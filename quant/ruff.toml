@@ -1,0 +1,8 @@
+# Inherit upstream Freqtrade lint rules; only add project-local adjustments.
+extend = "../pyproject.toml"
+
+[lint.isort]
+known-first-party = ["quantlab"]
+
+[lint.per-file-ignores]
+"tests/*" = ["S101"]

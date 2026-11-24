@@ -1,0 +1,6 @@
+# Project environment = pinned upstream Freqtrade runtime + test/lint tooling.
+# Install from the repository root: uv pip install -r quant/requirements.txt && uv pip install -e .
+-r ../requirements.txt
+pytest==9.2.0
+pytest-mock==3.17.0
+ruff==0.17.5
