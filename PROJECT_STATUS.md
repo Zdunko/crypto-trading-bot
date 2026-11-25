@@ -94,6 +94,10 @@ Synthetic-data tests prove rules and causality, **not profitability**. No backte
 - The terminal 20 % breaker halted each variant early (A1 after 48.6 % of the period, V0 8.7 %, A0 0.6 %), so most of the period was spent in cash; the evaluation says little about the signal across a full cycle.
 - Recommendation: do not use Family A as specified for the holdout. Further research only after an owner decision on the evaluation design (not on parameters).
 
+## Phase 4C proposal (design only; `quant/docs/phase4c/risk_and_evaluation_protocol_v2_proposal.md`)
+
+- Owner accepted the rejection of Family A. Proposal: four-layer separation, tiered breaker (temporary reduction / defensive flatten with cooldown and staged re-entry / manual emergency shutdown), shadow-replay diagnostics, risk-matched benchmarks, feasibility gate, hard research budget. Family B judged not justified on current data. Nothing implemented; awaiting approval gate G0.
+
 ## GitHub CI results
 
 | Check | Commit `c6cc24a` | Commit `5c9582f` |
