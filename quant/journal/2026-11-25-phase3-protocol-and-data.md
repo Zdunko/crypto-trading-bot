@@ -31,3 +31,5 @@
 | Stage | Run | Commit | Purpose / outcome |
 |---|---|---|---|
 | data | 45558871512 | 331ab62 | download + validation: passed (see above) |
+| bias | 45560148402 | 6a80519 | 8 pairs x 6 half-year periods inside the evaluation period: lookahead clean 6/6 periods for all 4 strategies (0 biased signals); recursive 18/18 checks per strategy within 0.1 % (worst 0.034 % MomentumRoc, 0.026 % TrendEmaCross, 0.000 % others). Recorded in `protocol/bias_result.json` |
+| upstream CI | 45560359246 | a573c62 | Windows 2025/3.14: 6 of 5104 tests failed - manifest keys used backslashes (**our bug**, Windows only); fixed in 5126a25 (`as_posix`); the Codecov patch itself worked (job ran to the end) |
