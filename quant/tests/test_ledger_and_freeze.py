@@ -13,7 +13,11 @@ def test_ledger_totals_are_internally_consistent_and_tied_to_the_protocol():
     assert conf["phase3"]["one_at_a_time_variants"] == variants == 22
     assert conf["phase3"]["subtotal"] == len(proto["strategies"]) + variants
     assert conf["phase4"]["subtotal"] == 2 + 12
-    assert conf["total_distinct"] == conf["phase3"]["subtotal"] + conf["phase4"]["subtotal"] + conf["family_a"]["subtotal"] == 43
+    assert (
+        conf["total_distinct"]
+        == conf["phase3"]["subtotal"] + conf["phase4"]["subtotal"] + conf["family_a"]["subtotal"]
+        == 43
+    )
     runs = led["runs"]
     assert (
         sum(r["freqtrade_backtests"] for r in runs)

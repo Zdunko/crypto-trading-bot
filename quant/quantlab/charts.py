@@ -4,7 +4,18 @@ from __future__ import annotations
 
 import math
 
-PALETTE = ["#1f77b4", "#d62728", "#2ca02c", "#9467bd", "#7f7f7f", "#8c564b", "#e377c2", "#bcbd22", "#17becf"]
+
+PALETTE = [
+    "#1f77b4",
+    "#d62728",
+    "#2ca02c",
+    "#9467bd",
+    "#7f7f7f",
+    "#8c564b",
+    "#e377c2",
+    "#bcbd22",
+    "#17becf",
+]
 
 
 def drawdown(series: list[float]) -> list[float]:
@@ -29,8 +40,10 @@ def line_chart(
         lo, hi = math.log10(lo), math.log10(hi)
     pad = (hi - lo) * 0.05 or 1.0
     lo, hi = lo - pad, hi + pad
-    px = lambda i: left + (width - left - right) * i / max(n - 1, 1)  # noqa: E731
-    py = lambda y: top + (height - top - bottom) * (1 - ((math.log10(y) if log else y) - lo) / (hi - lo))  # noqa: E731
+    px = lambda i: left + (width - left - right) * i / max(n - 1, 1)
+    py = lambda y: (
+        top + (height - top - bottom) * (1 - ((math.log10(y) if log else y) - lo) / (hi - lo))
+    )
     out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" font-family="sans-serif" font-size="11">',
            f'<rect width="{width}" height="{height}" fill="white"/>',
            f'<text x="{left}" y="22" font-size="14" font-weight="bold">{title}</text>',
@@ -48,7 +61,11 @@ def line_chart(
             out += [f'<line x1="{px(i):.1f}" x2="{px(i):.1f}" y1="{top}" y2="{height - bottom}" stroke="#f0f0f0"/>',
                     f'<text x="{px(i):.1f}" y="{height - bottom + 16}" text-anchor="middle">{yr}</text>']  # fmt: skip
     for k, (name, v) in enumerate(series.items()):
-        pts = " ".join(f"{px(i):.1f},{py(x):.1f}" for i, x in enumerate(v) if x is not None and (x > 0 or not log))
+        pts = " ".join(
+            f"{px(i):.1f},{py(x):.1f}"
+            for i, x in enumerate(v)
+            if x is not None and (x > 0 or not log)
+        )
         dash = ' stroke-dasharray="5 3"' if name in dashed else ""
         c = PALETTE[k % len(PALETTE)]
         out.append(f'<polyline fill="none" stroke="{c}" stroke-width="1.6"{dash} points="{pts}"/>')
