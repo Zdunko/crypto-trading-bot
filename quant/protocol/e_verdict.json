@@ -1,0 +1,46 @@
+{
+ "validated": [],
+ "holdout": "NOT evaluated and untouched (no strategy passed T1-T10)",
+ "evaluation_run": 45563804911,
+ "commit": "918c2f5b9992167b3776b13355f79f60dfa374f3",
+ "protocol_version": 2,
+ "failed": {
+  "TrendEmaCross": [
+   "T1b",
+   "T3",
+   "T4",
+   "T5",
+   "T7b",
+   "T8"
+  ],
+  "MeanReversionRsiBb": [
+   "T1b",
+   "T2",
+   "T3",
+   "T4",
+   "T5",
+   "T6",
+   "T7a",
+   "T7b",
+   "T8",
+   "T9"
+  ],
+  "BreakoutDonchian": [
+   "T1b",
+   "T3",
+   "T4",
+   "T5",
+   "T6",
+   "T7a",
+   "T7b"
+  ],
+  "MomentumRoc": [
+   "T1b",
+   "T4",
+   "T5",
+   "T7a",
+   "T7b",
+   "T8"
+  ]
+ }
+}

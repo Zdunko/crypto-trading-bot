@@ -35,3 +35,8 @@
 | upstream CI | 45560359246 | a573c62 | Windows 2025/3.14: 6 of 5104 tests failed - manifest keys used backslashes (**our bug**, Windows only); fixed in 5126a25 (`as_posix`); the Codecov patch itself worked (job ran to the end) |
 | eval | 45561413667 | 18cdd1c | **failed before any result**: Freqtrade could not store the backtest export because the output directory did not exist (my runner bug; no result was produced or looked at). Fixed in the next commit |
 | eval | 45561982317 | fedad61 | **completed; all four strategies REJECTED on T1-T10** (max drawdown 75-87 % vs limit 20 %, PF 1.06-1.21 vs 1.3). Two presentation defects noticed in the output: net returns below -100 % (post-hoc slippage not fed back into sizing, visible only for near-ruined accounts) and total-return bootstrap intervals that are unreadably wide. Reaction: add a reconciliation stage against Freqtrade's own totals, annualised intervals and a ruin flag. **No rule, parameter, threshold, period, config or strategy changed** (manifest verifies); verdicts cannot change because they do not depend on these outputs |
+| eval + reconcile | 45563804911 | 918c2f5 | **final evaluation:** all four strategies REJECTED (see `reports/phase3_evaluation_report.md`); reconciliation: final balance matches Freqtrade within 0.004 % and identical trade counts for all five; holdout not run, `protocol/e_verdict.json` records `validated: []` |
+
+## Outcome
+
+No strategy passed the frozen criteria; the holdout stays untouched. Nothing was tuned after seeing results; every code change after the first results (export directory, annualised intervals, ruin flag, reconcile stage, Windows path fix) was an analysis/diagnostic fix and is logged above. Next decisions belong to the owner (see PROJECT_STATUS.md).

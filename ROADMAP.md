@@ -35,7 +35,7 @@ Phase 2 exist only as inputs to the bias checks and are not reported as performa
 
 **Exit:** D1–D7 satisfied and owner approves the PR.
 
-## Phase 3 — Backtesting & validation pipeline (in progress; protocol v2 frozen 2026-11-25)
+## Phase 3 — Backtesting & validation pipeline (evaluation done 2026-11-25: no strategy validated; holdout untouched; awaiting owner review)
 Authoritative definition: `quant/docs/strategies/phase3_validation_thresholds.md` and
 `quant/protocol/protocol.json`. Stages (GitHub Actions, public OKX data, simulated capital):
 1. **Data** — download + validate (done: 8 pairs, 0 gaps, hash recorded).
