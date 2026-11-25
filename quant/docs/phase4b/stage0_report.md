@@ -101,3 +101,13 @@ or a risk budget; none tuned on this data):
   underpowered for Sharpe below about 1.2. None of this will be softened: failure of T1-T10 means no promotion.
 - Stage 1 deliverable (before any run): the specification and pre-registration committed and hashed in manifest v5; then Stage 2
   evaluation on research data only after your approval; the holdout only after a further written approval.
+
+## 11. Real-data engine check (CI run 45669058906, commit 8f3e15b; the only Stage 0 research run)
+Frozen dataset, evaluation period 2021-01-01..2025-07-01 only (holdout never loaded), 8 pairs, equal-weight buy-and-hold through the
+new engine versus the legacy benchmark: maximum relative equity difference 5.0e-7 (final 19964.96 vs 19964.95; the documented
+difference between multiplicative and additive liquidation valuation). Two runs produce the same hash
+(`e4c5fdff...0841`): deterministic. Missing candles in the evaluation window: 0 for all 8 pairs (so real-data gap handling is covered by
+the synthetic tests only). No rejected orders. This is an infrastructure check of a known benchmark, not a strategy result.
+CI incidents during Stage 0 (both ours, both fixed, none affect results): `pytest-xdist` missing from `quant/requirements.txt`
+(commit 2de999e) and the reconciliation test leaking Freqtrade's global backtest mode into upstream tests under
+`pytest -n auto --random-order` (commit 1fff969; isolation fixture, reproduced and verified). Research CI runs used: 1 of 2.
