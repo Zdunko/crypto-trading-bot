@@ -29,7 +29,7 @@ import pandas as pd
 
 from quantlab import bias as bias_mod
 from quantlab import protocol as protocol_mod
-from quantlab.costs import BASE, SCENARIOS, CostScenario, apply_costs
+from quantlab.costs import BASE, SCENARIOS, CostScenario, apply_costs, apply_costs_consistent
 from quantlab.equity import build_equity, buy_and_hold, close_matrix, hourly_index
 from quantlab.metrics import (
     daily_returns,
@@ -90,13 +90,18 @@ def assess_strategy(
     variant_returns: list[float] | None,
     ctx: Context,
     judge: bool = True,
+    consistent: bool = False,
 ) -> dict:
     """Costed equity, metrics, uncertainty and (optionally) the T1-T10 verdict for one strategy."""
     p = ctx.proto
     wallet = p["initial_wallet"]
     eq, costed, stats = {}, {}, {}
     for sc_name, scen in SCENARIOS.items():
-        costed[sc_name] = apply_costs(raw_trades[sc_name], scen)
+        costed[sc_name] = (
+            apply_costs_consistent(raw_trades[sc_name], scen, wallet)
+            if consistent
+            else apply_costs(raw_trades[sc_name], scen)
+        )
         eq[sc_name] = build_equity(costed[sc_name], ctx.closes, wallet, scen)
         stats[sc_name] = _stats_block(eq[sc_name], costed[sc_name], wallet)
     base_trades = costed["base"]
@@ -362,7 +367,7 @@ def stage_bias(proto: dict) -> int:
     return 0
 
 
-def run_variants(proto: dict, strategy: str, ctx: Context) -> list[dict]:
+def run_variants(proto: dict, strategy: str, ctx: Context, consistent: bool = False) -> list[dict]:
     per = proto["periods"]["evaluation"]
     tr = timerange(per["start"], per["end_exclusive"])
     vdir = USER_DATA / "variants"
@@ -370,8 +375,11 @@ def run_variants(proto: dict, strategy: str, ctx: Context) -> list[dict]:
     for param, value in variants_of(strategy, proto["robustness"][strategy]):
         name = make_variant(strategy, param, value, vdir)
         raw = backtest_trades(name, str(vdir), tr, BASE.fee, f"variant_{name}")
-        costed = apply_costs(raw, BASE)
-        eq = build_equity(costed, ctx.closes, proto["initial_wallet"], BASE)
+        wallet0 = proto["initial_wallet"]
+        costed = (
+            apply_costs_consistent(raw, BASE, wallet0) if consistent else apply_costs(raw, BASE)
+        )
+        eq = build_equity(costed, ctx.closes, wallet0, BASE)
         rows.append(
             {"param": param, "value": value, "net_return": float(eq.iloc[-1] / proto["initial_wallet"] - 1),
              "trades": len(costed)}
@@ -383,12 +391,18 @@ def run_variants(proto: dict, strategy: str, ctx: Context) -> list[dict]:
     return rows
 
 
-def stage_eval(proto: dict, which: str = "evaluation", only: list[str] | None = None) -> int:
+def stage_eval(
+    proto: dict,
+    which: str = "evaluation",
+    only: list[str] | None = None,
+    consistent: bool = False,
+) -> int:
     ctx = build_context(proto, which, with_bias=(which == "evaluation"))
     per = proto["periods"][which]
     tr = timerange(per["start"], per["end_exclusive"])
     names = only if only is not None else proto["strategies"]
     results: dict = {"protocol_version": proto["version"], "period": which, "range": per,
+                     "engine": "sizing-consistent slippage (3B)" if consistent else "post-hoc slippage (original)",
                      "bench_pairs": ctx.bench_pairs, "strategies": {}}  # fmt: skip
     results["benchmarks"] = {
         k: summarize(v, None, proto["initial_wallet"]) for k, v in ctx.bench.items()
@@ -400,9 +414,13 @@ def stage_eval(proto: dict, which: str = "evaluation", only: list[str] | None = 
             for sc, scen in SCENARIOS.items()
         }
         is_ref = name == proto["reference_strategy"]
-        variants = [] if (is_ref or which != "evaluation") else run_variants(proto, name, ctx)
+        variants = (
+            [] if (is_ref or which != "evaluation") else run_variants(proto, name, ctx, consistent)
+        )
         vr = [v["net_return"] for v in variants]
-        res = assess_strategy(name, raw, vr, ctx, judge=not is_ref and which == "evaluation")
+        res = assess_strategy(
+            name, raw, vr, ctx, judge=not is_ref and which == "evaluation", consistent=consistent
+        )
         res["variants"] = variants
         results["strategies"][name] = res
         print(f"{which}: {name} done", flush=True)
@@ -466,6 +484,140 @@ def stage_reconcile(proto: dict) -> int:
     return 0
 
 
+def _bh_stats(eq: pd.Series, wallet: float) -> dict:
+    s = summarize(eq, None, wallet)
+    return {k: s[k] for k in ("net_return", "max_drawdown", "sharpe", "sortino")}
+
+
+def stage_audit(proto: dict) -> int:
+    """Phase 3B audit: native-Freqtrade reconciliation, benchmark decomposition, leakage proof."""
+    from freqtrade.data.btanalysis import load_backtest_stats
+
+    from quantlab.equity import rebalanced_buy_and_hold
+
+    ctx = build_context(proto, "evaluation", with_bias=False)
+    per = proto["periods"]["evaluation"]
+    tr = timerange(per["start"], per["end_exclusive"])
+    wallet = proto["initial_wallet"]
+    out: dict = {"native": {}, "benchmarks": {}, "leakage": {}}
+
+    # 1. native Freqtrade statistics versus ours (fee-only trades, no slippage layer)
+    fee_only = CostScenario("fee-only", BASE.fee, 0.0, 0.0)
+    for name in [*proto["strategies"], proto["reference_strategy"]]:
+        raw = backtest_trades(name, "quant/strategies", tr, BASE.fee, f"audit_{name}")
+        st = load_backtest_stats(USER_DATA / "bt" / f"audit_{name}")["strategy"][name]
+        costed = apply_costs(raw, fee_only)
+        mine = summarize(build_equity(costed, ctx.closes, wallet, fee_only), costed, wallet)
+        per_pair = {r["key"]: r["profit_total_abs"] for r in st.get("results_per_pair", [])}
+        mine_pair = costed.groupby("pair")["profit_abs"].sum().to_dict()
+        out["native"][name] = {
+            "ft": {
+                k: st.get(k)
+                for k in (
+                    "total_trades",
+                    "profit_factor",
+                    "winrate",
+                    "profit_total_abs",
+                    "final_balance",
+                    "market_change",
+                    "max_drawdown_account",
+                )
+            },
+            "mine": {
+                "trades": mine["trades"],
+                "profit_factor": mine["profit_factor"],
+                "win_rate": mine["win_rate"],
+                "profit_total_abs": float(costed["profit_abs"].sum()),
+                "max_drawdown_mtm": mine["max_drawdown"],
+            },
+            "max_abs_pair_profit_diff": max(
+                (abs(per_pair.get(p, 0.0) - v) for p, v in mine_pair.items()), default=0.0
+            ),
+        }
+        if name == proto["reference_strategy"]:
+            tdf = raw[
+                ["pair", "open_date", "close_date", "exit_reason", "profit_ratio", "stake_amount"]
+            ].copy()
+            out["buy_and_hold_trades"] = json.loads(
+                tdf.astype({"open_date": str, "close_date": str}).to_json(orient="records")
+            )
+
+    # 2. benchmark decomposition and fairer alternatives (base costs)
+    pairs = ctx.bench_pairs
+    gross = {}
+    for p in pairs:
+        c = ctx.candles[p]
+        d = pd.to_datetime(c["date"], utc=True)
+        first = float(c.loc[d == ctx.index[0], "open"].iloc[0])
+        last = float(c.loc[d == ctx.index[-1], "close"].iloc[0])
+        gross[p] = last / first - 1.0
+    ew = sum(gross.values()) / len(gross)
+    out["benchmarks"]["per_pair_gross_return"] = gross
+    out["benchmarks"]["ew_gross_return_no_costs"] = ew
+    out["benchmarks"]["pair_share_of_ew_return"] = {
+        p: g / len(gross) / ew for p, g in gross.items()
+    }
+    variants = {
+        "equal-weight all 8 (frozen benchmark)": buy_and_hold(
+            ctx.candles, ctx.index, wallet, BASE, pairs
+        )[0],
+        "equal-weight without SOL": buy_and_hold(
+            ctx.candles, ctx.index, wallet, BASE, [p for p in pairs if p != "SOL/USDT"]
+        )[0],
+        "equal-weight without SOL and DOGE": buy_and_hold(
+            ctx.candles,
+            ctx.index,
+            wallet,
+            BASE,
+            [p for p in pairs if p not in ("SOL/USDT", "DOGE/USDT")],
+        )[0],
+        "BTC + ETH": buy_and_hold(ctx.candles, ctx.index, wallet, BASE, ["BTC/USDT", "ETH/USDT"])[
+            0
+        ],
+        "BTC": buy_and_hold(ctx.candles, ctx.index, wallet, BASE, ["BTC/USDT"])[0],
+        "equal-weight all 8, monthly rebalanced": rebalanced_buy_and_hold(
+            ctx.candles, ctx.index, wallet, BASE, pairs
+        ),
+    }
+    out["benchmarks"]["variants"] = {k: _bh_stats(v, wallet) for k, v in variants.items()}
+    starts = {}
+    for start in (
+        "2021-01-01",
+        "2021-07-01",
+        "2022-01-01",
+        "2022-07-01",
+        "2023-01-01",
+        "2023-07-01",
+        "2024-01-01",
+    ):
+        idx = hourly_index(start, per["end_exclusive"])
+        eq, used = buy_and_hold(ctx.candles, idx, wallet, BASE)
+        starts[start] = {"pairs": len(used), **_bh_stats(eq, wallet)}
+    out["benchmarks"]["start_date_sensitivity"] = starts
+
+    # 3. leakage proof: dropping every candle at/after the holdout start changes nothing
+    cut = pd.Timestamp(per["end_exclusive"], tz="UTC")
+    trimmed = {p: c[pd.to_datetime(c["date"], utc=True) < cut] for p, c in ctx.candles.items()}
+    closes_t = close_matrix(trimmed, ctx.index)
+    reg_t = daily_regimes(
+        trimmed["BTC/USDT"], proto["regime"]["ema_period"], proto["regime"]["adx_trend"]
+    )
+    last_day = pd.Timestamp(per["end_exclusive"], tz="UTC") - pd.Timedelta("1D")
+    same_reg = bool(
+        ctx.regimes[ctx.regimes.index <= last_day].equals(reg_t[reg_t.index <= last_day])
+    )
+    bench_t, _ = buy_and_hold(trimmed, ctx.index, wallet, BASE, pairs)
+    out["leakage"] = {
+        "closes_identical": bool(closes_t.equals(ctx.closes)),
+        "regimes_identical_up_to_period_end": same_reg,
+        "benchmark_identical": bool(bench_t.equals(ctx.bench["base"])),
+        "last_timestamp_used": str(ctx.index[-1]),
+        "holdout_start": per["end_exclusive"],
+    }
+    emit("PHASE3B_AUDIT_JSON", json.dumps(out, default=_json_default))
+    return 0
+
+
 def _json_default(o):
     if isinstance(o, (np.integer,)):
         return int(o)
@@ -502,8 +654,11 @@ def stage_holdout(proto: dict) -> int:
 
 def main(argv: list[str] | None = None) -> int:
     cmd = (argv or sys.argv[1:] or [""])[0]
-    if cmd not in ("bias", "eval", "holdout", "reconcile"):
-        print("usage: python -m quantlab.phase3 bias|eval|holdout|reconcile", file=sys.stderr)
+    if cmd not in ("bias", "eval", "holdout", "reconcile", "eval_consistent", "audit"):
+        print(
+            "usage: python -m quantlab.phase3 bias|eval|eval_consistent|audit|holdout|reconcile",
+            file=sys.stderr,
+        )
         return 2
     proto = guard()
     stages = {

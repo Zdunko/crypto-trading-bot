@@ -192,3 +192,74 @@ def test_monthly_returns_and_summary():
     s = summarize(eq, None, 1000.0)
     assert s["net_return"] == pytest.approx(net_return(eq, 1000.0))
     assert s["max_drawdown"] == pytest.approx(0.0)
+
+
+# ------------------------------------------------------------------ Phase 3B corrections
+def _ruin_trades(n: int = 300, loss: float = 0.05) -> pd.DataFrame:
+    """Trades as Freqtrade would size them: 90 % of its (fee-only) wallet, a 5 % loss each, in sequence."""
+    idx = hourly_index("2024-01-01", "2024-12-31")
+    w, rows = 1000.0, []
+    for i in range(n):
+        stake = 0.9 * w
+        rows.append(
+            {
+                "pair": "A/USDT", "open_date": idx[2 * i], "close_date": idx[2 * i + 1],
+                "amount": stake / 100.0, "open_rate": 100.0, "close_rate": 100.0 * (1 - loss),
+                "fee_open": BASE.fee, "fee_close": BASE.fee, "exit_reason": "exit_signal",
+            }
+        )  # fmt: skip
+        w -= stake * (loss + 2 * BASE.fee + 0.0 * loss)
+    return pd.DataFrame(rows)
+
+
+def test_posthoc_slippage_can_ruin_below_minus_100_percent_but_consistent_cannot():
+    from quantlab.costs import apply_costs_consistent
+
+    t = _ruin_trades()
+    posthoc = apply_costs(t, BASE)
+    assert 1000.0 + posthoc["profit_abs"].sum() < 0.0  # the original artefact: below -100 %
+    fixed = apply_costs_consistent(t, BASE, 1000.0)
+    final = 1000.0 + fixed["profit_abs"].sum()
+    assert 0.0 < final < 1000.0  # heavy loss but never beyond total loss
+    assert (fixed["size_scale"] <= 1.0 + 1e-12).all() and fixed[
+        "size_scale"
+    ].is_monotonic_decreasing
+
+
+def test_consistent_equals_posthoc_without_slippage_and_for_single_trade():
+    from quantlab.costs import apply_costs_consistent
+
+    t = _ruin_trades(40)
+    fee_only = CostScenario("fee-only", BASE.fee, 0.0, 0.0)
+    a, b = apply_costs(t, fee_only), apply_costs_consistent(t, fee_only, 1000.0)
+    assert np.allclose(a["profit_abs"], b["profit_abs"]) and (b["size_scale"] == 1.0).all()
+    one = _ruin_trades(1)
+    assert np.allclose(
+        apply_costs(one, BASE)["profit_abs"],
+        apply_costs_consistent(one, BASE, 1000.0)["profit_abs"],
+    )
+
+
+def test_consistent_costs_are_close_to_posthoc_for_a_normal_strategy():
+    from quantlab.costs import apply_costs_consistent
+
+    t = _ruin_trades(60, loss=-0.01)  # small gains: wallet barely moves
+    d = 1000.0 + apply_costs_consistent(t, BASE, 1000.0)["profit_abs"].sum()
+    p = 1000.0 + apply_costs(t, BASE)["profit_abs"].sum()
+    assert abs(d / p - 1) < 0.05
+
+
+def test_rebalanced_benchmark_is_costed_and_tracks_unrebalanced_for_one_pair():
+    from quantlab.equity import rebalanced_buy_and_hold
+
+    idx = hourly_index("2024-01-01", "2024-04-01")
+    px = np.linspace(100, 150, len(idx))
+    c = {
+        "A/USDT": pd.DataFrame(
+            {"date": idx, "open": px, "high": px, "low": px, "close": px, "volume": 1.0}
+        )
+    }
+    plain, _ = buy_and_hold(c, idx, 1000.0, BASE)
+    reb = rebalanced_buy_and_hold(c, idx, 1000.0, BASE)
+    assert reb.iloc[-1] < plain.iloc[-1] * 1.0001  # extra rebalancing costs, nothing more
+    assert abs(reb.iloc[-1] / plain.iloc[-1] - 1) < 0.01

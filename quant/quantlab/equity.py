@@ -80,3 +80,38 @@ def buy_and_hold(
         amount = per_pair / (opens[pair] * (1 + scenario.slippage) * (1 + scenario.fee))
         value += amount * closes[pair].to_numpy() * (1 - scenario.slippage - scenario.fee)
     return pd.Series(value, index=index), chosen
+
+
+def rebalanced_buy_and_hold(
+    candles: dict[str, pd.DataFrame],
+    index: pd.DatetimeIndex,
+    wallet: float,
+    scenario: CostScenario,
+    pairs: list[str] | None = None,
+) -> pd.Series:
+    """
+    Equal-weight benchmark rebalanced on the first hour of every month over the pairs already
+    trading at that moment; each rebalance pays (fee + slippage) on the traded notional, and
+    the final value is liquidation value. Used to show that the plain buy-and-hold benchmark
+    is not an artefact of never rebalancing.
+    """
+    closes = close_matrix({p: candles[p] for p in (pairs or list(candles))}, index)
+    cost = scenario.fee + scenario.slippage
+    month = index.strftime("%Y-%m")
+    holdings = pd.Series(0.0, index=closes.columns)  # units
+    cash = wallet
+    values = np.zeros(len(index))
+    for i in range(len(index)):
+        px = closes.iloc[i]
+        live = px.notna()
+        if i == 0 or month[i] != month[i - 1]:
+            equity = cash + float((holdings * px.fillna(0.0)).sum())
+            target = pd.Series(0.0, index=closes.columns)
+            target[live] = equity / live.sum()
+            trade_value = (target - holdings * px.fillna(0.0)).abs().sum()
+            equity -= cost * trade_value
+            holdings = (target / px).where(live, 0.0).fillna(0.0)
+            holdings = holdings * (equity / max(float((holdings * px.fillna(0.0)).sum()), 1e-12))
+            cash = 0.0
+        values[i] = cash + float((holdings * px.fillna(0.0)).sum()) * (1.0 - cost)
+    return pd.Series(values, index=index)

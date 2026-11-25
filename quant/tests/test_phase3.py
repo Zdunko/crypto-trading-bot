@@ -234,3 +234,14 @@ def test_uncertainty_has_annualised_intervals_and_report_flags_ruin(world):
 
     assert _net(-1.09) == "-100% (ruin; post-hoc slippage artefact)"
     assert _net(-0.5) == "-50.0%" and _net(2.0) == "200.0%"
+
+
+def test_consistent_engine_runs_end_to_end_and_never_reports_below_minus_100(world):
+    _, ctx = world
+    raw = {k: _raw_trades(ctx, s.fee) for k, s in SCENARIOS.items()}
+    old = phase3.assess_strategy("S", raw, [0.1], ctx, judge=False)
+    new = phase3.assess_strategy("S", raw, [0.1], ctx, judge=False, consistent=True)
+    assert new["stats"]["base"]["trades"] == old["stats"]["base"]["trades"]
+    for sc in ("base", "stress"):
+        assert new["stats"][sc]["net_return"] >= -1.0
+    assert phase3.stage_audit and phase3.stage_eval

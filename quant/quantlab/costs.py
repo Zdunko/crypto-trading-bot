@@ -73,3 +73,46 @@ def apply_costs(trades: pd.DataFrame, scenario: CostScenario) -> pd.DataFrame:
     out["profit_abs"] = close_value - out["open_value"]
     out["profit_ratio"] = close_value / out["open_value"] - 1
     return out
+
+
+def apply_costs_consistent(
+    trades: pd.DataFrame, scenario: CostScenario, wallet: float
+) -> pd.DataFrame:
+    """
+    Slippage with position sizes fed back (Phase 3B correction of :func:`apply_costs`).
+
+    Freqtrade sized every position from a wallet that never paid slippage. Here each trade's size
+    is scaled by ``k = (wallet + our realised profit) / (wallet + Freqtrade's fee-only realised
+    profit)`` at its entry time, i.e. the share of Freqtrade's wallet we would really still own.
+    Losses then compound multiplicatively, so a long-only account can no longer fall below -100 %.
+
+    Approximation (documented): ``k`` uses realised profit only (Freqtrade's "unlimited" stake is
+    proportional to free balance), and exits are processed before entries at the same timestamp.
+    ``profit_ratio`` is unchanged; ``amount``, ``open_value`` and ``profit_abs`` are scaled.
+    """
+    full = apply_costs(trades, scenario)
+    fee_only = apply_costs(trades, CostScenario("fee-only", scenario.fee, 0.0, 0.0))
+    n = len(full)
+    scale = np.ones(n)
+    if n:
+
+        def _ns(col: str) -> np.ndarray:
+            return pd.to_datetime(full[col], utc=True).dt.as_unit("ns").astype("int64").to_numpy()
+
+        events = sorted(
+            [(t, 1, i) for i, t in enumerate(_ns("open_date"))]
+            + [(t, 0, i) for i, t in enumerate(_ns("close_date"))]
+        )
+        mine = theirs = 0.0
+        for _, is_entry, i in events:
+            if is_entry:
+                base = wallet + theirs
+                scale[i] = max((wallet + mine) / base, 0.0) if base > 0 else 0.0
+            else:
+                mine += float(full["profit_abs"].iloc[i]) * scale[i]
+                theirs += float(fee_only["profit_abs"].iloc[i])
+    out = full.copy()
+    for col in ("amount", "open_value", "profit_abs"):
+        out[col] = full[col] * scale
+    out["size_scale"] = scale
+    return out

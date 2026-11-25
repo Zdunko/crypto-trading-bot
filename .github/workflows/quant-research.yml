@@ -5,6 +5,7 @@ name: Quant research
 #   [phase3-data]      download + validate OKX candles, print availability and dataset hash
 #   [phase3-bias]      lookahead/recursive analysis on 8 pairs x 6 periods (inside the evaluation period)
 #   [phase3-eval]      backtests, costs, stress, walk-forward, robustness, report (evaluation period ONLY)
+#   [phase3b-audit]    corrected (sizing-consistent) evaluation + native reconciliation + benchmark audit
 #   [phase3-holdout]   survivors only, exactly once (refuses to run without e_verdict.json / if already done)
 # workflow_dispatch needs this file on the default branch, so markers are the way before merging.
 
@@ -210,5 +211,55 @@ jobs:
           name: holdout-${{ github.sha }}
           path: |
             user_data/phase3_holdout.log
+          if-no-files-found: warn
+          retention-days: 30
+
+  audit3b:
+    name: "Phase 3B audit (corrected engine, benchmark, leakage)"
+    if: contains(github.event.head_commit.message, '[phase3b-audit]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          activate-environment: true
+          enable-cache: false
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: |
+          uv pip install -r quant/requirements.txt
+          uv pip install -e .
+
+      - name: Verify the frozen protocol
+        run: python -m quantlab.protocol verify
+
+      - name: Download and validate candles (hash must match the protocol)
+        shell: bash
+        run: |
+          export EXPECT_DATA_HASH=$(python -c "import json;print(json.load(open('quant/protocol/protocol.json'))['data']['dataset_sha256'])")
+          bash quant/scripts/fetch_data.sh 2>&1 | tail -n 5
+
+      - name: Corrected evaluation (evaluation period only)
+        shell: bash
+        run: python -m quantlab.phase3 eval_consistent 2>&1 | tee user_data/phase3b_eval.log
+
+      - name: Audit
+        shell: bash
+        run: python -m quantlab.phase3 audit 2>&1 | tee user_data/phase3b_audit.log
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: audit3b-${{ github.sha }}
+          path: |
+            user_data/phase3b_eval.log
+            user_data/phase3b_audit.log
           if-no-files-found: warn
           retention-days: 30
