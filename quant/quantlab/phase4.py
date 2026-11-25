@@ -198,14 +198,14 @@ def stage_research(proto: dict, v3: dict) -> int:
         print(f"{cls} R1: net {res['stats']['base']['net_return']:+.2%} "
               f"dd {res['stats']['base']['max_drawdown']:.2%} trades {res['stats']['base']['trades']} "
               f"halts {len(halts)}", flush=True)  # fmt: skip
-        for abl, flag in ABLATION_FLAGS.items():
+        for ablation_name, flag in ABLATION_FLAGS.items():
             vname, src = ablation_source(cls, modules[cls], flag)
             (vdir / f"{vname}.py").write_text(src)
             ares, astats, _, _ = run_config(proto, ctx, vname, str(vdir), f"{vname}", tr)
             out["backtests"] += 1
             ahalts = [e for e in astats.get("breaker_events", []) if e.get("type") == "halt"]
-            entry["ablations"][abl] = condensed(ares, len(ahalts))
-            print(f"  {abl}: net {ares['stats']['base']['net_return']:+.2%} "
+            entry["ablations"][ablation_name] = condensed(ares, len(ahalts))
+            print(f"  {ablation_name}: net {ares['stats']['base']['net_return']:+.2%} "
                   f"dd {ares['stats']['base']['max_drawdown']:.2%}", flush=True)  # fmt: skip
         out["strategies"][base_name] = entry
 
