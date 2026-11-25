@@ -54,6 +54,14 @@ Synthetic-data tests prove rules and causality, **not profitability**. No backte
 - Honest limits: post-hoc slippage is not fed back into sizing (artefact only for near-ruined accounts), flat slippage assumption, survivorship bias, one market cycle, optimistic bootstrap intervals.
 - Upstream CI: Codecov upload patched (one condition); the first full matrix exposed a Windows-only bug in our manifest paths (fixed, `5126a25`). The matrix for the latest commit was not re-verified after the last push; one upstream job ("Online / live tests", ccxt against live exchanges) was reported failed on `918c2f5` and has **not** been investigated.
 
+## Phase 3B (audit) - see `quant/docs/phase3b/audit_findings.md`
+
+- Slippage artefact fixed additively (`apply_costs_consistent`); originals preserved; all four strategies still rejected; Breakout T6 flips to PASS but it fails six other criteria.
+- Native Freqtrade reconciliation: trades, PF, win rate, profit and per-pair profit identical.
+- Thresholds were applied to the pre-holdout period only (leakage proof), but there was no development/OOS split: all data before 2025-07-01 is research data.
+- Benchmark: +1896 % is dominated by SOL (66.7 %) and DOGE (22.6 %) and by the 2021-01-01 start; Freqtrade BuyAndHold +4185 % is one SOL x100 ROI exit.
+- TrendEmaCross and MomentumRoc: research candidates only. Risk-management research **proposal awaiting approval** (`quant/docs/phase3b/risk_research_proposal.md`); nothing implemented.
+
 ### Decisions that belong to the owner
 1. Accept "no validated strategy" as the Phase 3 result, or approve a **new protocol version** for redesigned strategies (e.g. with portfolio-level risk limits from Phase 4). Note: the evaluation period has now been seen, so the untouched holdout is the only clean sample left and can be used once.
 2. Whether T4 (20 % drawdown) remains the right gate for a fully invested long-only crypto strategy, or whether the exposure/sizing rules should be added to the strategies first.

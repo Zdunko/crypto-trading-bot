@@ -40,3 +40,5 @@
 ## Outcome
 
 No strategy passed the frozen criteria; the holdout stays untouched. Nothing was tuned after seeing results; every code change after the first results (export directory, annualised intervals, ruin flag, reconcile stage, Windows path fix) was an analysis/diagnostic fix and is logged above. Next decisions belong to the owner (see PROJECT_STATUS.md).
+| audit 3B (failed) | 45629198632 | 04abeec | died with KeyError: new CLI commands not in the dispatch table (my bug; no result) |
+| audit 3B | 45630084090 | 065a7fc | corrected engine + native reconciliation + benchmark audit + leakage proof; all four strategies still rejected; findings in `docs/phase3b/audit_findings.md` |
