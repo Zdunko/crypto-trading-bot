@@ -1,0 +1,49 @@
+{
+ "version": 4,
+ "status": "PRE-REGISTERED before any Family A result exists; changes need owner approval",
+ "purpose": "statistical credibility rules for Family A (HTF trend, volatility targeting, crypto/cash allocation) and Family B",
+ "levels": {
+  "alpha": 0.05,
+  "power": 0.8,
+  "bootstrap_ci": 0.95,
+  "bootstrap_block_days": 10,
+  "bootstrap_n": 2000,
+  "bootstrap_seed": 20261125
+ },
+ "stat_screen": {
+  "alpha": 0.05,
+  "power": 0.8,
+  "min_dsr": 0.95,
+  "max_pbo": 0.25,
+  "max_mde_annualised_sharpe": 1.5
+ },
+ "multiple_testing": {
+  "family_wise": "Holm-Bonferroni at alpha 0.05 across the hypotheses registered for a family (one primary specification per family = 1 hypothesis; extra registered variants count)",
+  "secondary": "Benjamini-Hochberg q 0.05 reported, never decisive",
+  "trial_count_rule": "N = distinct strategy configurations ever evaluated on research data (experiment_ledger.json: 40) + configurations of the new family; every new evaluation increments N before its result is read",
+  "dsr_variance": "sampling variance 1/(n-1) of a Sharpe estimate under no skill (no per-trial Sharpe history exists for all earlier configurations)",
+  "pbo": "CSCV with 16 splits when a family has >= 2 registered configurations; otherwise not applicable (and then only 1 hypothesis may be registered)"
+ },
+ "credible_means": "ALL of: T1-T10 pass (unchanged); lower bound of the 95 % block-bootstrap interval of net annualised Sharpe > 0; DSR >= 0.95; Holm rejects the null; PBO <= 0.25 where applicable; passes 2x cost stress; no single asset or regime supplies the result; sample not underpowered",
+ "underpowered_rule": "if the smallest annualised Sharpe detectable at power 0.8 exceeds 1.5 the sample is 'underpowered': absence of significance is not evidence of absence and no claim of statistical significance is made",
+ "volatility_targeting": "never evidence of alpha: a scaled series is always compared with the unscaled basket under identical costs; only the difference in risk-adjusted return counts and it must itself pass the screen",
+ "holdout": "unchanged: 2025-07-01..2026-11-25, one evaluation per finalist after separate written approval",
+ "references_verified": [
+  "Bailey & Lopez de Prado 2014 JPM 40(5) 94-107",
+  "Bailey, Borwein, Lopez de Prado, Zhu 2017 J. Computational Finance 20(4) DOI 10.21314/JCF.2016.322",
+  "Liu, Tsyvinski, Wu 2022 JF 77(2) 1133-1177",
+  "Cederburg et al. 2020 JFE 138(1) 95-117",
+  "Daniel & Moskowitz 2016 JFE 122(2) 221-247",
+  "Jegadeesh & Titman 1993 JF 48(1) 65-91",
+  "Moskowitz, Ooi, Pedersen 2012 JFE 104(2) 228-250",
+  "Moreira & Muir 2017 JF 72(4) 1611-1644",
+  "Liu & Tsyvinski 2021 RFS 34(6) 2689-2727"
+ ],
+ "references_not_verified_and_not_relied_on": [
+  "Hurst, Ooi, Pedersen 2017 JPM",
+  "Faber 2007 J. Wealth Mgmt",
+  "Harvey, Liu, Zhu 2016 RFS",
+  "Harvey et al. 2018 JPM (volatility targeting)",
+  "White 2000 Econometrica (only partially confirmed)"
+ ]
+}

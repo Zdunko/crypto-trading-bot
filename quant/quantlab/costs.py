@@ -51,6 +51,16 @@ STRESS = CostScenario("stress", fee=0.002, slippage=0.001, stop_extra=0.001)
 SCENARIOS = {s.name: s for s in (BASE, STRESS)}
 
 
+def entry_price(ref, scenario: CostScenario):
+    """Effective buy price: slippage moves the reference against us (fee applies on value)."""
+    return ref * (1 + scenario.slippage)
+
+
+def exit_price(ref, scenario: CostScenario, is_stop=False):
+    """Effective sell price: slippage, plus ``stop_extra`` on stop exits."""
+    return ref * (1 - scenario.slippage - np.where(is_stop, scenario.stop_extra, 0.0))
+
+
 def apply_costs(trades: pd.DataFrame, scenario: CostScenario) -> pd.DataFrame:
     """Return trades with slippage applied and profit recomputed from rates (never trusted)."""
     missing = [c for c in REQUIRED if c not in trades.columns]
@@ -64,10 +74,8 @@ def apply_costs(trades: pd.DataFrame, scenario: CostScenario) -> pd.DataFrame:
             )
     out = trades.copy()
     is_stop = out["exit_reason"].isin(STOP_REASONS).to_numpy()
-    s_open = scenario.slippage
-    s_close = scenario.slippage + np.where(is_stop, scenario.stop_extra, 0.0)
-    out["open_rate_eff"] = out["open_rate"] * (1 + s_open)
-    out["close_rate_eff"] = out["close_rate"] * (1 - s_close)
+    out["open_rate_eff"] = entry_price(out["open_rate"], scenario)
+    out["close_rate_eff"] = exit_price(out["close_rate"], scenario, is_stop)
     out["open_value"] = out["amount"] * out["open_rate_eff"] * (1 + out["fee_open"])
     close_value = out["amount"] * out["close_rate_eff"] * (1 - out["fee_close"])
     out["profit_abs"] = close_value - out["open_value"]

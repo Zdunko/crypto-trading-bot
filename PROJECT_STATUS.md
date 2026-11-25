@@ -75,6 +75,13 @@ Synthetic-data tests prove rules and causality, **not profitability**. No backte
 - Ablations are descriptive and unselected; `no_stop_cooldown` (also reverts the chandelier to the fixed -10 % stop) looks better but is not attributable to one component and may not be adopted without a new protocol and the single holdout.
 - Upstream `Build (3.13)` fails only because 6 macOS jobs never get a runner (17 other jobs pass); not our change.
 
+## Phase 4B / Stage 0 (infrastructure only; report `quant/docs/phase4b/stage0_report.md`)
+
+- Approved by owner: Stage 0 only; Family A (HTF trend, volatility targeting, crypto/cash) prioritised; all Phase 4 configurations incl. `no_stop_cooldown` remain rejected.
+- Added: single execution/cost engine (`quantlab/execution.py`), continuous deterministic circuit breaker, trade-level causality checks (`causality.py`), statistical rules fixed in advance (`stats.py`, `protocol_v4_stats.json`), reconstructed experiment ledger (40 distinct configurations, 136 backtests, 0 holdout evaluations), manifest v4.
+- Reconciliation with native Freqtrade on synthetic fixtures: identical trades and timestamps, profit within 3.3e-4 USDT per 100 USDT stake; documented stop-gap rule difference.
+- No strategy, no profitability backtest, holdout untouched. Family A proposal awaits approval.
+
 ## GitHub CI results
 
 | Check | Commit `c6cc24a` | Commit `5c9582f` |
@@ -153,6 +160,7 @@ defaults to **OKX** for the technical bias check; this is **not** the owner's fi
 
 ## Change log
 
+- 2026-11-25 — Phase 4B Stage 0: execution engine, causality tests, statistical rules, ledger, manifest v4 (no strategy, no holdout).
 - 2026-11-25 — Phase 4: R1 risk overlay research (protocol v3, 2 research runs, run 1 invalid); R1 rejected on research data; holdout untouched.
 - 2026-11-24 — Phase 1: audit, `AGENTS.md`, `ROADMAP.md`, journal, `quant/` layout, safety policy, configs, scripts, Quant CI.
 - 2026-11-25 — fix: `quant/__init__.py` (mypy duplicate-module failure introduced by us).
