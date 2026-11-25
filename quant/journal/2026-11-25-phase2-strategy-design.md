@@ -49,3 +49,48 @@
 
 Read the probe result, pick the data exchange, trigger the bias check, record command / commit / data hash
 here, then request owner review of D1–D7 and the Phase 3 thresholds.
+
+## D4 result — Freqtrade bias checks on real candles (verified from the workflow log)
+
+- **Run:** `Quant bias check` #2, https://github.com/Zdunko/crypto-trading-bot/actions/runs/45553021957
+  (job success, artifact `bias-check-af56964f…`, id 14994198659) · **Commit:** `af56964f842d02316e543bc888de44a0d78db78f`
+- **Data:** OKX spot, 1h, public candles, no credentials. Pairs BTC/USDT, ETH/USDT, SOL/USDT, 39 317 candles
+  each, downloaded from 2022-06-01; **data sha256 `83e0c636de1ab11473acc494421a25de4a312e478c4a9a3d3f12994046c268ea`**
+  (hash of the sorted `*.feather` file hashes, computed in the run).
+- **Analysis range:** `20230101-20240101`, fee 0.15 % per side (`configs/backtest.json`).
+- **Commands (as in `quant-bias-check.yml`):** `freqtrade lookahead-analysis ... --strategy-list <4 strategies>
+  --minimum-trade-amount 10 --targeted-trade-amount 20`; `freqtrade recursive-analysis ... --strategy <name> -p BTC/USDT
+  --startup-candle 199 399 599 999`.
+
+### lookahead-analysis (4 of 4 strategies: `has_bias = No`)
+
+| Strategy | has_bias | signals analysed | biased entry | biased exit | biased indicators |
+|---|---|---|---|---|---|
+| TrendEmaCross | No | 20 | 0 | 0 | – |
+| MeanReversionRsiBb | No | 20 | 0 | 0 | – |
+| BreakoutDonchian | No | 20 | 0 | 0 | – |
+| MomentumRoc | No | 20 | 0 | 0 | – |
+
+All four also passed the workflow's strict gate (fails if a strategy is biased or was not evaluated).
+
+### recursive-analysis (BTC/USDT only), variance in the strategy's own startup column
+
+| Strategy | startup | worst indicator variance at that column |
+|---|---|---|
+| TrendEmaCross | 400 | `ema_slow` −0.002 % |
+| MeanReversionRsiBb | 600 | `bb_lower`/`bb_middle` −0.000 % (rsi: none) |
+| BreakoutDonchian | 100 | `volume_avg` 0.000 % |
+| MomentumRoc | 600 | `ema_trend` 0.024 % |
+
+All ≤ 0.1 % (acceptance threshold). Freqtrade also reported "No lookahead bias on indicators found" for each.
+Note: `roc` shows `nan%` at startup 199 only because the 240-candle lookback cannot be computed there; it is "–"
+(no variance) at the strategy's 600. Not a defect.
+
+### Limits of this evidence (not hidden)
+
+- Freqtrade's lookahead check is empirical (re-runs backtests on truncated data for 20 signals per strategy);
+  absence of detected bias is **not a proof** of its absence.
+- Recursive analysis used BTC/USDT only; lookahead used BTC, ETH, SOL over one year (2023) on **OKX** data.
+- Positive side observation: MeanReversionRsiBb produced 20 analysable signals on real 2023 data, so it is not
+  dead on real candles (unlike my fear from synthetic data). Trade count adequacy is still a Phase 3 question (T1).
+- Still no backtest performance has been produced or reported.

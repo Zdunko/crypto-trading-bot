@@ -1,12 +1,12 @@
 # PROJECT STATUS
 
-_Last updated: 2026-11-25 · Phase 1 approved. **Phase 2 in progress**: design + offline verification done, D4 (bias checks on real data) outstanding._
+_Last updated: 2026-11-25 · Phase 1 approved. **Phase 2 implemented, awaiting owner review**: D1–D6 done, D7 pending PR review. No backtest performance exists._
 
 ## Current state
 
 | Item | State |
 |---|---|
-| Phase | 2 — Strategy research (in progress; Phase 1 approved by owner) |
+| Phase | 2 — Strategy research (implemented; awaiting owner review; Phase 1 approved) |
 | Branch / PR | `claude/freqtrade-trading-system-b82aek` · draft PR #1, not merged |
 | Real-money trading | Disabled by policy; **no credentials exist anywhere** (see "Safety model") |
 | Strategies | 4 specified + implemented (trend, mean reversion, breakout, momentum) + BuyAndHold benchmark; **none evaluated on market data** |
@@ -34,10 +34,10 @@ _Last updated: 2026-11-25 · Phase 1 approved. **Phase 2 in progress**: design +
 | D1 specs | done | `quant/docs/strategies/*.md` — 4 strategies, regime filter, volatility component; ≤ 3 free parameters each, fixed before any backtest |
 | D2 strategies | done | 5 classes load via `freqtrade list-strategies` (status OK); spot, long only, no averaging, stoploss set |
 | D3 unit tests | done | 124 tests: per-rule logic, NaN warm-up silence, causality (truncating the future changes nothing), offline recursion convergence |
-| D4 bias checks | **outstanding** | Needs real candles. `quant-bias-check.yml` is written, zizmor-clean, arguments parse locally, but **never executed**; blocked on exchange reachability from GitHub runners (see probe job in Quant CI) |
+| D4 bias checks | done (with limits) | Run #2 of `quant-bias-check.yml` (https://github.com/Zdunko/crypto-trading-bot/actions/runs/45553021957, commit `af56964`, OKX data, sha256 `83e0c636…68ea`): lookahead **no bias for 4/4** (20 signals each, 0 biased); recursive variance ≤ 0.024 % in each strategy's own startup column. Empirical, not a proof; recursive check on BTC/USDT only. Details in the journal |
 | D5 strategy policy | done | `quantlab.strategy_policy` (AST) wired into `check.sh`: forbids shorting, averaging, leverage, negative `shift`, missing/too-wide `stoploss` (only `BuyAndHold` may use -0.99) |
 | D6 thresholds | done (proposal) | `phase3_validation_thresholds.md` — T1–T10, awaiting **owner approval** before Phase 3 |
-| D7 housekeeping | partly | journal written, status updated; CI results for the Phase 2 commit pending |
+| D7 housekeeping | partly | journal and status updated; Quant CI green on `497e0b4` and `af56964`; upstream matrix red only from the missing `CODECOV_TOKEN` (commented on PR); owner review pending |
 
 Known strategy risks (hypotheses, not results): mean reversion may yield too few trades (0.33 % of
 synthetic candles); momentum can re-enter immediately after a stop-out (cooldown → Phase 4);
@@ -111,7 +111,7 @@ defaults to **OKX** for the technical bias check; this is **not** the owner's fi
 
 ## Not yet verified (assumptions)
 
-- `quant-bias-check.yml` end-to-end (never executed). `workflow_dispatch` needs the file on the default branch; before merging use a push whose commit message contains `[bias-check]`.
+- `quant-bias-check.yml` has run once (success). `workflow_dispatch` still needs the file on the default branch; before merging use a push whose commit message contains `[bias-check]`.
 - End-to-end data download + backtest (blocked here by network policy).
 - Fee + slippage assumption of 0.15 % per side.
 
