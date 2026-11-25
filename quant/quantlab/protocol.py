@@ -45,7 +45,9 @@ def frozen_files(quant_dir: Path = QUANT_DIR) -> list[Path]:
 def build_manifest(quant_dir: Path = QUANT_DIR) -> dict:
     return {
         "note": "Regenerate only through a reviewed commit; see quantlab/protocol.py",
-        "files": {str(p.relative_to(quant_dir)): _norm_hash(p) for p in frozen_files(quant_dir)},
+        "files": {
+            p.relative_to(quant_dir).as_posix(): _norm_hash(p) for p in frozen_files(quant_dir)
+        },
     }
 
 

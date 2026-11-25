@@ -94,3 +94,9 @@ def test_freeze_cli_roundtrip(copy, monkeypatch):
     manifest = P.build_manifest(copy)
     (copy / "protocol" / "frozen_manifest.json").write_text(json.dumps(manifest))
     assert P.verify_manifest(copy) == []
+
+
+def test_manifest_keys_are_posix_paths_on_every_platform():
+    """Windows CI failed once because keys were built with backslashes."""
+    assert all("\\" not in k for k in P.build_manifest()["files"])
+    assert all("\\" not in k for k in json.loads(P.MANIFEST_PATH.read_text())["files"])
