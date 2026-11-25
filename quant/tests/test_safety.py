@@ -148,3 +148,54 @@ def test_cli_exit_codes(tmp_path, capsys):
     assert main([str(bad)]) == 1
     assert "dry_run" in capsys.readouterr().err
     assert main([]) == 2
+
+
+def _write(tmp_path, config: dict):
+    path = tmp_path / "cfg.json"
+    path.write_text(json.dumps(config))
+    return str(path)
+
+
+@pytest.mark.parametrize(
+    "env,path",
+    [
+        ("FREQTRADE__DRY_RUN", "dry_run"),
+        ("FREQTRADE__TRADING_MODE", "trading_mode"),
+        ("FREQTRADE__MARGIN_MODE", "margin_mode"),
+        ("FREQTRADE__POSITION_ADJUSTMENT_ENABLE", "position_adjustment_enable"),
+        ("FREQTRADE__FORCE_ENTRY_ENABLE", "force_entry_enable"),
+        ("FREQTRADE__MAX_OPEN_TRADES", "max_open_trades"),
+    ],
+)
+def test_env_overrides_cannot_bypass_policy(tmp_path, monkeypatch, env, path):
+    values = {
+        "FREQTRADE__DRY_RUN": "false",
+        "FREQTRADE__TRADING_MODE": "futures",
+        "FREQTRADE__MARGIN_MODE": "isolated",
+        "FREQTRADE__POSITION_ADJUSTMENT_ENABLE": "true",
+        "FREQTRADE__FORCE_ENTRY_ENABLE": "true",
+        "FREQTRADE__MAX_OPEN_TRADES": "500",
+    }
+    cfg = _write(tmp_path, _valid())
+    assert check_files([cfg]) == []
+    monkeypatch.setenv(env, values[env])
+    assert path in {v.path for v in check_files([cfg])}
+    # Opting out of the overlay only inspects the files themselves.
+    assert check_files([cfg], include_env=False) == []
+
+
+def test_runtime_secrets_from_environment_are_allowed(tmp_path, monkeypatch):
+    cfg = _write(tmp_path, _valid())
+    monkeypatch.setenv("FREQTRADE__TELEGRAM__TOKEN", "123:ABC")
+    assert check_files([cfg]) == []
+
+
+def test_env_overlay_matches_freqtrade_resolution(tmp_path, monkeypatch):
+    """Guard against drift: our overlay must resolve the way Freqtrade's loader does."""
+    from freqtrade.configuration.environment_vars import environment_vars_to_dict
+    from freqtrade.misc import deep_merge_dicts
+
+    monkeypatch.setenv("FREQTRADE__DRY_RUN", "false")
+    file_cfg = _valid()
+    effective = deep_merge_dicts(environment_vars_to_dict(), dict(file_cfg))
+    assert effective["dry_run"] is False

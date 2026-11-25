@@ -11,19 +11,28 @@ the next phase starts. Exit criteria are measurable; nothing is "done" on assump
 - **Exit:** quality gate green locally and in GitHub Actions.
 
 ## Phase 2 — Strategy research (design, no tuning)
-1. Decide data source/exchange using the CI network probe (Binance vs. alternatives).
-2. Written spec per strategy family in `quant/docs/strategies/`: hypothesis, rules, parameters,
-   expected regime, failure conditions:
-   - Trend following (e.g. EMA crossover / Donchian trend with ATR stop)
-   - Mean reversion (e.g. RSI / Bollinger re-entry, only in low-trend regimes)
-   - Breakout (Donchian/volatility breakout with volume confirmation)
-   - Momentum (time-series momentum / rate-of-change ranking)
-   - Regime filter (e.g. 200-day trend + ADX/volatility state) as a shared component
-   - Volatility risk layer (ATR stop distance, volatility-scaled stake)
-3. Implement each as a small Freqtrade strategy in `quant/strategies/` with ≤ 4 parameters,
-   plus `BuyAndHold` benchmark strategy.
-4. Unit tests for signal logic on synthetic data; `lookahead-analysis` + `recursive-analysis` clean.
-- **Exit:** strategies compile, pass bias checks, specs reviewed. No performance claims yet.
+
+**Blocking prerequisite (owner decision):** where historical data is downloaded and backtests
+run. Claude Code Cloud cannot reach any exchange; run the `Quant CI` workflow once with
+`network_probe: true`, then choose (a) GitHub Actions, or (b) allow-list one exchange host
+(owner approval). Bias checks in D4 need market data, so Phase 2 cannot close without this.
+
+**Deliverables and acceptance criteria** (all must hold; each is checkable by a command or file):
+
+| # | Deliverable | Acceptance criterion |
+|---|---|---|
+| D1 | One spec per family in `quant/docs/strategies/<name>.md`: trend following, mean reversion, breakout, momentum, plus a shared regime filter and a volatility risk component | Each spec states: hypothesis, exact entry/exit rules, **≤ 4 parameters with fixed values and allowed ranges written before any backtest**, favourable and unfavourable regimes, expected failure modes, cost sensitivity. |
+| D2 | Strategies in `quant/strategies/` (one `IStrategy` per family) + a `BuyAndHold` benchmark strategy | `freqtrade list-strategies --strategy-path quant/strategies` lists all; each sets `stoploss`, keeps `can_short = False` and `position_adjustment_enable = False`; no `shift(-n)` or other future data. |
+| D3 | Unit tests on synthetic candles | ≥ 3 tests per strategy (signal fires on a constructed pattern; silent otherwise; no signals inside the startup window). `bash quant/scripts/check.sh` green, test count reported. |
+| D4 | Bias checks | `freqtrade lookahead-analysis` and `recursive-analysis` report **no bias** for every strategy; command, commit, data range and data hash recorded in the journal. |
+| D5 | Safety extension | `quantlab.safety` statically rejects strategy files that enable shorting, position adjustment or omit `stoploss`; covered by tests. |
+| D6 | Pre-registered Phase 3 thresholds | A proposal (for owner approval) of numeric "validated" criteria written **before** results exist: min. OOS trades, max drawdown, Sharpe/Sortino vs buy-and-hold, cost-stress multiple. |
+| D7 | Housekeeping | Journal entry per strategy, `PROJECT_STATUS.md` updated, draft PR, Quant CI green, upstream-CI failures (if any) explained as upstream or ours. |
+
+**Explicitly out of scope:** performance numbers, hyperopt, parameter tuning, ML. Backtests in
+Phase 2 exist only as inputs to the bias checks and are not reported as performance.
+
+**Exit:** D1–D7 satisfied and owner approves the PR.
 
 ## Phase 3 — Backtesting & validation pipeline
 1. Data: download OHLCV (1h + 1d, 2019→now) in GitHub Actions; store as workflow artifact or

@@ -55,7 +55,9 @@ Built-in gaps we must fill ourselves: **slippage** (not modelled — we add a fe
   same pattern [V: `zizmor` reports no findings for `quant-ci.yml`].
 - Risky features we disable by policy: live trading, futures/margin, `force_entry_enable`,
   `position_adjustment_enable`, exposed REST API with default credentials.
-- New guardrail: `quant/quantlab/safety.py` fails CI on any config violating the hard rules.
+- New guardrail: `quant/quantlab/safety.py` fails CI on any config violating the hard rules,
+  including `FREQTRADE__*` environment overrides (gap found and closed in the final audit; see
+  `PROJECT_STATUS.md` → Safety model for what remains unguaranteed).
 
 ## 5. Licensing
 
@@ -70,7 +72,7 @@ Built-in gaps we must fill ourselves: **slippage** (not modelled — we add a fe
 
 | Task | Claude Code Cloud | GitHub Actions (public repo) |
 |---|---|---|
-| Install, lint, unit tests | [V] yes | [A] yes (workflow added, first run pending) |
+| Install, lint, unit tests | [V] yes | [V] yes (`Quant CI` green on PR #1) |
 | Upstream test suite | [V] runs (see status for result) | upstream `ci.yml` (15-job matrix) |
 | Download exchange data | [V] **blocked** — all exchange hosts refused by network policy | [A] open internet; Binance may block US runners (HTTP 451) — probe job added |
 | Backtesting | [V] **blocked** — needs exchange market metadata even with local data | [A] yes if an exchange API is reachable |
@@ -101,3 +103,12 @@ bash quant/scripts/check.sh       # ruff + pytest + safety policy
 ```
 
 The same two commands run locally (Claude Code Cloud) and in GitHub Actions.
+
+## 9. Final audit addendum (2026-11-25)
+
+- [V] Diff vs upstream `develop`: 22 added files, **0 modified, 0 deleted**; nothing under `freqtrade/`, `tests/`,
+  `docs/`, `ft_client/` or upstream build files.
+- [V] Environment-variable bypass of the safety policy reproduced and fixed (see `PROJECT_STATUS.md`).
+- [V] Upstream scheduled workflows are active on the fork and expect secrets that do not exist; disabling is recommended.
+- [V] Transitive dependencies are not locked (52 of 104 packages unpinned in the audited venv).
+- [A] Upstream test-matrix results on GitHub are pending; local failures are attributed to the environment, not proven.

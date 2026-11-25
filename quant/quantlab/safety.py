@@ -21,8 +21,11 @@ from __future__ import annotations
 
 import re
 import sys
+from copy import deepcopy
 from dataclasses import dataclass
 from typing import Any
+
+from freqtrade.configuration.load_config import load_from_files
 
 
 # Upper bound for concurrently open trades. Raising it requires an explicit,
@@ -76,8 +79,13 @@ def _check_secrets(config: dict[str, Any]) -> list[Violation]:
     return violations
 
 
-def check_config(config: dict[str, Any]) -> list[Violation]:
-    """Return all policy violations for an already-merged Freqtrade config."""
+def check_config(config: dict[str, Any], *, check_secrets: bool = True) -> list[Violation]:
+    """
+    Return all policy violations for an already-merged Freqtrade config.
+
+    ``check_secrets`` should be False for the environment-variable overlay: runtime secrets
+    are allowed to arrive through the environment (never through committed files).
+    """
     v: list[Violation] = []
 
     if config.get("dry_run") is not True:
@@ -123,15 +131,33 @@ def check_config(config: dict[str, Any]) -> list[Violation]:
         if not isinstance(sl, (int, float)) or not MIN_STOPLOSS <= sl < 0:
             v.append(Violation("stoploss", f"must be in [{MIN_STOPLOSS}, 0), got {sl!r}"))
 
-    v.extend(_check_secrets(config))
+    if check_secrets:
+        v.extend(_check_secrets(config))
     return v
 
 
-def check_files(paths: list[str]) -> list[Violation]:
-    """Merge config files with Freqtrade's loader and check the result."""
-    from freqtrade.configuration.load_config import load_from_files
+def check_files(paths: list[str], *, include_env: bool = True) -> list[Violation]:
+    """
+    Check the configuration exactly as Freqtrade would resolve it.
 
-    return check_config(load_from_files(paths))
+    Files are merged with Freqtrade's own loader. With ``include_env`` the ``FREQTRADE__*``
+    environment variables are overlaid the same way ``Configuration.load_config`` does, so
+    e.g. ``FREQTRADE__DRY_RUN=false`` is caught. Secrets are only checked in the files.
+    """
+    from freqtrade.configuration.environment_vars import environment_vars_to_dict
+    from freqtrade.misc import deep_merge_dicts
+
+    file_config = load_from_files(paths)
+    violations = check_config(file_config)
+    if include_env:
+        effective = deep_merge_dicts(environment_vars_to_dict(), deepcopy(file_config))
+        seen = {(x.path, x.message) for x in violations}
+        violations.extend(
+            x
+            for x in check_config(effective, check_secrets=False)
+            if (x.path, x.message) not in seen
+        )
+    return violations
 
 
 def main(argv: list[str] | None = None) -> int:
