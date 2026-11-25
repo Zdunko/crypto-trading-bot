@@ -87,6 +87,13 @@ Synthetic-data tests prove rules and causality, **not profitability**. No backte
 - Owner decisions 2026-11-25: breaker ON in all evaluations (impact reported separately); halt cancels entries, liquidates with fees/slippage/liquidity cap, no auto restart; implementation and evaluation separately approved.
 - Implemented `quantlab/family_a.py` (A1, A0, V0) on the Stage 0 engine, spec frozen in `protocol_v5_family_a.json` + manifest v5. 318 tests pass locally. Evaluation awaits approval.
 
+## Family A evaluation outcome (CI run 45679466940; report `quant/reports/family_a/evaluation_report.md`)
+
+- One research run, evaluation period only, holdout untouched. Liquidity correction A1 applied first (completed-candle median volume), original manifests preserved, amendments A1/A2 recorded.
+- A1 +24.4 %, A0 +24.0 %, V0 +30.0 % (base costs, breaker ON) versus B1 +1896 %; every variant fails T1 (14/7/8 episodes), T3, T4, T7, T1b; T10 (causality) passes; T9 not evaluated; T6 passes for A1 only. DSR 0.10-0.20, Holm rejects nothing, PBO 0.47: "not_credible".
+- The terminal 20 % breaker halted each variant early (A1 after 48.6 % of the period, V0 8.7 %, A0 0.6 %), so most of the period was spent in cash; the evaluation says little about the signal across a full cycle.
+- Recommendation: do not use Family A as specified for the holdout. Further research only after an owner decision on the evaluation design (not on parameters).
+
 ## GitHub CI results
 
 | Check | Commit `c6cc24a` | Commit `5c9582f` |
@@ -165,6 +172,7 @@ defaults to **OKX** for the technical bias check; this is **not** the owner's fi
 
 ## Change log
 
+- 2026-11-25 — Family A evaluated (one run): not credible, fails T1/T3/T4/T7; liquidity amendment A1, ledger amendment A2.
 - 2026-11-25 — Family A implemented and frozen (spec v5), synthetic tests and causality validation; no market evaluation.
 - 2026-11-25 — Phase 4B Stage 0: execution engine, causality tests, statistical rules, ledger, manifest v4 (no strategy, no holdout).
 - 2026-11-25 — Phase 4: R1 risk overlay research (protocol v3, 2 research runs, run 1 invalid); R1 rejected on research data; holdout untouched.

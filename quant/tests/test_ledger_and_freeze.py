@@ -13,7 +13,7 @@ def test_ledger_totals_are_internally_consistent_and_tied_to_the_protocol():
     assert conf["phase3"]["one_at_a_time_variants"] == variants == 22
     assert conf["phase3"]["subtotal"] == len(proto["strategies"]) + variants
     assert conf["phase4"]["subtotal"] == 2 + 12
-    assert conf["total_distinct"] == conf["phase3"]["subtotal"] + conf["phase4"]["subtotal"] == 40
+    assert conf["total_distinct"] == conf["phase3"]["subtotal"] + conf["phase4"]["subtotal"] + conf["family_a"]["subtotal"] == 43
     runs = led["runs"]
     assert (
         sum(r["freqtrade_backtests"] for r in runs)
@@ -73,7 +73,8 @@ def test_amendment_a1_is_a_complete_auditable_chain_and_originals_are_preserved(
             P.QUANT_DIR / ch["file"]
         )
     changed = {f for f, h in originals.items() if P._norm_hash(P.QUANT_DIR / f) != h}
-    assert changed == {c["file"] for c in a["changes"]}  # no file changed without being listed
+    listed = {c["file"] for am in P.load_amendments() for c in am["changes"]}
+    assert changed == listed  # no file changed without being listed in an amendment
     assert P.verify_all() == []
 
 

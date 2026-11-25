@@ -116,6 +116,16 @@
    "new_configurations": 0,
    "note": "same 14 configurations after the fix (+1 smoke); valid; repeat of the same configurations",
    "valid": true
+  },
+  {
+   "run": "45679466940",
+   "commit": "7058aa4",
+   "marker": "family-a-eval",
+   "conclusion": "success",
+   "freqtrade_backtests": 0,
+   "new_configurations": 3,
+   "valid": true,
+   "note": "Family A evaluation on the Stage 0 engine: A1, A0, V0 (breaker ON) + A1 at 2x costs; 31 engine runs incl. 27 causality runs; evaluation period only; holdout untouched"
   }
  ],
  "configurations_evaluated_on_research_data": {
@@ -131,16 +141,22 @@
    "subtotal": 14,
    "status": "rejected by owner; incl. no_stop_cooldown"
   },
-  "total_distinct": 40,
-  "excluded": "BuyAndHold reference and benchmarks B1-B5 (not tuned strategies)"
+  "total_distinct": 43,
+  "excluded": "BuyAndHold reference and benchmarks B1-B5 (not tuned strategies)",
+  "family_a": {
+   "configurations": 3,
+   "subtotal": 3,
+   "detail": "A1, A0, V0 (A1 at 2x costs is the same configuration under stress)"
+  }
  },
  "execution_totals": {
   "freqtrade_backtests_in_successful_runs": 136,
   "first_evaluations": 47,
   "repeats_of_identical_configurations": 89,
   "holdout_evaluations": 0,
-  "explanation": "first evaluations: run 45561982317 (32) + run 45644306073 (15). Repeats: 45563804911 (37), 45630084090 (37), 45653877385 (15)."
+  "explanation": "first evaluations: run 45561982317 (32) + run 45644306073 (15). Repeats: 45563804911 (37), 45630084090 (37), 45653877385 (15).",
+  "engine_runs_family_a": 31
  },
- "multiple_testing_rule": "N for DSR = 40 + configurations of any new family (protocol_v4_stats.json)",
+ "multiple_testing_rule": "N for DSR = 43 (40 before Family A + A1, A0, V0); any new family adds its configurations before its results are read",
  "all_data_before_2025_07_01_is_research_data": true
 }
