@@ -446,12 +446,12 @@ class RiskOverlayMixin:
         return self._regime_cache[day]
 
     def _start_balance(self) -> float:
-        wallets = getattr(self, "wallets", None)
-        if wallets is not None:
-            try:
-                return float(wallets.get_starting_balance())
-            except Exception:
-                logger.debug("starting balance unavailable, falling back to config")
+        """
+        Starting capital from the CONFIG. ``wallets.get_starting_balance()`` is not used: in a
+        backtest it returns the current balance (realised profit included), which double counted
+        closed profit in the equity and made the circuit breaker halt on phantom drawdowns
+        (found in the first Phase 4 research run; regression test in test_risk_overlay.py).
+        """
         w = self.config.get("dry_run_wallet", 1000)
         return float(w if not isinstance(w, dict) else next(iter(w.values())))
 

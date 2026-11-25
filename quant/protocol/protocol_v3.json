@@ -123,5 +123,15 @@
   "stop exits fill at stop price or the candle open when gapped (Freqtrade behaviour), plus stop_extra",
   "stress is recosted on identical positions",
   "R1 reads BTC history for the daily regime from the stored candle file in backtests (exchange startup-candle limit forbids requesting ~6000 candles); it is only sliced to completed days before the decision time. R1 uses startup_candle_count=600, the same warm-up family as R0"
+ ],
+ "errata": [
+  {
+   "date": "2026-11-25",
+   "run": "research run 1, commit 1e99407 (run 45644306073)",
+   "defect": "RiskOverlayMixin._start_balance used wallets.get_starting_balance(), which in a backtest returns the CURRENT balance, so realised profit was counted twice in the overlay's equity. The drawdown breaker saw phantom peaks (+16 % / +29 %) and halted at a real drawdown of about 11 % / 9 %; R1 then traded only ~10-22 months of 54.",
+   "how_found": "internal inconsistency, not a favourable/unfavourable result: breaker peak equity exceeded the maximum of the independently reconstructed mark-to-market equity; reproduced offline, fixed, and verified to match the reconstruction to 8 digits",
+   "fix": "starting capital is read from config dry_run_wallet; regression test added. No R1 parameter, ablation, threshold or benchmark rule changed.",
+   "consequence": "run 1 R1 and ablation results are INVALID and are not used for any conclusion; they stay recorded in the journal. Research trial count: 2 evaluation runs of the same frozen R1 design (1 invalid because of the defect)."
+  }
  ]
 }

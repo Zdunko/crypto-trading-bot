@@ -430,3 +430,10 @@ def test_glue_stop_outs_create_a_pair_cooldown(overlay):
     )
     assert strat.custom_stake_amount("A/USDT", t, 100.0, 300.0, 5.0, 1e9, 1.0, None, "long") == 0.0
     assert strat._denied.get("pair_cooldown") == 1
+
+
+def test_start_balance_comes_from_config_not_from_the_moving_wallet(overlay):
+    """Regression: wallets.get_starting_balance() grows with profit in backtests (double counting)."""
+    strat, _frames, _state, _t = overlay
+    strat.wallets = SimpleNamespace(get_starting_balance=lambda: 1234.0)
+    assert strat._start_balance() == 1000.0

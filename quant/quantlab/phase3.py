@@ -359,6 +359,8 @@ def run_bias(
             check=False,
         )  # fmt: skip
         (out_dir / f"lookahead_{i}.log").write_text(text)
+        biased = [ln for ln in text.splitlines() if "|" in ln or "bias" in ln.lower()]
+        print("\n".join(biased[-30:]), flush=True)  # visible in the job log for diagnosis
         lookahead[label] = bias_mod.parse_lookahead_csv(csv_path)
         for s in strategies:
             for pair in proto["bias"]["recursive_pairs"]:
