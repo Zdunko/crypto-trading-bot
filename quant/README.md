@@ -34,5 +34,5 @@ freqtrade backtesting -c quant/configs/base.json -c quant/configs/backtest.json 
 ```
 
 `base.json`: spot, dry-run wallet 1000 USDT, max 3 open trades, static pair list.
-`backtest.json`: fee 0.15 % per side (0.10 % exchange fee + 0.05 % slippage buffer — an
-*assumption* to be stress-tested in Phase 3).
+`backtest.json`: exchange taker fee 0.10 % per side (assumption). Slippage is **not** in this number: it is
+applied afterwards by `quantlab.costs` so costs are counted exactly once (see `protocol/protocol.json`).

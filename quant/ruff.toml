@@ -5,4 +5,6 @@ extend = "../pyproject.toml"
 known-first-party = ["quantlab"]
 
 [lint.per-file-ignores]
-"tests/*" = ["S101"]
+"tests/*" = ["S101", "E501"]  # E501: fixtures are verbatim log lines
+"quantlab/report.py" = ["E501"]  # markdown table rows
+"quantlab/phase3.py" = ["E501"]  # CLI argument lists and progress messages

@@ -12,7 +12,7 @@ not fitted to data. The "allowed range" column is used only for the Phase 3 sens
 | [momentum_roc](momentum_roc.md) | `strategies/momentum_roc.py` | Momentum |
 | [regime_filter](regime_filter.md) | `strategies/quant_common.py::market_regime` | Shared regime component |
 | [volatility_risk](volatility_risk.md) | `strategies/quant_common.py::atr_stake_fraction` | Shared risk component |
-| [phase3_validation_thresholds](phase3_validation_thresholds.md) | — | Pre-registered pass/fail criteria (proposal) |
+| [phase3_validation_thresholds](phase3_validation_thresholds.md) | `protocol/protocol.json` | **Frozen v2** pass/fail protocol |
 | — | `strategies/buy_and_hold.py` | In-framework benchmark (not tradable) |
 
 Common to all strategies: spot, long only, 1h candles, no position averaging, no leverage,

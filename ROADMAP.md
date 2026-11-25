@@ -35,21 +35,16 @@ Phase 2 exist only as inputs to the bias checks and are not reported as performa
 
 **Exit:** D1–D7 satisfied and owner approves the PR.
 
-## Phase 3 — Backtesting & validation pipeline
-1. Data: download OHLCV (1h + 1d, 2019→now) in GitHub Actions; store as workflow artifact or
-   cached release asset (not in git); record data hash in the journal.
-2. Universe: fixed list of pairs listed for the whole test period + documented survivorship
-   caveat (delisted coins are absent from exchange data).
-3. Costs: fee 0.10 % + 0.05 % slippage buffer per side (`backtest.json`), sensitivity at 2× costs;
-   liquidity cap: stake ≤ small fraction of median candle quote volume.
-4. `quantlab.metrics`: net return, max DD, Sharpe, Sortino, profit factor, win rate,
-   expectancy, trades, monthly table, exposure — computed from Freqtrade result files.
-5. `quantlab.validation`: in-sample / out-of-sample split, walk-forward (rolling windows),
-   regime-segmented results (bull / bear / sideways by benchmark trend), parameter-stability grid.
-6. Report generator → Markdown/HTML readable on a phone; benchmark = buy-and-hold, equal weight.
-- **Exit:** reproducible pipeline (`workflow_dispatch`) producing a report from a pinned commit
-  and data hash; a strategy is "validated" only if OOS/walk-forward beats buy-and-hold on a
-  risk-adjusted basis (Sharpe/Sortino, max DD) with acceptable trade count.
+## Phase 3 — Backtesting & validation pipeline (in progress; protocol v2 frozen 2026-11-25)
+Authoritative definition: `quant/docs/strategies/phase3_validation_thresholds.md` and
+`quant/protocol/protocol.json`. Stages (GitHub Actions, public OKX data, simulated capital):
+1. **Data** — download + validate (done: 8 pairs, 0 gaps, hash recorded).
+2. **Bias checks** — lookahead + recursive on 8 pairs × 6 periods inside the evaluation period.
+3. **Evaluation** — 4 strategies + buy-and-hold benchmark, base and stress costs, 9 walk-forward windows,
+   regimes, 22 robustness variants, bootstrap intervals; mechanical T1–T10 verdict.
+4. **Holdout** — only for survivors, exactly once, files frozen by the manifest.
+5. **Report** — comparative results, honest rejections; owner review.
+No result may change a rule, parameter, threshold or period; "no strategy validated" is an acceptable outcome.
 
 ## Phase 4 — Risk management
 - Config + strategy-level controls: max position exposure, portfolio exposure cap,

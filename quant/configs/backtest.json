@@ -1,4 +1,4 @@
 {
     "$schema": "https://schema.freqtrade.io/schema.json",
-    "fee": 0.0015
+    "fee": 0.001
 }
