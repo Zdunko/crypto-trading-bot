@@ -95,9 +95,22 @@ Guaranteed (tested):
   and optionally upstream `Freqtrade CI` (it runs a 19-job matrix on every push to this PR).
 - Repository is public: everything committed is world-readable. Public-repo Actions minutes are free.
 
+## Verified: exchange reachability from GitHub runners (probe job, run 45552884205, 2026-11-25)
+
+| Endpoint | HTTP | | Endpoint | HTTP |
+|---|---|---|---|---|
+| `api.binance.com` | **451** (blocked) | | `api.exchange.coinbase.com` | 200 |
+| `data-api.binance.vision` | 200 | | `api.kucoin.com` | 200 |
+| `data.binance.vision` | 200 | | `api.gateio.ws` | 200 |
+| `api.kraken.com` | 200 | | `api.bybit.com` | 403 |
+| `www.okx.com` | 200 | | | |
+
+Consequence: Freqtrade's `binance` exchange cannot be used from GitHub runners. `quant-bias-check.yml`
+defaults to **OKX** for the technical bias check; this is **not** the owner's final data-exchange decision.
+`configs/base.json` still says `binance`; the workflow overrides it with `FREQTRADE__EXCHANGE__NAME`.
+
 ## Not yet verified (assumptions)
 
-- Which exchange data APIs are reachable from GitHub runners (the informational probe job in Quant CI reports it on every run).
 - `quant-bias-check.yml` end-to-end (never executed). `workflow_dispatch` needs the file on the default branch; before merging use a push whose commit message contains `[bias-check]`.
 - End-to-end data download + backtest (blocked here by network policy).
 - Fee + slippage assumption of 0.15 % per side.
@@ -106,7 +119,7 @@ Guaranteed (tested):
 
 1. Data/backtest location: GitHub Actions (free) and/or allow-list one exchange host in Claude Code Cloud.
 2. Disable the upstream workflows listed above (recommended).
-3. Exchange for research data, decided after the network probe.
+3. Exchange for Phase 3 research data: OKX is the working default (see reachability table); Kraken/KuCoin/Gate are alternatives. Binance only via a different host.
 
 ## Change log
 

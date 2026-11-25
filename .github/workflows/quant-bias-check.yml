@@ -10,8 +10,8 @@ on:
   workflow_dispatch:
     inputs:
       exchange:
-        description: "Exchange for public candle data"
-        default: "binance"
+        description: "Exchange for public candle data (api.binance.com returns HTTP 451 from GitHub runners)"
+        default: "okx"
       pairs:
         description: "Space-separated pairs"
         default: "BTC/USDT ETH/USDT SOL/USDT"
@@ -29,7 +29,7 @@ permissions:
   contents: read
 
 env:
-  EXCHANGE: ${{ inputs.exchange || 'binance' }}
+  EXCHANGE: ${{ inputs.exchange || 'okx' }}
   PAIRS: ${{ inputs.pairs || 'BTC/USDT ETH/USDT SOL/USDT' }}
   TIMERANGE: ${{ inputs.timerange || '20230101-20240101' }}
   DOWNLOAD_RANGE: "20220601-"

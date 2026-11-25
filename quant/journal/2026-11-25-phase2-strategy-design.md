@@ -39,9 +39,10 @@
 
 ## Assumptions & limitations
 
-- `quant-bias-check.yml` has never run (needs exchange reachability from GitHub runners; the informational
-  probe job in Quant CI reports it). `workflow_dispatch` also requires the file on the default branch, so the
-  push trigger with `[bias-check]` in the commit message is the way to run it before merging.
+- `quant-bias-check.yml` had never run when this entry was first written. The Quant CI probe (run 45552884205)
+  showed `api.binance.com` = 451 and OKX/Kraken/KuCoin/Gate/Coinbase/Binance-mirror = 200 from GitHub runners,
+  so the workflow defaults to OKX. `workflow_dispatch` requires the file on the default branch, so the push
+  trigger with `[bias-check]` in the commit message is used before merging.
 - Parameter values are conventions (priors), not estimates; sensitivity ranges are for Phase 3 only.
 
 ## Decision / next step

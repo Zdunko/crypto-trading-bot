@@ -13,9 +13,10 @@ the next phase starts. Exit criteria are measurable; nothing is "done" on assump
 ## Phase 2 — Strategy research (design, no tuning)
 
 **Blocking prerequisite (owner decision):** where historical data is downloaded and backtests
-run. Claude Code Cloud cannot reach any exchange; run the `Quant CI` workflow once with
-`network_probe: true`, then choose (a) GitHub Actions, or (b) allow-list one exchange host
-(owner approval). Bias checks in D4 need market data, so Phase 2 cannot close without this.
+run. Claude Code Cloud cannot reach any exchange. The probe job in `Quant CI` showed (2026-11-25) that GitHub
+runners reach OKX, Kraken, KuCoin, Gate, Coinbase and the Binance data mirror, but **not** `api.binance.com`
+(HTTP 451) and not Bybit (403). Default: run data work in GitHub Actions on OKX; the owner may instead
+allow-list one exchange host for Claude Code Cloud. Bias checks in D4 need market data, so Phase 2 cannot close without this.
 
 **Deliverables and acceptance criteria** (all must hold; each is checkable by a command or file):
 
