@@ -3,4 +3,5 @@
 -r ../requirements.txt
 pytest==9.2.0
 pytest-mock==3.17.0
+pytest-xdist==3.8.0  # imported by the upstream test helpers used read-only in tests/test_reconcile_freqtrade.py
 ruff==0.17.5
