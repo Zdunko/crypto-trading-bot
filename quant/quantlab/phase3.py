@@ -71,6 +71,7 @@ class Context:
     bench: dict[str, pd.Series]  # scenario name -> equal-weight buy-and-hold equity
     bench_pairs: list[str]
     bias: dict | None
+    bench_threshold: dict | None = None  # Phase 4: T3/T4 benchmark override (set B1-B5)
 
 
 def _num(x):
@@ -91,17 +92,21 @@ def assess_strategy(
     ctx: Context,
     judge: bool = True,
     consistent: bool = False,
+    precosted: dict[str, pd.DataFrame] | None = None,
 ) -> dict:
     """Costed equity, metrics, uncertainty and (optionally) the T1-T10 verdict for one strategy."""
     p = ctx.proto
     wallet = p["initial_wallet"]
     eq, costed, stats = {}, {}, {}
     for sc_name, scen in SCENARIOS.items():
-        costed[sc_name] = (
-            apply_costs_consistent(raw_trades[sc_name], scen, wallet)
-            if consistent
-            else apply_costs(raw_trades[sc_name], scen)
-        )
+        if precosted is not None:
+            costed[sc_name] = precosted[sc_name]
+        else:
+            costed[sc_name] = (
+                apply_costs_consistent(raw_trades[sc_name], scen, wallet)
+                if consistent
+                else apply_costs(raw_trades[sc_name], scen)
+            )
         eq[sc_name] = build_equity(costed[sc_name], ctx.closes, wallet, scen)
         stats[sc_name] = _stats_block(eq[sc_name], costed[sc_name], wallet)
     base_trades = costed["base"]
@@ -134,7 +139,8 @@ def assess_strategy(
                 "profit_factor": stats["base"]["profit_factor"],
             },
             "pair_share_max": max(shares.values()) if shares else None,
-            "bench": {
+            "bench": ctx.bench_threshold
+            or {
                 "sortino": bench_stats["base"]["sortino"],
                 "max_drawdown": bench_stats["base"]["max_drawdown"],
             },
@@ -217,7 +223,12 @@ def ft(args: list[str], *, check: bool = True) -> str:
         **os.environ,
         "FREQTRADE__EXCHANGE__NAME": "okx",
         "PYTHONPATH": os.pathsep.join(
-            [str(STRATEGY_DIR), str(ROOT / "quant"), os.environ.get("PYTHONPATH", "")]
+            [
+                str(STRATEGY_DIR),
+                str(ROOT / "quant" / "strategies_r1"),
+                str(ROOT / "quant"),
+                os.environ.get("PYTHONPATH", ""),
+            ]
         ),
     }
     res = subprocess.run(
@@ -327,10 +338,12 @@ def guard() -> dict:
 
 
 # ====================================================================== stages
-def stage_bias(proto: dict) -> int:
-    strategies, pairs = proto["strategies"], proto["pairs"]
+def run_bias(
+    proto: dict, strategies: list[str], strategy_path: str = "quant/strategies", sub: str = "bias"
+) -> dict:
+    pairs = proto["pairs"]
     tol = proto["bias"]["max_recursive_variance"]
-    out_dir = USER_DATA / "bias"
+    out_dir = USER_DATA / sub
     shutil.rmtree(out_dir, ignore_errors=True)
     out_dir.mkdir(parents=True)
     lookahead: dict[str, dict] = {}
@@ -339,7 +352,7 @@ def stage_bias(proto: dict) -> int:
         label, tr = f"{start}..{end}", timerange(start, end)
         csv_path = out_dir / f"lookahead_{i}.csv"
         text = ft(
-            ["lookahead-analysis", *common_args(), "--strategy-path", "quant/strategies",
+            ["lookahead-analysis", *common_args(), "--strategy-path", strategy_path,
              "--strategy-list", *strategies, "--timerange", tr, "-p", *pairs,
              "--minimum-trade-amount", "10", "--targeted-trade-amount", "20",
              "--lookahead-analysis-exportfilename", str(csv_path)],
@@ -350,7 +363,7 @@ def stage_bias(proto: dict) -> int:
         for s in strategies:
             for pair in proto["bias"]["recursive_pairs"]:
                 text = ft(
-                    ["recursive-analysis", *common_args(), "--strategy-path", "quant/strategies",
+                    ["recursive-analysis", *common_args(), "--strategy-path", strategy_path,
                      "--strategy", s, "--timerange", tr, "-p", pair,
                      "--startup-candle", "199", "399", "599", "999"],
                     check=False,
@@ -363,7 +376,11 @@ def stage_bias(proto: dict) -> int:
         strategies, lookahead, recursive, proto["bias"]["min_evaluated_periods_per_strategy"]
     )
     summary["protocol_version"] = proto["version"]
-    emit("PHASE3_BIAS_JSON", json.dumps(summary))
+    return summary
+
+
+def stage_bias(proto: dict) -> int:
+    emit("PHASE3_BIAS_JSON", json.dumps(run_bias(proto, proto["strategies"])))
     return 0
 
 

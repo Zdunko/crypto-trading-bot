@@ -116,3 +116,21 @@ def apply_costs_consistent(
         out[col] = full[col] * scale
     out["size_scale"] = scale
     return out
+
+
+def apply_costs_recosted(consistent_trades: pd.DataFrame, scenario: CostScenario) -> pd.DataFrame:
+    """
+    Re-price IDENTICAL positions under another cost scenario (used for R1 cost stress).
+
+    ``consistent_trades`` is the output of :func:`apply_costs_consistent` for the base scenario:
+    ``amount`` already carries the sizing scale. The same entries, exits and sizes are kept; only
+    fee and slippage change. No second backtest is run, so under stress the overlay's decisions
+    stay those it made at base costs (documented approximation: a real stressed run could size and
+    stop differently). Fee columns are rewritten, so the double-counting guard stays meaningful.
+    """
+    retag = consistent_trades.copy()
+    retag["fee_open"] = scenario.fee
+    retag["fee_close"] = scenario.fee
+    out = apply_costs(retag, scenario)
+    out["size_scale"] = consistent_trades["size_scale"].to_numpy()
+    return out

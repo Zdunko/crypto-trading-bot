@@ -96,6 +96,27 @@ def exposure(trades: pd.DataFrame, index: pd.DatetimeIndex) -> dict:
     return {"time_in_market": float((count > 0).mean()), "avg_open_positions": float(count.mean())}
 
 
+def exposure_profile(trades: pd.DataFrame, equity: pd.Series) -> dict:
+    """Gross exposure = capital in open positions at cost / mark-to-market equity, hourly."""
+    index = equity.index
+    cost = np.zeros(len(index) + 1)
+    for t in trades.itertuples(index=False):
+        p0 = int(index.searchsorted(pd.Timestamp(t.open_date)))
+        p1 = int(index.searchsorted(pd.Timestamp(t.close_date)))
+        cost[p0] += float(t.open_value)
+        cost[p1] -= float(t.open_value)
+    gross = np.cumsum(cost)[: len(index)]
+    ratio = gross / np.where(equity.to_numpy() > 0, equity.to_numpy(), np.nan)
+    ratio = ratio[np.isfinite(ratio)]
+    if ratio.size == 0:
+        return {"avg_gross_exposure": 0.0, "peak_gross_exposure": 0.0, "p95_gross_exposure": 0.0}
+    return {
+        "avg_gross_exposure": float(ratio.mean()),
+        "peak_gross_exposure": float(ratio.max()),
+        "p95_gross_exposure": float(np.quantile(ratio, 0.95)),
+    }
+
+
 def summarize(equity: pd.Series, trades: pd.DataFrame | None, wallet: float) -> dict:
     full = with_start(equity, wallet)
     d = daily_returns(full)

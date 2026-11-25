@@ -6,6 +6,7 @@ name: Quant research
 #   [phase3-bias]      lookahead/recursive analysis on 8 pairs x 6 periods (inside the evaluation period)
 #   [phase3-eval]      backtests, costs, stress, walk-forward, robustness, report (evaluation period ONLY)
 #   [phase3b-audit]    corrected (sizing-consistent) evaluation + native reconciliation + benchmark audit
+#   [phase4-research]  R1 risk overlay: smoke test, bias checks, R1 + 6 ablations x 2 strategies (research data only)
 #   [phase3-holdout]   survivors only, exactly once (refuses to run without e_verdict.json / if already done)
 # workflow_dispatch needs this file on the default branch, so markers are the way before merging.
 
@@ -166,6 +167,55 @@ jobs:
           path: |
             user_data/phase3_eval.log
             user_data/phase3_reconcile.log
+          if-no-files-found: warn
+          retention-days: 30
+
+  research:
+    name: "phase 4 risk-overlay research (research data only)"
+    if: contains(github.event.head_commit.message, '[phase4-research]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          activate-environment: true
+          enable-cache: false
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: |
+          uv pip install -r quant/requirements.txt
+          uv pip install -e .
+
+      - name: Verify the frozen protocols (v2 and v3)
+        run: python -m quantlab.protocol verify3
+
+      - name: Download and validate candles (hash must match the protocol)
+        shell: bash
+        run: |
+          export EXPECT_DATA_HASH=$(python -c "import json;print(json.load(open('quant/protocol/protocol.json'))['data']['dataset_sha256'])")
+          bash quant/scripts/fetch_data.sh 2>&1 | tail -n 40
+
+      - name: Phase 4 research stage
+        shell: bash
+        run: python -m quantlab.phase4 research 2>&1 | tee user_data/phase4_research.log
+
+      - name: Upload logs and results
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: research-${{ github.sha }}
+          path: |
+            user_data/phase4_research.log
+            user_data/phase4_result.json
+            user_data/phase4_report.md
+            user_data/risk_stats/
+            user_data/bias_r1/
           if-no-files-found: warn
           retention-days: 30
 

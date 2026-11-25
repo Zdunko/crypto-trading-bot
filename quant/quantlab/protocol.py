@@ -130,6 +130,88 @@ def consistency_errors(proto: dict | None = None, quant_dir: Path = QUANT_DIR) -
     return _config_errors(p, quant_dir) + _threshold_errors(p["criteria"]) + _period_errors(p)
 
 
+# ------------------------------------------------------------------ protocol v3 (Phase 4)
+PROTOCOL_V3_PATH = QUANT_DIR / "protocol" / "protocol_v3.json"
+MANIFEST_V3_PATH = QUANT_DIR / "protocol" / "frozen_manifest_v3.json"
+ABLATIONS = {
+    "no_vol_sizing": "vol_sizing",
+    "no_exposure_limits": "exposure_limits",
+    "no_correlation": "correlation",
+    "no_regime_filter": "regime_filter",
+    "no_stop_cooldown": "stop_cooldown",
+    "no_circuit_breaker": "circuit_breaker",
+}
+
+
+def frozen_files_v3(quant_dir: Path = QUANT_DIR) -> list[Path]:
+    files = frozen_files(quant_dir)
+    files += sorted((quant_dir / "strategies_r1").glob("*.py"))
+    files += [
+        quant_dir / "protocol" / "protocol_v3.json",
+        quant_dir / "protocol" / "r0_reference.json",
+    ]
+    return files
+
+
+def build_manifest_v3(quant_dir: Path = QUANT_DIR) -> dict:
+    return {
+        "note": "Protocol v3 freeze (Phase 4). Regenerate only through a reviewed commit.",
+        "files": {
+            p.relative_to(quant_dir).as_posix(): _norm_hash(p) for p in frozen_files_v3(quant_dir)
+        },
+    }
+
+
+def verify_manifest_v3(quant_dir: Path = QUANT_DIR) -> list[str]:
+    path = quant_dir / "protocol" / "frozen_manifest_v3.json"
+    if not path.exists():
+        return ["frozen_manifest_v3.json is missing"]
+    frozen = json.loads(path.read_text())["files"]
+    current = build_manifest_v3(quant_dir)["files"]
+    errors = [
+        f"CHANGED after v3 freeze: {k}" for k in frozen if k in current and frozen[k] != current[k]
+    ]
+    errors += [f"MISSING since v3 freeze: {k}" for k in frozen if k not in current]
+    errors += [f"NEW file not in v3 freeze: {k}" for k in current if k not in frozen]
+    return errors
+
+
+def consistency_errors_v3(quant_dir: Path = QUANT_DIR) -> list[str]:
+    """v3 must match the code defaults and may not touch any v2 threshold."""
+    import dataclasses
+    import importlib
+
+    v3 = json.loads((quant_dir / "protocol" / "protocol_v3.json").read_text())
+    v2 = load_protocol(quant_dir / "protocol" / "protocol.json")
+    errs: list[str] = []
+    sys.path.insert(0, str(quant_dir / "strategies_r1"))
+    try:
+        risk = importlib.import_module("quant_risk")
+        defaults = {f.name: f.default for f in dataclasses.fields(risk.RiskConfig)}
+    finally:
+        sys.path.remove(str(quant_dir / "strategies_r1"))
+    for k, v in v3["R1"].items():
+        if k == "rationale":
+            continue
+        if k not in defaults or defaults[k] != v:
+            errs.append(f"R1.{k}={v} differs from RiskConfig default {defaults.get(k)}")
+    switches = {k for k, v in defaults.items() if isinstance(v, bool)}
+    if set(ABLATIONS.values()) != switches:
+        errs.append("ablation list must switch exactly the component flags of RiskConfig")
+    if v3["ablations"]["names"] != list(ABLATIONS):
+        errs.append("ablation names in protocol_v3.json differ from the code")
+    if v3["budget"]["backtests"] != 2 * (1 + len(ABLATIONS)):
+        errs.append("backtest budget must equal strategies x (R1 + ablations)")
+    if v3["candidates"]["strategies"] != ["TrendEmaCross", "MomentumRoc"]:
+        errs.append("only TrendEmaCross and MomentumRoc are approved candidates")
+    if v3["holdout"]["period"] != (
+        f"{v2['periods']['holdout']['start']}..{v2['periods']['holdout']['end_exclusive']}"
+    ):
+        errs.append("holdout period changed")
+    errs += _threshold_errors(v2["criteria"])
+    return errs
+
+
 def main(argv: list[str] | None = None) -> int:
     cmd = (argv or sys.argv[1:] or [""])[0]
     if cmd == "freeze":
@@ -144,7 +226,26 @@ def main(argv: list[str] | None = None) -> int:
         errs = consistency_errors() + verify_manifest()
         print("\n".join(errs) if errs else "protocol frozen and consistent")
         return 1 if errs else 0
-    print("usage: python -m quantlab.protocol freeze|verify", file=sys.stderr)
+    if cmd == "freeze3":
+        errs = consistency_errors() + consistency_errors_v3()
+        if errs:
+            print("\n".join(errs), file=sys.stderr)
+            return 1
+        MANIFEST_V3_PATH.write_text(
+            json.dumps(build_manifest_v3(), indent=1, sort_keys=True) + "\n"
+        )
+        print(f"wrote {MANIFEST_V3_PATH}")
+        return 0
+    if cmd == "verify3":
+        errs = (
+            consistency_errors()
+            + verify_manifest()
+            + consistency_errors_v3()
+            + verify_manifest_v3()
+        )
+        print("\n".join(errs) if errs else "protocol v2 and v3 frozen and consistent")
+        return 1 if errs else 0
+    print("usage: python -m quantlab.protocol freeze|verify|freeze3|verify3", file=sys.stderr)
     return 2
 
 

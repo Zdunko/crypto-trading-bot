@@ -5,6 +5,9 @@ extend = "../pyproject.toml"
 known-first-party = ["quantlab"]
 
 [lint.per-file-ignores]
-"tests/*" = ["S101", "E501"]  # E501: fixtures are verbatim log lines
+"tests/*" = ["S101", "E501", "RUF059", "C408"]  # E501: fixtures are verbatim log lines
 "quantlab/report.py" = ["E501"]  # markdown table rows
-"quantlab/phase3.py" = ["E501"]  # CLI argument lists and progress messages
+"quantlab/report4.py" = ["E501", "ISC004"]  # markdown table rows
+"quantlab/phase3.py" = ["E501"]
+"quantlab/phase4.py" = ["E501"]  # CLI argument lists and progress messages
+"strategies_r1/*.py" = ["E501", "C901", "PLR0913", "PLR0911"]  # overlay glue: Freqtrade callback signatures

@@ -1,0 +1,127 @@
+{
+ "version": 3,
+ "status": "FROZEN once frozen_manifest_v3.json is committed; extends protocol.json (v2) without changing any of its thresholds. Changes need a new version and owner approval.",
+ "extends": "protocol.json (v2): data, periods, costs, criteria T1-T10, holdout and regime definitions are inherited unchanged",
+ "purpose": "Phase 4 risk-management research: R1 overlay on TrendEmaCross and MomentumRoc. Research data only (all data before 2025-07-01 is research data); nothing here is validation.",
+ "holdout": {
+  "period": "2025-07-01..2026-11-25",
+  "rule": "NOT touched by Phase 4. One single evaluation of R1, only after separate written owner approval, with files identical to frozen_manifest_v3.json. A holdout result never feeds back into any rule or parameter."
+ },
+ "research_period": {
+  "start": "2021-01-01",
+  "end_exclusive": "2025-07-01",
+  "same_nine_windows_as_v2": true
+ },
+ "candidates": {
+  "strategies": [
+   "TrendEmaCross",
+   "MomentumRoc"
+  ],
+  "classes": {
+   "TrendEmaCross": "TrendEmaCrossR1",
+   "MomentumRoc": "MomentumRocR1"
+  },
+  "status": "research candidates only; MeanReversionRsiBb and BreakoutDonchian stay rejected"
+ },
+ "R1": {
+  "risk_per_trade": 0.005,
+  "atr_stop_mult": 3.0,
+  "max_stake_fraction": 0.2,
+  "max_positions": 3,
+  "max_gross_exposure": 0.6,
+  "corr_limit": 0.8,
+  "corr_window": 720,
+  "corr_min_obs": 500,
+  "sideways_risk_factor": 0.5,
+  "cooldown_hours": 24,
+  "cluster_stops": 3,
+  "cluster_window_hours": 48,
+  "cluster_pause_hours": 24,
+  "dd_halve": 0.15,
+  "dd_halt": 0.2,
+  "halve_factor": 0.5,
+  "fixed_stop": -0.1,
+  "fee": 0.001,
+  "slippage": 0.0005,
+  "stop_extra": 0.0005,
+  "rationale": "All values set a priori from a risk budget or convention (see docs/phase3b/risk_research_proposal.md); none was tuned on results. They are never swept."
+ },
+ "decision_timestamp_rule": "Every input (ATR, correlation, BTC regime, equity, open positions, stop-out history) uses only candles that closed strictly before the decision timestamp; BTC regime uses completed days only; an input that cannot be computed means NO entry (fail closed).",
+ "sizing": "stake = risk_factor * risk_per_trade * equity / (stop_distance + 2*fee + slippage + stop_extra), capped by max_stake_fraction*equity, free cash (incl. fee+slippage), remaining gross-exposure room and the exchange maximum; if below the exchange minimum the trade is skipped, never rounded up. Equity is mark-to-market at closed-candle prices. Entries on the same candle are sized one after another from the updated snapshot.",
+ "circuit_breaker": {
+  "equity": "mark-to-market portfolio equity (cash + open positions at last closed price)",
+  "warn": "drawdown from peak >= dd_halve: risk per trade multiplied by halve_factor",
+  "halt": "drawdown from peak >= dd_halt: NO new entries. Latched: it does NOT release when equity recovers. Restart needs an explicit owner approval file naming the halt id. A flat portfolio cannot trade out of a halt.",
+  "existing_positions": "are not force-liquidated; they stay managed by their ATR chandelier stops (and the strategy's exit signals) and may close normally",
+  "in_backtest": "no owner approval is possible, so a halt is terminal for the rest of the run; every RISK_HALT event is reported"
+ },
+ "ablations": {
+  "descriptive_only": true,
+  "names": [
+   "no_vol_sizing",
+   "no_exposure_limits",
+   "no_correlation",
+   "no_regime_filter",
+   "no_stop_cooldown",
+   "no_circuit_breaker"
+  ],
+  "each_switches_off_exactly": "the component named",
+  "never_used_to": "select, rank-to-pick, re-tune or promote a configuration"
+ },
+ "budget": {
+  "backtests": 14,
+  "formula": "2 strategies x (R1 + 6 ablations), each run once at base fee 0.001",
+  "stress": "recosted on the identical R1 positions with stress fee/slippage (no extra backtest); R0 stress is from its own fee-0.002 backtest (approximation, documented)",
+  "ci_runs_max": 3,
+  "extra_budget_eur": 0
+ },
+ "benchmarks": {
+  "set": [
+   "B1 equal-weight all 8 pairs, never rebalanced (v2 benchmark)",
+   "B2 equal-weight without SOL",
+   "B3 BTC + ETH",
+   "B4 BTC",
+   "B5 equal-weight all 8, monthly rebalanced"
+  ],
+  "membership_rule": "fixed here, before any R1 result exists; chosen from the Phase 3B audit proposal, not from future performance",
+  "T3": "Sortino of the candidate >= MAX Sortino over B1..B5 (base costs, same period)",
+  "T4": "max drawdown <= 0.20 AND <= MIN max drawdown over B1..B5 (the 20 % limit is binding)"
+ },
+ "criteria": "T1-T10 exactly as in protocol.json; T9 (parameter robustness) is NOT evaluated in Phase 4 because parameters are frozen and not swept; reported as 'not evaluated'. Phase 4 verdicts are diagnostics on research data, never validation.",
+ "comparison_metrics": [
+  "net_return",
+  "annualized_return",
+  "max_drawdown",
+  "sharpe",
+  "sortino",
+  "profit_factor",
+  "time_in_market",
+  "avg_and_peak_gross_exposure",
+  "monthly_returns",
+  "cost_stress",
+  "pair_concentration",
+  "regime_performance",
+  "trades",
+  "halt_events"
+ ],
+ "failure_conditions": [
+  "R1 max drawdown not below R0 -> overlay not worth carrying forward",
+  "time in market < 25 % -> report as capital preservation without edge",
+  "any lookahead/recursive bias finding -> R1 rejected"
+ ],
+ "bias_checks": {
+  "strategies": [
+   "TrendEmaCrossR1",
+   "MomentumRocR1"
+  ],
+  "periods": "same six periods and pairs as protocol.json",
+  "note": "lookahead-analysis cannot see state-dependent overlay decisions fully; the overlay is additionally covered by unit tests (causality: appended future rows change nothing)"
+ },
+ "approximations_to_document": [
+  "post-hoc slippage scaled by wallet ratio (apply_costs_consistent); R1 sizing is proportional to equity so this is reasonable but not exact",
+  "Freqtrade backtesting sizes with its own wallet which does not pay slippage",
+  "stop exits fill at stop price or the candle open when gapped (Freqtrade behaviour), plus stop_extra",
+  "stress is recosted on identical positions",
+  "R1 reads BTC history for the daily regime from the stored candle file in backtests (exchange startup-candle limit forbids requesting ~6000 candles); it is only sliced to completed days before the decision time. R1 uses startup_candle_count=600, the same warm-up family as R0"
+ ]
+}

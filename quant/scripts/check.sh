@@ -11,7 +11,7 @@ echo "== pytest";       (cd quant && python -m pytest -q)
 echo "== safety policy"
 (cd quant && python -m quantlab.safety configs/base.json configs/backtest.json)
 echo "== frozen protocol"
-(cd quant && python -m quantlab.protocol verify)
+(cd quant && python -m quantlab.protocol verify3)
 echo "== strategy policy"
-(cd quant && python -m quantlab.strategy_policy strategies)
+(cd quant && python -m quantlab.strategy_policy strategies strategies_r1)
 echo "== all checks passed"
