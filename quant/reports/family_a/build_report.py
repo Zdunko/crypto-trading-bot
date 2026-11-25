@@ -23,9 +23,9 @@ def num(x, k=2):
     return "n/a" if x is None or x != x else ("inf" if x == float("inf") else f"{x:.{k}f}")
 
 
-ser = d["series_daily"]
-eq = {k: ser[k] for k in ("A1", "A0", "V0", "A1_stress")} | {
-    k: ser[k] for k in ser if k.startswith("B")
+series = d["series_daily"]
+eq = {k: series[k] for k in ("A1", "A0", "V0", "A1_stress")} | {
+    k: series[k] for k in series if k.startswith("B")
 }
 (HERE / "equity_curves.svg").write_text(
     line_chart(
