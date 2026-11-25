@@ -2,6 +2,7 @@
 
 import copy
 import importlib
+import json
 
 import numpy as np
 import pandas as pd
@@ -169,3 +170,33 @@ def test_variants_cover_both_range_ends_for_every_strategy():
         assert len(v) == 2 * len(proto["robustness"][s])
         assert phase3.strategy_module(s)
     assert total == 22
+
+
+def test_mixed_time_resolutions_like_real_feather_and_freqtrade_data(world):
+    """Real candles are ms/us resolution and Freqtrade trades us; results must not change."""
+    _, ctx = world
+    ms = {
+        p: df.assign(date=df["date"].astype("datetime64[ms, UTC]")) for p, df in ctx.candles.items()
+    }
+    index = ctx.index
+    closes_ms = close_matrix(ms, index)
+    pd.testing.assert_frame_equal(closes_ms, ctx.closes)
+    assert daily_regimes(ms["BTC/USDT"]).equals(ctx.regimes)
+
+    raw = {k: _raw_trades(ctx, s.fee) for k, s in SCENARIOS.items()}
+    us = {
+        k: v.assign(open_date=v["open_date"].astype("datetime64[us, UTC]"),
+                    close_date=v["close_date"].astype("datetime64[us, UTC]"))
+        for k, v in raw.items()
+    }  # fmt: skip
+    a = phase3.assess_strategy("S", raw, [0.1], ctx, judge=False)
+    b = phase3.assess_strategy("S", us, [0.1], ctx, judge=False)
+
+    def same(x, y):  # NaN-safe comparison
+        return json.dumps(x, sort_keys=True, default=str) == json.dumps(
+            y, sort_keys=True, default=str
+        )
+
+    assert same(a["stats"], b["stats"]) and same(a["regimes"], b["regimes"])
+    bench_ms, _ = buy_and_hold(ms, index, 1000.0, SCENARIOS["base"])
+    pd.testing.assert_series_equal(bench_ms, ctx.bench["base"])

@@ -72,12 +72,13 @@ def daily_regimes(candles_1h: pd.DataFrame, ema_period: int = 200, adx_trend: fl
         .dropna()
     )
     labels = market_regime(daily.reset_index(drop=True), ema_period=ema_period, adx_trend=adx_trend)
-    return pd.Series(labels.to_numpy(), index=daily.index)
+    return pd.Series(labels.to_numpy(), index=daily.index.as_unit("ns"))
 
 
 def trade_regimes(trades: pd.DataFrame, labels: pd.Series) -> pd.Series:
     """Regime of the last COMPLETED day before each trade's entry (no look-ahead)."""
-    prev_day = pd.to_datetime(trades["open_date"], utc=True).dt.floor("1D") - pd.Timedelta("1D")
+    opened = pd.to_datetime(trades["open_date"], utc=True).dt.as_unit("ns")
+    prev_day = opened.dt.floor("1D") - pd.Timedelta("1D")
     return prev_day.map(labels).fillna("unknown").reset_index(drop=True)
 
 

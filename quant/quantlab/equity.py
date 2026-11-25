@@ -17,6 +17,7 @@ def close_matrix(candles: dict[str, pd.DataFrame], index: pd.DatetimeIndex) -> p
     cols = {}
     for pair, df in candles.items():
         s = df.assign(date=pd.to_datetime(df["date"], utc=True)).set_index("date")["close"]
+        s.index = s.index.as_unit("ns")  # feather files may carry ms/us resolution
         cols[pair] = s.reindex(index).ffill()
     return pd.DataFrame(cols, index=index)
 
