@@ -1,22 +1,22 @@
 # PROJECT STATUS
 
-_Last updated: 2026-11-25 · Phase 1 complete and independently audited, **awaiting owner approval** for Phase 2._
+_Last updated: 2026-11-25 · Phase 1 approved. **Phase 2 in progress**: design + offline verification done, D4 (bias checks on real data) outstanding._
 
 ## Current state
 
 | Item | State |
 |---|---|
-| Phase | 1 — Repository audit & foundation (done, audited) |
+| Phase | 2 — Strategy research (in progress; Phase 1 approved by owner) |
 | Branch / PR | `claude/freqtrade-trading-system-b82aek` · draft PR #1, not merged |
 | Real-money trading | Disabled by policy; **no credentials exist anywhere** (see "Safety model") |
-| Strategies | None yet (Phase 2) |
+| Strategies | 4 specified + implemented (trend, mean reversion, breakout, momentum) + BuyAndHold benchmark; **none evaluated on market data** |
 | Backtest results | **None** — no market data downloaded, no performance claims exist |
 | Monthly cost | €0 |
 
 ## Verified results (commands actually run)
 
-- `bash quant/scripts/check.sh` → ruff clean, **46 passed**, safety policy OK
-  (38 tests at first push; +8 regression tests for the environment-variable bypass found in the audit).
+- `bash quant/scripts/check.sh` → ruff clean, **124 passed**, config policy OK, strategy policy OK
+  (38 at first push → 46 after the audit fix → 124 with Phase 2 strategies and policy tests).
 - mypy (upstream pre-commit hook, whole repo) → passed locally after the fix below.
 - Upstream suite, local run before the audit fix (`pytest -n 4 --timeout=60`, excl. `tests/exchange_online`,
   `tests/freqai`): **4807 passed, 20 skipped, 6 failed**. The failure causes below are
@@ -26,6 +26,24 @@ _Last updated: 2026-11-25 · Phase 1 complete and independently audited, **await
 - `zizmor` on `quant-ci.yml` → no findings (also green in GitHub CI).
 - Claude Code Cloud network: PyPI reachable, all exchanges refused. Backtesting got as far as the
   **unauthenticated** `GET /currencies` market-metadata call with no credentials, then failed on network.
+
+## Phase 2 progress (acceptance criteria D1–D7 from `ROADMAP.md`)
+
+| # | Status | Evidence / what is missing |
+|---|---|---|
+| D1 specs | done | `quant/docs/strategies/*.md` — 4 strategies, regime filter, volatility component; ≤ 3 free parameters each, fixed before any backtest |
+| D2 strategies | done | 5 classes load via `freqtrade list-strategies` (status OK); spot, long only, no averaging, stoploss set |
+| D3 unit tests | done | 124 tests: per-rule logic, NaN warm-up silence, causality (truncating the future changes nothing), offline recursion convergence |
+| D4 bias checks | **outstanding** | Needs real candles. `quant-bias-check.yml` is written, zizmor-clean, arguments parse locally, but **never executed**; blocked on exchange reachability from GitHub runners (see probe job in Quant CI) |
+| D5 strategy policy | done | `quantlab.strategy_policy` (AST) wired into `check.sh`: forbids shorting, averaging, leverage, negative `shift`, missing/too-wide `stoploss` (only `BuyAndHold` may use -0.99) |
+| D6 thresholds | done (proposal) | `phase3_validation_thresholds.md` — T1–T10, awaiting **owner approval** before Phase 3 |
+| D7 housekeeping | partly | journal written, status updated; CI results for the Phase 2 commit pending |
+
+Known strategy risks (hypotheses, not results): mean reversion may yield too few trades (0.33 % of
+synthetic candles); momentum can re-enter immediately after a stop-out (cooldown → Phase 4);
+breakout slippage may exceed the 0.05 % buffer.
+
+Synthetic-data tests prove rules and causality, **not profitability**. No backtest has been run.
 
 ## GitHub CI results
 
@@ -79,7 +97,8 @@ Guaranteed (tested):
 
 ## Not yet verified (assumptions)
 
-- Which exchange data APIs are reachable from GitHub runners (run `Quant CI` manually with `network_probe: true`).
+- Which exchange data APIs are reachable from GitHub runners (the informational probe job in Quant CI reports it on every run).
+- `quant-bias-check.yml` end-to-end (never executed). `workflow_dispatch` needs the file on the default branch; before merging use a push whose commit message contains `[bias-check]`.
 - End-to-end data download + backtest (blocked here by network policy).
 - Fee + slippage assumption of 0.15 % per side.
 
@@ -95,3 +114,5 @@ Guaranteed (tested):
 - 2026-11-25 — fix: `quant/__init__.py` (mypy duplicate-module failure introduced by us).
 - 2026-11-25 — final audit: environment-variable bypass closed (+8 tests), Phase 2 acceptance criteria D1–D7,
   residual-risk and CI documentation.
+- 2026-11-25 — Phase 2 (approved): strategy specs, 5 strategies, `quant_common`, `strategy_policy`, 78 new tests,
+  Phase 3 threshold proposal, `quant-bias-check.yml`, always-on informational network probe.

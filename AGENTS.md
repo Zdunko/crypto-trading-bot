@@ -26,10 +26,10 @@ spot-only crypto trading research system. Read `PROJECT_STATUS.md` first, then `
 | Path | Owner | Notes |
 |---|---|---|
 | `freqtrade/`, `tests/`, `docs/`, `ft_client/`, root build files | upstream | **Do not modify.** Keeps upstream sync conflict-free. |
-| `.github/workflows/quant-ci.yml` | project | Our CI. Upstream workflows are left untouched. |
+| `.github/workflows/quant-*.yml` | project | Our CI (`quant-ci.yml`) and bias checks (`quant-bias-check.yml`). Upstream workflows are left untouched. |
 | `quant/` | project | All project code, configs, research and docs. |
 | `quant/quantlab/` | project | Python package: safety policy, (later) metrics, validation, risk, reporting. |
-| `quant/strategies/` | project | Freqtrade strategy classes (`--strategy-path quant/strategies`). |
+| `quant/strategies/` | project | Freqtrade strategy classes (`--strategy-path quant/strategies`) + `quant_common.py`. Every strategy must pass `quantlab.strategy_policy` (checked by `check.sh`). Specs live in `quant/docs/strategies/` and are written **before** the code runs on data. |
 | `quant/configs/` | project | Layered configs, no secrets. Do not name files `config*.json` (gitignored upstream). |
 | `quant/journal/` | project | Research journal, one dated file per study. |
 | `quant/docs/` | project | Audit, architecture and research notes. |

@@ -6,8 +6,8 @@ easy to sync. Rules: see `../AGENTS.md`. Plan: `../ROADMAP.md`. State: `../PROJE
 ```
 quant/
 ├── configs/        layered Freqtrade configs (no secrets): base.json + backtest.json (+ dryrun later)
-├── strategies/     Freqtrade IStrategy classes  (--strategy-path quant/strategies)
-├── quantlab/       python package: safety policy (now); metrics, validation, risk, reports (later)
+├── strategies/     4 strategies + BuyAndHold benchmark + quant_common.py (regime, ATR sizing)
+├── quantlab/       python package: safety (configs) + strategy_policy (strategy source); later: metrics, validation, risk, reports
 ├── tests/          pytest suite for quantlab and strategies
 ├── scripts/        setup_env.sh (reproducible env), check.sh (quality gate)
 ├── journal/        research journal, one dated entry per study

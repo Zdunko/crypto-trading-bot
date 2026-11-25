@@ -1,7 +1,7 @@
 name: Quant CI
 
 # Quality gate for the project code in quant/. Runs on Ubuntu only to keep CI fast.
-# Never deploys, never trades, never uses secrets.
+# Never deploys, never trades, never uses secrets. The reachability probe is informational only.
 
 on:
   push:
@@ -20,11 +20,6 @@ on:
       - "pyproject.toml"
       - "freqtrade/**"
   workflow_dispatch:
-    inputs:
-      network_probe:
-        description: "Also probe which exchange data APIs are reachable from GitHub runners"
-        type: boolean
-        default: false
 
 concurrency:
   group: "${{ github.workflow }}-${{ github.ref }}"
@@ -60,10 +55,10 @@ jobs:
         run: bash quant/scripts/check.sh
 
   network-probe:
-    name: "Exchange data reachability probe"
-    if: github.event_name == 'workflow_dispatch' && inputs.network_probe
+    name: "Exchange data reachability probe (informational)"
     runs-on: ubuntu-24.04
     timeout-minutes: 5
+    continue-on-error: true # never blocks the quality gate
     steps:
       - name: Probe public market-data endpoints (no credentials)
         run: |
