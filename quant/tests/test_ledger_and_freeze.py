@@ -38,3 +38,14 @@ def test_v4_manifest_verifies_and_detects_changes(tmp_path):
     p = q / "quantlab" / "execution.py"
     p.write_text(p.read_text() + "\n# tamper\n")
     assert any("execution.py" in e for e in P.verify_manifest_v4(q))
+
+
+def test_v5_manifest_verifies_and_detects_a_changed_specification(tmp_path):
+    import shutil
+
+    assert P.verify_manifest_v5() == []
+    q = tmp_path / "quant"
+    shutil.copytree(P.QUANT_DIR, q, ignore=shutil.ignore_patterns("__pycache__", ".pytest_cache"))
+    spec = q / "protocol" / "protocol_v5_family_a.json"
+    spec.write_text(spec.read_text().replace('"sigma_target": 0.4', '"sigma_target": 0.5'))
+    assert any("protocol_v5_family_a.json" in e for e in P.verify_manifest_v5(q))

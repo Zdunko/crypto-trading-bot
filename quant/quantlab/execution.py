@@ -14,6 +14,8 @@ Contract
   sell at ``open*(1-slip)`` less fee; stop exits also pay ``stop_extra``.
 * Equity = cash + open positions at liquidation value (last known close less one exit cost).
 * Order processing order is fixed: stop moves, sells, then buys, each sorted by (priority, pair).
+* Liquidity (optional ``max_participation``): one order fills at most that share of the candle's
+  volume; the rest of a SELL continues on the next candle. Halt liquidations never expire.
 * Missing candle: the order waits (at most ``max_defer`` candles, then it expires and is logged);
   positions are valued at the last known close; a stop cannot trigger without a candle.
 * Funds: a buy is clipped to free cash; below ``min_notional`` it is rejected (never rounded up).
@@ -46,6 +48,7 @@ class ExecConfig:
     wallet: float = 1000.0
     min_notional: float = 5.0
     max_defer: int = 3
+    max_participation: float | None = None  # max share of a candle's volume one order may take
     stop_fill: str = "conservative"  # or "freqtrade"
     halt_action: str = "flatten"  # or "hold"
     breaker: bool = True
@@ -71,6 +74,7 @@ class Order:
     priority: int = 0
     reason: str = "signal"
     attempts: int = 0
+    add: bool = False  # buy: allow adding to an open position (weighted cost basis)
 
 
 @dataclass
@@ -123,17 +127,19 @@ class PriceData:
         self.pairs = sorted(candles)
         cols = {
             k: np.full((len(index), len(self.pairs)), np.nan)
-            for k in ("open", "high", "low", "close")
+            for k in ("open", "high", "low", "close", "volume")
         }
         for j, pair in enumerate(self.pairs):
             df = candles[pair].copy()
             df["date"] = pd.to_datetime(df["date"], utc=True).dt.as_unit("ns")
             df = df.drop_duplicates("date").set_index("date").reindex(index)
             for k, arr in cols.items():
-                arr[:, j] = df[k].to_numpy(dtype=float)
+                if k in df:
+                    arr[:, j] = df[k].to_numpy(dtype=float)
         self.open, self.high, self.low, self.close = (
             cols[k] for k in ("open", "high", "low", "close")
         )
+        self.volume = cols["volume"]  # base-currency volume per candle; NaN if unknown
         self.close_ff = pd.DataFrame(self.close).ffill().to_numpy()
         self.col = {p: j for j, p in enumerate(self.pairs)}
 
@@ -213,6 +219,13 @@ def run(
             _liq(p.qty, data.close_ff[i_close, data.col[k]], c) for k, p in st.positions.items()
         )
 
+    def cap_qty(i: int, j: int) -> float:
+        """Largest quantity one order may fill on candle i (liquidity constraint)."""
+        if cfg.max_participation is None:
+            return float("inf")
+        v = data.volume[i, j]
+        return float(cfg.max_participation * v) if np.isfinite(v) else 0.0
+
     def reject(i, o, why):
         rejects.append(
             {"i": i, "time": str(data.index[i]), "pair": o.pair, "side": o.side, "reason": why}
@@ -285,22 +298,38 @@ def run(
             if o.side == "sell":
                 if o.pair not in st.positions:
                     reject(i, o, "no_position")
-                elif not have:
+                elif not have or cap_qty(i, j) <= 0:
                     o.attempts += 1
-                    (
+                    # a halt liquidation never expires: it waits for a candle with liquidity
+                    if o.reason == "halt" or o.attempts <= cfg.max_defer:
                         st.pending.append(o)
-                        if o.attempts <= cfg.max_defer
-                        else reject(i, o, "expired")
-                    )
+                    else:
+                        reject(i, o, "expired")
                 else:
-                    close_pos(
-                        i, o.pair, min(o.fraction, 1.0), float(data.open[i, j]), False, o.reason
-                    )
+                    pos = st.positions[o.pair]
+                    want = pos.qty * min(o.fraction, 1.0)
+                    got = min(want, cap_qty(i, j))
+                    close_pos(i, o.pair, got / pos.qty, float(data.open[i, j]), False, o.reason)
+                    if got < want * (
+                        1 - 1e-12
+                    ):  # liquidity-limited: the rest continues next candle
+                        rest = pos.qty if o.pair in st.positions else 0.0
+                        if rest > 0:
+                            rem = (want - got) / rest
+                            st.pending.append(
+                                Order(
+                                    o.pair,
+                                    "sell",
+                                    fraction=min(rem, 1.0),
+                                    priority=o.priority,
+                                    reason=o.reason,
+                                )
+                            )
                 continue
             # buy
             if br.halted and cfg.breaker:
                 reject(i, o, "halted")
-            elif o.pair in st.positions:
+            elif o.pair in st.positions and not o.add:
                 reject(i, o, "already_open")
             elif o.notional < cfg.min_notional:
                 reject(i, o, "below_min_notional")
@@ -313,14 +342,25 @@ def run(
                     reject(i, o, "insufficient_funds")
                     continue
                 ref = float(data.open[i, j])
-                qty = spend / (float(entry_price(ref, c)) * (1 + c.fee))
+                unit = float(entry_price(ref, c)) * (1 + c.fee)
+                spend = min(spend, cap_qty(i, j) * unit)  # liquidity: never more than the cap
+                if spend < cfg.min_notional:
+                    reject(i, o, "illiquid")
+                    continue
+                qty = spend / unit
                 st.cash -= spend
                 stop = (
                     o.stop
                     if o.stop is not None
                     else (ref * (1 - o.stop_pct) if o.stop_pct else None)
                 )
-                st.positions[o.pair] = Position(qty, t, ref, spend, stop)
+                if o.pair in st.positions:  # add: weighted cost basis, stop unchanged
+                    p0 = st.positions[o.pair]
+                    p0.open_ref = (p0.qty * p0.open_ref + qty * ref) / (p0.qty + qty)
+                    p0.qty += qty
+                    p0.open_value += spend
+                else:
+                    st.positions[o.pair] = Position(qty, t, ref, spend, stop)
         # ---- stops (also on the entry candle, as Freqtrade does)
         for pair in sorted(st.positions):
             p = st.positions[pair]

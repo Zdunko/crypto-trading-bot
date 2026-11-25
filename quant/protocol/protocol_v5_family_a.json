@@ -1,0 +1,77 @@
+{
+ "version": 5,
+ "status": "FROZEN once frozen_manifest_v5.json is committed. Implementation approved 2026-11-25; MARKET EVALUATION NOT YET APPROVED.",
+ "extends": "protocol.json (v2: data, periods, costs, T1-T10, holdout), protocol_v4_stats.json (statistical rules)",
+ "family": "A - trend-filtered, volatility-scaled crypto basket vs cash",
+ "universe": {
+  "pairs": "the 8 frozen pairs",
+  "bias": "survivor-biased (listed and still trading in 2026); labelled in every report",
+  "warmup": "candles before the evaluation start are history only; SMA(200) needs 200 completed days"
+ },
+ "parameters": {
+  "trend_windows": [
+   50,
+   100,
+   200
+  ],
+  "vol_window": 30,
+  "sigma_target": 0.4,
+  "band": 0.05,
+  "periods_per_year": 365,
+  "trend": true,
+  "vol_scale": true,
+  "rationale": "50/100/200-day filters and a 40 % volatility target (about half the basket's historical volatility) are conventions / a risk budget, fixed before any market result; none was tuned"
+ },
+ "variants": {
+  "A1": "trend + volatility scaling (primary)",
+  "A0": "trend only (descriptive trial)",
+  "V0": "volatility scaling only, score fixed at 1 (descriptive trial)"
+ },
+ "decision_time": "00:00 UTC candle open, completed days only; orders fill at that candle's open",
+ "execution": {
+  "costs": "BASE 0.10 % fee + 0.05 % slippage per side; STRESS 0.20 % + 0.10 %",
+  "min_notional": 5.0,
+  "max_participation": 0.1,
+  "engine": "quantlab.execution (manifest v4/v5)"
+ },
+ "circuit_breaker": {
+  "enabled_in_all_evaluations": true,
+  "reduce_at": 0.15,
+  "reduce_factor": 0.5,
+  "halt_at": 0.2,
+  "halt_behaviour": "no new entries; pending entry orders cancelled; every position liquidated at the next candle open with fees, slippage and the volume participation cap (remainder continues each following candle, never expires); no automatic restart in the same evaluation run (terminal)",
+  "impact_reporting": "reported separately from the ON run: halt time, equity and drawdown at halt, days flat afterwards, entries blocked, liquidation cost. A breaker-OFF counterfactual is NOT part of the evaluation; it needs a separate explicit owner approval and would be labelled diagnostic"
+ },
+ "hypotheses": {
+  "registered": [
+   "H1: net annualised Sharpe of A1 > 0",
+   "H2: A1 Sharpe exceeds the unscaled basket B1 (paired block bootstrap)"
+  ],
+  "multiple_testing": "Holm over 2; N trials = 40 + 3 (A1, A0, V0) = 43",
+  "volatility_targeting": "V0 vs B1 is reported but never counted as alpha"
+ },
+ "trade_definition": "T1 counts position episodes (entry to flat) per pair; partial rebalances are not trades",
+ "criteria": "T1-T10 unchanged (protocol.json); T9 not evaluated (no parameter sweep); benchmark rule B1-B5 as in protocol v3",
+ "metrics": [
+  "net_return",
+  "annualised_return",
+  "max_drawdown",
+  "sharpe",
+  "sortino",
+  "profit_factor",
+  "exposure_avg_peak",
+  "turnover",
+  "monthly_returns",
+  "cost_stress_2x",
+  "pair_concentration",
+  "regime_table",
+  "breaker_impact",
+  "credibility_verdict"
+ ],
+ "evaluation_period": "2021-01-01..2025-07-01 (research data); holdout 2025-07-01..2026-11-25 untouched, single use per finalist after separate written approval",
+ "known_consequence": "a terminal halt may truncate an evaluation run exactly as it did for R1; the report must show time-to-halt and the part of the period traded",
+ "rejected_not_reused": [
+  "R1 and all Phase 4 ablations including no_stop_cooldown",
+  "all four Phase 2 strategies"
+ ]
+}

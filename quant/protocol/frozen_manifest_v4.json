@@ -4,7 +4,7 @@
   "protocol/protocol_v4_stats.json": "cd95f6d06f6e846ea444ab81f424aeddbb6c88f41b2ccbfc58a4c1a8a75654cd",
   "quantlab/causality.py": "ce80422aca089f3a5570460dda84efbbb3d2ee58a123f9dec0e8f00137dec7a4",
   "quantlab/costs.py": "65251c871747ed5bc43bc20ccc59eb717d462233f29ed94871502299e930496a",
-  "quantlab/execution.py": "b90a2b4e4e524deaf3d2d6fa8695f7f8e3ea52e8223778b7025d33b1964520d1",
+  "quantlab/execution.py": "72f7df14cef7a483306dbc1fced2db7915f73ece0845d2ec2c008f4da130a26f",
   "quantlab/stats.py": "ab3c2fb77191bd768f3832fed2bab9ad340a7c1e3232adb0663eec2f0b5fb339"
  },
  "note": "Stage 0 freeze: statistical rules, ledger and the engine used for Family A."

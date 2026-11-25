@@ -82,6 +82,11 @@ Synthetic-data tests prove rules and causality, **not profitability**. No backte
 - Reconciliation with native Freqtrade on synthetic fixtures: identical trades and timestamps, profit within 3.3e-4 USDT per 100 USDT stake; documented stop-gap rule difference.
 - No strategy, no profitability backtest, holdout untouched. Family A proposal awaits approval.
 
+## Family A (implementation done, NO market evaluation; `quant/docs/family_a/implementation_report.md`)
+
+- Owner decisions 2026-11-25: breaker ON in all evaluations (impact reported separately); halt cancels entries, liquidates with fees/slippage/liquidity cap, no auto restart; implementation and evaluation separately approved.
+- Implemented `quantlab/family_a.py` (A1, A0, V0) on the Stage 0 engine, spec frozen in `protocol_v5_family_a.json` + manifest v5. 318 tests pass locally. Evaluation awaits approval.
+
 ## GitHub CI results
 
 | Check | Commit `c6cc24a` | Commit `5c9582f` |
@@ -160,6 +165,7 @@ defaults to **OKX** for the technical bias check; this is **not** the owner's fi
 
 ## Change log
 
+- 2026-11-25 — Family A implemented and frozen (spec v5), synthetic tests and causality validation; no market evaluation.
 - 2026-11-25 — Phase 4B Stage 0: execution engine, causality tests, statistical rules, ledger, manifest v4 (no strategy, no holdout).
 - 2026-11-25 — Phase 4: R1 risk overlay research (protocol v3, 2 research runs, run 1 invalid); R1 rejected on research data; holdout untouched.
 - 2026-11-24 — Phase 1: audit, `AGENTS.md`, `ROADMAP.md`, journal, `quant/` layout, safety policy, configs, scripts, Quant CI.

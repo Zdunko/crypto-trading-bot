@@ -242,6 +242,37 @@ def verify_manifest_v4(quant_dir: Path = QUANT_DIR) -> list[str]:
     ]
 
 
+# ------------------------------------------------------------------ Family A / protocol v5 freeze
+MANIFEST_V5_PATH = QUANT_DIR / "protocol" / "frozen_manifest_v5.json"
+V5_FILES = (
+    "protocol/protocol_v5_family_a.json",
+    "quantlab/family_a.py",
+    "quantlab/execution.py",
+    "quantlab/causality.py",
+    "quantlab/stats.py",
+    "quantlab/costs.py",
+    "protocol/protocol_v4_stats.json",
+)
+
+
+def build_manifest_v5(quant_dir: Path = QUANT_DIR) -> dict:
+    return {
+        "note": "Family A freeze: specification, strategy code and the engine it runs on.",
+        "files": {f: _norm_hash(quant_dir / f) for f in V5_FILES},
+    }
+
+
+def verify_manifest_v5(quant_dir: Path = QUANT_DIR) -> list[str]:
+    path = quant_dir / "protocol" / "frozen_manifest_v5.json"
+    if not path.exists():
+        return ["frozen_manifest_v5.json is missing"]
+    frozen = json.loads(path.read_text())["files"]
+    current = build_manifest_v5(quant_dir)["files"]
+    return [f"CHANGED after v5 freeze: {k}" for k in frozen if frozen[k] != current.get(k)] + [
+        f"NEW file not in v5 freeze: {k}" for k in current if k not in frozen
+    ]
+
+
 def main(argv: list[str] | None = None) -> int:
     cmd = (argv or sys.argv[1:] or [""])[0]
     if cmd == "freeze":
@@ -286,10 +317,18 @@ def main(argv: list[str] | None = None) -> int:
         errs += verify_manifest_v3() + verify_manifest_v4()
         print("\n".join(errs) if errs else "protocol v2, v3 and v4 frozen and consistent")
         return 1 if errs else 0
-    print(
-        "usage: python -m quantlab.protocol freeze|verify|freeze3|verify3|freeze4|verify4",
-        file=sys.stderr,
-    )
+    if cmd == "freeze5":
+        MANIFEST_V5_PATH.write_text(
+            json.dumps(build_manifest_v5(), indent=1, sort_keys=True) + "\n"
+        )
+        print(f"wrote {MANIFEST_V5_PATH}")
+        return 0
+    if cmd == "verify5":
+        errs = consistency_errors() + verify_manifest() + consistency_errors_v3()
+        errs += verify_manifest_v3() + verify_manifest_v4() + verify_manifest_v5()
+        print("\n".join(errs) if errs else "protocol v2-v5 frozen and consistent")
+        return 1 if errs else 0
+    print("usage: python -m quantlab.protocol freeze|verify|...|freeze5|verify5", file=sys.stderr)
     return 2
 
 

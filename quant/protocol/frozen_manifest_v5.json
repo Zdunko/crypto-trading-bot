@@ -1,0 +1,12 @@
+{
+ "files": {
+  "protocol/protocol_v4_stats.json": "cd95f6d06f6e846ea444ab81f424aeddbb6c88f41b2ccbfc58a4c1a8a75654cd",
+  "protocol/protocol_v5_family_a.json": "aba0d5b96d5aeb1306dae485680ab0bf270f54bdab4c273c900cc2e04e84e0b6",
+  "quantlab/causality.py": "ce80422aca089f3a5570460dda84efbbb3d2ee58a123f9dec0e8f00137dec7a4",
+  "quantlab/costs.py": "65251c871747ed5bc43bc20ccc59eb717d462233f29ed94871502299e930496a",
+  "quantlab/execution.py": "72f7df14cef7a483306dbc1fced2db7915f73ece0845d2ec2c008f4da130a26f",
+  "quantlab/family_a.py": "ecb0fae9a7fdc6b1224f67a6921d35017a0fa50babe76dcbd5f2911736b72eeb",
+  "quantlab/stats.py": "ab3c2fb77191bd768f3832fed2bab9ad340a7c1e3232adb0663eec2f0b5fb339"
+ },
+ "note": "Family A freeze: specification, strategy code and the engine it runs on."
+}
