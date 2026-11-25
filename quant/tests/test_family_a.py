@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
+from quantlab import causality
 from quantlab.causality import mutation_mismatches, restart_mismatches
 from quantlab.execution import ExecConfig, Order, PriceData, Strategy, run
 from quantlab.family_a import (
@@ -218,26 +219,24 @@ def test_pending_entry_orders_are_cancelled_at_halt_and_the_halt_is_never_blocke
 
 
 def test_liquidity_cap_spreads_a_halt_liquidation_over_several_candles():
-    idx = IDX[:120]
-    px = np.r_[np.full(20, 100.0), np.full(100, 55.0)]
+    idx = IDX[:160]
+    px = np.r_[np.full(60, 100.0), np.full(100, 55.0)]  # crash on candle 60
     vol = np.r_[
-        np.full(20, 1000.0), np.full(100, 1.0)
-    ]  # liquid when buying, thin when the crash comes
+        np.full(30, 1000.0), np.full(130, 1.0)
+    ]  # liquid when buying (candle 30), thin afterwards
     df = pd.DataFrame({"date": idx, "open": px, "high": px, "low": px, "close": px, "volume": vol})
 
     class S(Strategy):
         def on_candle(self, t, hist, view):
-            return [Order("A", "buy", notional=90.0)] if len(hist.times) == 1 else []
+            return [Order("A", "buy", notional=90.0)] if len(hist.times) == 30 else []
 
     res = run(S(), PriceData({"A": df}, idx), ExecConfig(wallet=100.0, max_participation=0.10))
     sells = res.trades[res.trades["exit_reason"] == "halt"]
     assert (
         len(sells) >= 5 and sells["amount"].max() <= 0.10 * 1.0 + 1e-12
-    )  # capped fills, one per candle
+    )  # 10 % of median volume 1.0
     assert sells["close_date"].is_monotonic_increasing and not res.state.positions
-    assert sum(t["amount"] for _, t in sells.iterrows()) == pytest.approx(
-        0.9 / 1.0015 / 1.0005 / 1.0, rel=0.02
-    )
+    assert sells["amount"].sum() == pytest.approx(0.9 / 1.0005 / 1.001, rel=1e-6)
 
 
 # ------------------------------------------------------------------ causality and determinism
@@ -301,3 +300,32 @@ def test_code_defaults_equal_the_frozen_specification():
         br["reduce_factor"],
     )
     assert br["enabled_in_all_evaluations"] is True and set(SPEC["variants"]) == set(VARIANTS)
+
+
+def thin_basket():
+    """Volumes small enough that the 10 % participation budget really binds for ~100 USDT orders."""
+    rng = np.random.default_rng(3)
+    data = basket(0.004, 0.015, n=3)
+    for df in data.values():
+        df["volume"] = rng.uniform(0.3, 3.0, len(df))  # base units per hour at a price near 100
+    return data
+
+
+@pytest.mark.parametrize("k", [150 * 24, 250 * 24])
+def test_mutating_current_and_future_volumes_never_changes_fills_up_to_that_candle(k):
+    data = thin_basket()
+    t0 = IDX[k]
+    for name in VARIANTS:
+        mk = lambda d, name=name: FamilyAStrategy(VARIANTS[name], 3)  # noqa: E731
+        assert (
+            causality.mutation_mismatches_at(
+                mk, data, IDX, exec_config(), t0, start=24 * 40, prices=False
+            )
+            == []
+        )
+        assert (
+            causality.mutation_mismatches_at(
+                mk, data, IDX, exec_config(), t0, start=24 * 40, prices=True
+            )
+            == []
+        )

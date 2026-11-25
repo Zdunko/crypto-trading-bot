@@ -14,8 +14,12 @@ Contract
   sell at ``open*(1-slip)`` less fee; stop exits also pay ``stop_extra``.
 * Equity = cash + open positions at liquidation value (last known close less one exit cost).
 * Order processing order is fixed: stop moves, sells, then buys, each sorted by (priority, pair).
-* Liquidity (optional ``max_participation``): one order fills at most that share of the candle's
-  volume; the rest of a SELL continues on the next candle. Halt liquidations never expire.
+* Liquidity (optional ``max_participation``, amendment A1): the budget of an asset on candle ``i`` is
+  max_participation x the MEDIAN volume (base units) of the 24 completed candles before ``i``, shared by
+  all orders on that asset (halt liquidations first, then sells, then buys). Volume of ``i`` or later is
+  never read. Missing, zero, invalid volume or < 24 candles of history = no liquidity (fail closed).
+  Quote notional of a buy = base quantity x entry price x (1 + fee). The rest of a SELL continues on
+  the next candle; halt liquidations never expire.
 * Missing candle: the order waits (at most ``max_defer`` candles, then it expires and is logged);
   positions are valued at the last known close; a stop cannot trigger without a candle.
 * Funds: a buy is clipped to free cash; below ``min_notional`` it is rejected (never rounded up).
@@ -40,6 +44,9 @@ import numpy as np
 import pandas as pd
 
 from quantlab.costs import BASE, CostScenario, entry_price, exit_price
+
+
+LIQ_LOOKBACK = 24  # completed candles whose median volume defines the liquidity budget
 
 
 @dataclass(frozen=True)
@@ -188,6 +195,7 @@ class Result:
     breaker_events: list[dict]
     state: EngineState
     hash: str
+    exposure: pd.Series | None = None  # gross position value / equity at each close (not hashed)
 
 
 def _liq(qty: float, px: float, costs: CostScenario) -> float:
@@ -211,6 +219,7 @@ def run(
     orders_log: list[dict] = []
     rejects: list[dict] = []
     eq_out = np.full(end - start, np.nan)
+    exp_out = np.zeros(end - start)
 
     def equity_at(i_close: int) -> float:
         if i_close < 0:
@@ -219,12 +228,23 @@ def run(
             _liq(p.qty, data.close_ff[i_close, data.col[k]], c) for k, p in st.positions.items()
         )
 
+    used: dict[int, float] = {}  # base quantity already filled on the current candle, per asset
+
     def cap_qty(i: int, j: int) -> float:
-        """Largest quantity one order may fill on candle i (liquidity constraint)."""
+        """
+        Liquidity left for candle i (base-asset quantity), shared by ALL orders on that asset.
+        Budget = max_participation x median volume of the previous LIQ_LOOKBACK COMPLETED candles
+        (indices i-24 .. i-1). The volume of candle i and later is never read. Fail closed:
+        fewer than LIQ_LOOKBACK candles of history, or a median of zero (missing, zero, negative,
+        NaN or infinite volumes count as zero) means no liquidity.
+        """
         if cfg.max_participation is None:
             return float("inf")
-        v = data.volume[i, j]
-        return float(cfg.max_participation * v) if np.isfinite(v) else 0.0
+        if i < LIQ_LOOKBACK:
+            return 0.0
+        v = data.volume[i - LIQ_LOOKBACK : i, j]
+        v = np.where(np.isfinite(v) & (v > 0), v, 0.0)
+        return max(cfg.max_participation * float(np.median(v)) - used.get(j, 0.0), 0.0)
 
     def reject(i, o, why):
         rejects.append(
@@ -252,6 +272,7 @@ def run(
 
     for i in range(start, end):
         t = data.index[i]
+        used.clear()
         eq_prev = equity_at(i - 1)
         br = st.breaker
         # ---- continuous circuit breaker on the close of the previous candle
@@ -310,6 +331,7 @@ def run(
                     want = pos.qty * min(o.fraction, 1.0)
                     got = min(want, cap_qty(i, j))
                     close_pos(i, o.pair, got / pos.qty, float(data.open[i, j]), False, o.reason)
+                    used[j] = used.get(j, 0.0) + got
                     if got < want * (
                         1 - 1e-12
                     ):  # liquidity-limited: the rest continues next candle
@@ -348,6 +370,7 @@ def run(
                     reject(i, o, "illiquid")
                     continue
                 qty = spend / unit
+                used[j] = used.get(j, 0.0) + qty
                 st.cash -= spend
                 stop = (
                     o.stop
@@ -374,6 +397,9 @@ def run(
             elif op <= p.stop or lo <= p.stop:
                 close_pos(i, pair, 1.0, min(op, p.stop), True, "stop")
         eq_out[i - start] = equity_at(i)
+        exp_out[i - start] = (
+            (eq_out[i - start] - st.cash) / eq_out[i - start] if eq_out[i - start] > 0 else 0.0
+        )
 
     tdf = pd.DataFrame(trades)
     eq = pd.Series(eq_out, index=data.index[start:end])
@@ -381,4 +407,5 @@ def run(
     h.update(eq.to_numpy().tobytes())
     h.update(tdf.to_json(date_format="iso", double_precision=15).encode() if len(tdf) else b"")
     h.update(repr(orders_log).encode() + repr(rejects).encode())
-    return Result(tdf, eq, orders_log, rejects, st.breaker.events, st, h.hexdigest())
+    exposure = pd.Series(exp_out, index=data.index[start:end])
+    return Result(tdf, eq, orders_log, rejects, st.breaker.events, st, h.hexdigest(), exposure)

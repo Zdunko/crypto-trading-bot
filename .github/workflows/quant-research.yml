@@ -8,6 +8,7 @@ name: Quant research
 #   [phase3b-audit]    corrected (sizing-consistent) evaluation + native reconciliation + benchmark audit
 #   [phase4-research]  R1 risk overlay: smoke test, bias checks, R1 + 6 ablations x 2 strategies (research data only)
 #   [stage0-check]     Stage 0: new engine vs legacy benchmark on the frozen dataset, determinism, real gaps (no strategy)
+#   [family-a-eval]    Family A market evaluation (evaluation period only, frozen spec v5 + amendment A1)
 #   [phase3-holdout]   survivors only, exactly once (refuses to run without e_verdict.json / if already done)
 # workflow_dispatch needs this file on the default branch, so markers are the way before merging.
 
@@ -261,6 +262,50 @@ jobs:
         with:
           name: stage0-${{ github.sha }}
           path: user_data/stage0.log
+          if-no-files-found: warn
+          retention-days: 30
+
+  family_a:
+    name: "family A evaluation (evaluation period only, no holdout)"
+    if: contains(github.event.head_commit.message, '[family-a-eval]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          activate-environment: true
+          enable-cache: false
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: |
+          uv pip install -r quant/requirements.txt
+          uv pip install -e .
+
+      - name: Verify the frozen protocols and amendments
+        run: python -m quantlab.protocol verify5
+
+      - name: Download and validate candles (hash must match the protocol)
+        shell: bash
+        run: |
+          export EXPECT_DATA_HASH=$(python -c "import json;print(json.load(open('quant/protocol/protocol.json'))['data']['dataset_sha256'])")
+          bash quant/scripts/fetch_data.sh 2>&1 | tail -n 40
+
+      - name: Family A evaluation
+        shell: bash
+        run: python -m quantlab.family_a_eval 2>&1 | tee user_data/family_a_eval.log
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: family-a-${{ github.sha }}
+          path: user_data/family_a_eval.log
           if-no-files-found: warn
           retention-days: 30
 

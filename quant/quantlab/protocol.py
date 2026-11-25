@@ -231,15 +231,55 @@ def build_manifest_v4(quant_dir: Path = QUANT_DIR) -> dict:
     }
 
 
-def verify_manifest_v4(quant_dir: Path = QUANT_DIR) -> list[str]:
-    path = quant_dir / "protocol" / "frozen_manifest_v4.json"
+AMENDMENTS_DIR = QUANT_DIR / "protocol" / "amendments"
+
+
+def load_amendments(amend_dir: Path = AMENDMENTS_DIR) -> list[dict]:
+    return [json.loads(p.read_text()) for p in sorted(amend_dir.glob("A*.json"))]
+
+
+def amended_expectations(
+    name: str, files: dict[str, str], amendments: list[dict]
+) -> tuple[dict[str, str], list[str]]:
+    """Original manifest hashes advanced through the amendment chain; chain breaks are reported."""
+    exp, errs = dict(files), []
+    for a in amendments:
+        for ch in a.get("changes", []):
+            if ch["file"] in exp:
+                if exp[ch["file"]] != ch["from"]:
+                    errs.append(
+                        f"amendment {a['id']}: chain broken for {ch['file']} in manifest {name}"
+                    )
+                exp[ch["file"]] = ch["to"]
+        for add in a.get("added_files", []):
+            if name in add["manifests"]:
+                exp[add["file"]] = add["sha256"]
+    return exp, errs
+
+
+def _verify_amended(name: str, manifest_file: str, quant_dir: Path) -> list[str]:
+    path = quant_dir / "protocol" / manifest_file
     if not path.exists():
-        return ["frozen_manifest_v4.json is missing"]
-    frozen = json.loads(path.read_text())["files"]
-    current = build_manifest_v4(quant_dir)["files"]
-    return [f"CHANGED after v4 freeze: {k}" for k in frozen if frozen[k] != current.get(k)] + [
-        f"NEW file not in v4 freeze: {k}" for k in current if k not in frozen
-    ]
+        return [f"{manifest_file} is missing"]
+    amendments = load_amendments(quant_dir / "protocol" / "amendments")
+    errs = []
+    for a in amendments:  # the ORIGINAL manifests are preserved byte for byte
+        want = a.get("preserves", {}).get(manifest_file)
+        if want and _norm_hash(path) != want:
+            errs.append(f"amendment {a['id']}: original {manifest_file} was modified")
+    exp, chain_errs = amended_expectations(name, json.loads(path.read_text())["files"], amendments)
+    errs += chain_errs
+    for f, h in exp.items():
+        cur = quant_dir / f
+        if not cur.exists():
+            errs.append(f"MISSING since freeze: {f}")
+        elif _norm_hash(cur) != h:
+            errs.append(f"CHANGED after {name} freeze (not covered by an amendment): {f}")
+    return errs
+
+
+def verify_manifest_v4(quant_dir: Path = QUANT_DIR) -> list[str]:
+    return _verify_amended("v4", "frozen_manifest_v4.json", quant_dir)
 
 
 # ------------------------------------------------------------------ Family A / protocol v5 freeze
@@ -263,14 +303,18 @@ def build_manifest_v5(quant_dir: Path = QUANT_DIR) -> dict:
 
 
 def verify_manifest_v5(quant_dir: Path = QUANT_DIR) -> list[str]:
-    path = quant_dir / "protocol" / "frozen_manifest_v5.json"
-    if not path.exists():
-        return ["frozen_manifest_v5.json is missing"]
-    frozen = json.loads(path.read_text())["files"]
-    current = build_manifest_v5(quant_dir)["files"]
-    return [f"CHANGED after v5 freeze: {k}" for k in frozen if frozen[k] != current.get(k)] + [
-        f"NEW file not in v5 freeze: {k}" for k in current if k not in frozen
-    ]
+    return _verify_amended("v5", "frozen_manifest_v5.json", quant_dir)
+
+
+def verify_all(quant_dir: Path = QUANT_DIR) -> list[str]:
+    """Every freeze (v2, v3, v4, v5) plus the amendment chain."""
+    return (
+        verify_manifest(quant_dir)
+        + consistency_errors_v3(quant_dir)
+        + verify_manifest_v3(quant_dir)
+        + verify_manifest_v4(quant_dir)
+        + verify_manifest_v5(quant_dir)
+    )
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -324,8 +368,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"wrote {MANIFEST_V5_PATH}")
         return 0
     if cmd == "verify5":
-        errs = consistency_errors() + verify_manifest() + consistency_errors_v3()
-        errs += verify_manifest_v3() + verify_manifest_v4() + verify_manifest_v5()
+        errs = consistency_errors() + verify_all()
         print("\n".join(errs) if errs else "protocol v2-v5 frozen and consistent")
         return 1 if errs else 0
     print("usage: python -m quantlab.protocol freeze|verify|...|freeze5|verify5", file=sys.stderr)

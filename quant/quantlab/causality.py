@@ -79,4 +79,88 @@ def restart_mismatches(
     return problems
 
 
-__all__ = ["EngineState", "mutate_future", "mutation_mismatches", "restart_mismatches"]
+def mutate_from_time(
+    candles: dict[str, pd.DataFrame],
+    t0: pd.Timestamp,
+    seed: int = 5,
+    prices: bool = True,
+    volume: bool = True,
+) -> dict[str, pd.DataFrame]:
+    """Randomise prices and/or volumes of every candle at or after ``t0`` (time based, any alignment)."""
+    rng = np.random.default_rng(seed)
+    out = {}
+    for pair, df in candles.items():
+        d = df.copy()
+        late = (pd.to_datetime(d["date"], utc=True) >= t0).to_numpy()
+        n = int(late.sum())
+        if prices:
+            for col in ("open", "high", "low", "close"):
+                d.loc[late, col] = d.loc[late, col].to_numpy() * rng.uniform(0.5, 1.5, n)
+        if volume and "volume" in d:
+            d.loc[late, "volume"] = d.loc[late, "volume"].to_numpy() * rng.uniform(0.1, 10.0, n)
+        out[pair] = d
+    return out
+
+
+def mutation_mismatches_at(
+    make: Callable[[PriceData], Strategy],
+    candles: dict[str, pd.DataFrame],
+    index: pd.DatetimeIndex,
+    cfg: ExecConfig,
+    t0: pd.Timestamp,
+    start: int = 0,
+    prices: bool = True,
+    volume: bool = True,
+) -> list[str]:
+    """
+    Causality at time ``t0`` (candle k): mutate prices and/or volumes from ``t0`` on. Orders emitted
+    up to and including candle k, fills up to and including candle k and equity through candle k - 1
+    must be identical (candle k's own prices may legitimately differ, its volume must not matter).
+    With ``prices=False`` equity through candle k must match as well.
+    """
+    k = int(index.searchsorted(t0))
+    d1 = PriceData(candles, index)
+    d2 = PriceData(mutate_from_time(candles, t0, prices=prices, volume=volume), index)
+    a, b = run(make(d1), d1, cfg, start=start), run(make(d2), d2, cfg, start=start)
+    problems = []
+    if [o for o in a.orders if o["i"] <= k] != [o for o in b.orders if o["i"] <= k]:
+        problems.append("orders up to candle k differ")
+    last = (
+        t0 if not prices else t0 - pd.Timedelta(1, "ns")
+    )  # price mutation changes candle k itself
+    ta = a.trades[a.trades["close_date"] <= last].reset_index(drop=True)
+    tb = b.trades[b.trades["close_date"] <= last].reset_index(drop=True)
+    if not ta.equals(tb):
+        problems.append("fills up to candle k differ")
+    upto = a.equity.index <= (t0 if not prices else t0 - pd.Timedelta(1, "ns"))
+    if not np.allclose(a.equity[upto].to_numpy(), b.equity[upto].to_numpy(), rtol=0, atol=1e-9):
+        problems.append("equity before candle k differs")
+    return problems
+
+
+def restart_mismatches_at(
+    make: Callable[[], Strategy], data: PriceData, cfg: ExecConfig, start: int, k: int
+) -> list[str]:
+    """Restart check for a strategy without private memory, starting the run at ``start``."""
+    full = run(make(), data, cfg, start=start)
+    head = run(make(), data, cfg, start=start, end=k)
+    tail = run(make(), data, cfg, start=k, state=head.state)
+    problems = []
+    if tail.orders != [o for o in full.orders if o["i"] >= k]:
+        problems.append("orders after k differ")
+    if not np.allclose(
+        tail.equity.to_numpy(), full.equity.loc[tail.equity.index].to_numpy(), rtol=0, atol=1e-9
+    ):
+        problems.append("equity after k differs")
+    return problems
+
+
+__all__ = [
+    "EngineState",
+    "mutate_from_time",
+    "mutate_future",
+    "mutation_mismatches",
+    "mutation_mismatches_at",
+    "restart_mismatches",
+    "restart_mismatches_at",
+]

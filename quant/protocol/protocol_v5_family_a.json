@@ -32,7 +32,8 @@
   "costs": "BASE 0.10 % fee + 0.05 % slippage per side; STRESS 0.20 % + 0.10 %",
   "min_notional": 5.0,
   "max_participation": 0.1,
-  "engine": "quantlab.execution (manifest v4/v5)"
+  "engine": "quantlab.execution (manifest v4/v5)",
+  "liquidity_model": "AMENDMENT A1: per-asset liquidity budget on candle i = max_participation (0.10) x MEDIAN volume (base-asset units) of the 24 completed candles before i, shared by all orders of that asset (halt liquidations first, then sells, then buys). Volume of candle i or later is never read. Missing, zero, negative, NaN or infinite volume counts as zero; fewer than 24 candles of history or a zero median means no liquidity (buys rejected, sells wait, halt liquidations wait without expiring). Buy notional = base quantity x entry price x (1 + fee)."
  },
  "circuit_breaker": {
   "enabled_in_all_evaluations": true,
@@ -73,5 +74,29 @@
  "rejected_not_reused": [
   "R1 and all Phase 4 ablations including no_stop_cooldown",
   "all four Phase 2 strategies"
+ ],
+ "benchmark_disclosure": "Benchmarks B1-B5 use the legacy buy-and-hold curves at the same BASE fee and slippage rates but WITHOUT the volume participation cap and WITHOUT the circuit breaker (a passive benchmark has neither). Their definitions are unchanged; the comparison is therefore slightly favourable to the benchmarks on liquidity and unfavourable to the variants on the breaker.",
+ "evaluation_protocol": {
+  "runs": [
+   "A1",
+   "A0",
+   "V0 (BASE costs, breaker ON)",
+   "A1 at STRESS costs (full re-run, breaker ON)"
+  ],
+  "not_run": "breaker-OFF counterfactual (not approved); holdout; paper/live",
+  "t10_for_engine_strategies": "trade-level causality checks identical for every variant: mutation of prices and volumes from 2022-01-01 and 2024-01-01; mutation of volumes only from 2023-01-01; restart from saved state at 2023-07-01. T10 passes only if all are clean",
+  "t6": "evaluated for A1 only (the only stress run); not evaluated for A0, V0",
+  "t9": "not evaluated for any variant (no parameter sweep)",
+  "statistics": "protocol_v4_stats.json unchanged: DSR with N=43, 95 % circular block bootstrap (10-day blocks, 2000 draws, seed 20261125), Holm over H1/H2, PBO by CSCV across A1/A0/V0 (16 splits), underpowered rule",
+  "verdict_words": [
+   "passes_statistical_screen",
+   "not_credible",
+   "underpowered",
+   "insufficient_data"
+  ],
+  "outputs": "per-variant metrics, T1-T10 matrix, benchmarks, windows, regimes, costs, breaker impact incl. liquidation fills, daily equity and exposure series for charts"
+ },
+ "amendments": [
+  "A1 (protocol/amendments/A1_liquidity_volume.json)"
  ]
 }

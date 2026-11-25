@@ -10,6 +10,7 @@ known-first-party = ["quantlab"]
 "quantlab/report4.py" = ["E501", "ISC004"]  # markdown table rows
 "quantlab/phase3.py" = ["E501"]
 "quantlab/phase4.py" = ["E501"]
+"quantlab/family_a_eval.py" = ["E501", "C901", "PLR0912", "PLR0915", "PLR0914"]  # one linear evaluation script
 "quantlab/family_a.py" = ["E501"]
 "quantlab/stats.py" = ["E501"]
 "quantlab/causality.py" = ["E501"]

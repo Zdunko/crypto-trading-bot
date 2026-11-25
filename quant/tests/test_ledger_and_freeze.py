@@ -49,3 +49,51 @@ def test_v5_manifest_verifies_and_detects_a_changed_specification(tmp_path):
     spec = q / "protocol" / "protocol_v5_family_a.json"
     spec.write_text(spec.read_text().replace('"sigma_target": 0.4', '"sigma_target": 0.5'))
     assert any("protocol_v5_family_a.json" in e for e in P.verify_manifest_v5(q))
+
+
+def _copy(tmp_path):
+    import shutil
+
+    q = tmp_path / "quant"
+    shutil.copytree(P.QUANT_DIR, q, ignore=shutil.ignore_patterns("__pycache__", ".pytest_cache"))
+    return q
+
+
+def test_amendment_a1_is_a_complete_auditable_chain_and_originals_are_preserved():
+    a = json.loads(
+        (P.QUANT_DIR / "protocol" / "amendments" / "A1_liquidity_volume.json").read_text()
+    )
+    assert a["id"] == "A1" and a["owner_approval"] and a["reason"] and a["tests_added"]
+    for name, h in a["preserves"].items():  # the original manifests are untouched byte for byte
+        assert P._norm_hash(P.QUANT_DIR / "protocol" / name) == h
+    originals = {**json.loads((P.QUANT_DIR / "protocol/frozen_manifest_v4.json").read_text())["files"],
+                 **json.loads((P.QUANT_DIR / "protocol/frozen_manifest_v5.json").read_text())["files"]}  # fmt: skip
+    for ch in a["changes"]:
+        assert ch["from"] == originals[ch["file"]] and ch["to"] == P._norm_hash(
+            P.QUANT_DIR / ch["file"]
+        )
+    changed = {f for f, h in originals.items() if P._norm_hash(P.QUANT_DIR / f) != h}
+    assert changed == {c["file"] for c in a["changes"]}  # no file changed without being listed
+    assert P.verify_all() == []
+
+
+def test_changing_an_amended_file_again_or_editing_an_original_manifest_is_detected(tmp_path):
+    q = _copy(tmp_path)
+    ex = q / "quantlab" / "execution.py"
+    ex.write_text(ex.read_text() + "\n# later edit\n")
+    assert any("execution.py" in e for e in P.verify_manifest_v5(q))
+    q2 = _copy(tmp_path / "second")
+    m = q2 / "protocol" / "frozen_manifest_v5.json"
+    m.write_text(m.read_text().replace("\n", "\n "))
+    assert any(
+        "original frozen_manifest_v5.json was modified" in e for e in P.verify_manifest_v5(q2)
+    )
+
+
+def test_amendment_chain_break_is_reported(tmp_path):
+    q = _copy(tmp_path)
+    f = q / "protocol" / "amendments" / "A1_liquidity_volume.json"
+    a = json.loads(f.read_text())
+    a["changes"][0]["from"] = "0" * 64
+    f.write_text(json.dumps(a))
+    assert any("chain broken" in e for e in P.verify_manifest_v4(q))
