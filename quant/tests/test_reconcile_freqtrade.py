@@ -107,6 +107,19 @@ class FixtureEngineStrategy(Strategy):
         return out
 
 
+@pytest.fixture(autouse=True)
+def restore_freqtrade_globals():
+    """Backtesting switches Trade to in-memory backtest mode globally; upstream tests (which share
+    the process under ``pytest --random-order -n auto``) must not inherit that state."""
+    yield
+    from freqtrade.optimize.backtesting import Backtesting
+    from freqtrade.persistence import PairLocks, Trade
+
+    Backtesting.cleanup()
+    Trade.reset_trades()
+    PairLocks.reset_locks()
+
+
 def native_trades(mocker, tmp_path, candles, fee):
     from freqtrade.configuration import TimeRange
     from freqtrade.data.converter import trim_dataframes
