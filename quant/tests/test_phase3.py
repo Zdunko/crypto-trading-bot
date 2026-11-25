@@ -219,3 +219,18 @@ def test_backtest_export_directory_exists_before_freqtrade_runs(tmp_path, monkey
     )
     phase3.backtest_trades("TrendEmaCross", "quant/strategies", "20210101-20250701", 0.001, "x")
     assert seen == {"exists": True, "fee": "0.001"}
+
+
+def test_uncertainty_has_annualised_intervals_and_report_flags_ruin(world):
+    _, ctx = world
+    raw = {k: _raw_trades(ctx, s.fee) for k, s in SCENARIOS.items()}
+    res = phase3.assess_strategy("S", raw, [0.1], ctx, judge=False)
+    u = res["uncertainty"]
+    lo, hi = u["annualized_return_ci"]
+    assert lo <= hi and -1.0 <= lo
+    assert "annualized_diff_vs_benchmark_ci" in u and "annualized_return" in u
+
+    from quantlab.report import _net
+
+    assert _net(-1.09) == "-100% (ruin; post-hoc slippage artefact)"
+    assert _net(-0.5) == "-50.0%" and _net(2.0) == "200.0%"

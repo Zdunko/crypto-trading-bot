@@ -153,6 +153,10 @@ jobs:
         shell: bash
         run: python -m quantlab.phase3 eval 2>&1 | tee user_data/phase3_eval.log
 
+      - name: Reconcile equity reconstruction with Freqtrade totals
+        shell: bash
+        run: python -m quantlab.phase3 reconcile 2>&1 | tee user_data/phase3_reconcile.log
+
       - name: Upload logs and results
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -160,6 +164,7 @@ jobs:
           name: evaluate-${{ github.sha }}
           path: |
             user_data/phase3_eval.log
+            user_data/phase3_reconcile.log
           if-no-files-found: warn
           retention-days: 30
 

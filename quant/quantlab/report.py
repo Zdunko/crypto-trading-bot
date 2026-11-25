@@ -22,6 +22,13 @@ def _p(x, d=1) -> str:
     return "n/a" if x is None or (isinstance(x, float) and math.isnan(x)) else f"{x * 100:.{d}f}%"
 
 
+def _net(x) -> str:
+    """Net return; below -100 % is impossible for long-only spot and flagged as an artefact."""
+    if isinstance(x, float) and x < -1.0:
+        return "-100% (ruin; post-hoc slippage artefact)"
+    return _p(x)
+
+
 def _f(x, d=2) -> str:
     if x is None or (isinstance(x, float) and math.isnan(x)):
         return "n/a"
@@ -36,9 +43,9 @@ def _ci(ci, pct=False) -> str:
 
 
 def _row(name: str, s: dict, stress: dict | None, verdict: str) -> str:
-    st = f"{_p(stress['net_return'])} / {_f(stress.get('profit_factor'))}" if stress else "-"
+    st = f"{_net(stress['net_return'])} / {_f(stress.get('profit_factor'))}" if stress else "-"
     cells = [
-        name, _p(s["net_return"]), _p(s["max_drawdown"]), _f(s["sharpe"]), _f(s["sortino"]),
+        name, _net(s["net_return"]), _p(s["max_drawdown"]), _f(s["sharpe"]), _f(s["sortino"]),
         _f(s.get("profit_factor")), _p(s.get("win_rate")), _p(s.get("expectancy_pct"), 2),
         str(s.get("trades", "-")), _p(s.get("time_in_market"), 0), st, verdict,
     ]  # fmt: skip
@@ -106,13 +113,13 @@ def _criteria(results: dict) -> list[str]:
 
 def _uncertainty(results: dict) -> list[str]:
     out = ["", "## 3. Uncertainty (95% intervals; optimistic, see limitations)", "",
-           "| Strategy | Net return | Sortino | Sharpe | Sortino minus benchmark | Return minus benchmark | Profit factor | Expectancy/trade |",
+           "| Strategy | Annualised return | Sortino | Sharpe | Sortino minus benchmark | Annualised return minus benchmark | Profit factor | Expectancy/trade |",
            "|---|---|---|---|---|---|---|---|"]  # fmt: skip
     for name, res in results["strategies"].items():
         u = res["uncertainty"]
         cells = [
-            name, _ci(u["net_return_ci"], True), _ci(u["sortino_ci"]), _ci(u["sharpe_ci"]),
-            _ci(u["sortino_diff_vs_benchmark_ci"]), _ci(u["net_return_diff_vs_benchmark_ci"], True),
+            name, _ci(u["annualized_return_ci"], True), _ci(u["sortino_ci"]), _ci(u["sharpe_ci"]),
+            _ci(u["sortino_diff_vs_benchmark_ci"]), _ci(u["annualized_diff_vs_benchmark_ci"], True),
             _ci(u.get("profit_factor_ci")), _ci(u.get("expectancy_pct_ci"), True),
         ]  # fmt: skip
         out.append("| " + " | ".join(cells) + " |")
@@ -153,7 +160,7 @@ def _robustness(results: dict) -> list[str]:
     ]
     for name, v in rows.items():
         pos = sum(1 for x in v if x["net_return"] > 0)
-        listing = "; ".join(f"{x['param']}={x['value']} {_p(x['net_return'])}" for x in v)
+        listing = "; ".join(f"{x['param']}={x['value']} {_net(x['net_return'])}" for x in v)
         out.append(f"- **{name}** ({pos}/{len(v)} positive): {listing}")
     return out
 

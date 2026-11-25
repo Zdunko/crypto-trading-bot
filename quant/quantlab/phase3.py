@@ -29,7 +29,7 @@ import pandas as pd
 
 from quantlab import bias as bias_mod
 from quantlab import protocol as protocol_mod
-from quantlab.costs import BASE, SCENARIOS, apply_costs
+from quantlab.costs import BASE, SCENARIOS, CostScenario, apply_costs
 from quantlab.equity import build_equity, buy_and_hold, close_matrix, hourly_index
 from quantlab.metrics import (
     daily_returns,
@@ -172,6 +172,11 @@ def _uncertainty(eq_s: pd.Series, eq_b: pd.Series, trades: pd.DataFrame, p: dict
     def total(r):
         return float(np.prod(1.0 + r) - 1.0)
 
+    def annual(r):
+        """Annualised growth rate (geometric); a wiped-out account is -100 %."""
+        growth = max(float(np.prod(1.0 + r)), 0.0)
+        return growth ** (365.0 / len(r)) - 1.0
+
     unc = {
         "method": f"trade-level bootstrap (iid) and circular block bootstrap ({block}-day blocks), "
         f"n={n}, seed={seed}, {int(level * 100)}% percentile intervals",
@@ -184,6 +189,11 @@ def _uncertainty(eq_s: pd.Series, eq_b: pd.Series, trades: pd.DataFrame, p: dict
         "net_return_diff_vs_benchmark_ci": block_bootstrap_ci(
             [ds, db], lambda a, b: total(a) - total(b), n, seed, block, level
         ),
+        "annualized_return_ci": block_bootstrap_ci([ds], annual, n, seed, block, level),
+        "annualized_diff_vs_benchmark_ci": block_bootstrap_ci(
+            [ds, db], lambda a, b: annual(a) - annual(b), n, seed, block, level
+        ),
+        "annualized_return": annual(ds),
     }
     if len(trades) >= 2:
         unc["profit_factor_ci"] = bootstrap_ci(
@@ -419,6 +429,43 @@ def stage_eval(proto: dict, which: str = "evaluation", only: list[str] | None = 
     return 0
 
 
+def stage_reconcile(proto: dict) -> int:
+    """
+    Cross-check our equity reconstruction against Freqtrade's own totals on fee-only trades
+    (no slippage layer): final balance, trade count and profit must agree; drawdown is expected to
+    differ because ours is hourly mark-to-market while Freqtrade's uses closed trades.
+    """
+    from freqtrade.data.btanalysis import load_backtest_stats
+
+    ctx = build_context(proto, "evaluation", with_bias=False)
+    per = proto["periods"]["evaluation"]
+    tr = timerange(per["start"], per["end_exclusive"])
+    wallet = proto["initial_wallet"]
+    fee_only = CostScenario("fee-only", BASE.fee, 0.0, 0.0)
+    rows = []
+    for name in [*proto["strategies"], proto["reference_strategy"]]:
+        raw = backtest_trades(name, "quant/strategies", tr, BASE.fee, f"reconcile_{name}")
+        st = load_backtest_stats(USER_DATA / "bt" / f"reconcile_{name}")["strategy"][name]
+        costed = apply_costs(raw, fee_only)
+        eq = build_equity(costed, ctx.closes, wallet, fee_only)
+        mine = summarize(eq, costed, wallet)
+        rows.append(
+            {
+                "strategy": name,
+                "ft_trades": st["total_trades"],
+                "my_trades": len(costed),
+                "ft_final_balance": st["final_balance"],
+                "my_final_equity": float(eq.iloc[-1]),
+                "final_rel_diff": float(eq.iloc[-1] / st["final_balance"] - 1.0),
+                "ft_max_dd_account": st.get("max_drawdown_account"),
+                "my_max_dd_mtm": mine["max_drawdown"],
+            }
+        )
+        print(f"reconcile {name}: {rows[-1]}", flush=True)
+    emit("PHASE3_RECONCILE_JSON", json.dumps(rows, default=_json_default))
+    return 0
+
+
 def _json_default(o):
     if isinstance(o, (np.integer,)):
         return int(o)
@@ -455,11 +502,17 @@ def stage_holdout(proto: dict) -> int:
 
 def main(argv: list[str] | None = None) -> int:
     cmd = (argv or sys.argv[1:] or [""])[0]
-    if cmd not in ("bias", "eval", "holdout"):
-        print("usage: python -m quantlab.phase3 bias|eval|holdout", file=sys.stderr)
+    if cmd not in ("bias", "eval", "holdout", "reconcile"):
+        print("usage: python -m quantlab.phase3 bias|eval|holdout|reconcile", file=sys.stderr)
         return 2
     proto = guard()
-    return {"bias": stage_bias, "eval": stage_eval, "holdout": stage_holdout}[cmd](proto)
+    stages = {
+        "bias": stage_bias,
+        "eval": stage_eval,
+        "holdout": stage_holdout,
+        "reconcile": stage_reconcile,
+    }
+    return stages[cmd](proto)
 
 
 if __name__ == "__main__":
