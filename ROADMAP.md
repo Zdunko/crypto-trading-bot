@@ -47,6 +47,7 @@ Authoritative definition: `quant/docs/strategies/phase3_validation_thresholds.md
 No result may change a rule, parameter, threshold or period; "no strategy validated" is an acceptable outcome.
 
 ## Phase 4 — Risk management
+- **Status 2026-11-25:** research stage done (R1 overlay, protocol v3, `quant/reports/phase4_risk_research_report.md`); R1 rejected on research data, holdout unused; owner review pending.
 - Config + strategy-level controls: max position exposure, portfolio exposure cap,
   max daily loss, max drawdown (protections + custom guard), volatility-based sizing
   (`custom_stake_amount`), emergency kill switch (file/env flag → stop entries), automatic

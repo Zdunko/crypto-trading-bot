@@ -6,7 +6,7 @@ _Last updated: 2026-11-25 · Phase 3 evaluation complete: **no strategy validate
 
 | Item | State |
 |---|---|
-| Phase | 3 — Backtesting & validation (evaluation finished, results below); Phase 4 not started |
+| Phase | 4 — Risk-management research finished (report below), awaiting owner review; holdout untouched |
 | Branch / PR | `claude/freqtrade-trading-system-b82aek` · draft PR #1, not merged |
 | Real-money trading | Disabled by policy; **no credentials exist anywhere** (see "Safety model") |
 | Strategies | 4 specified + implemented (trend, mean reversion, breakout, momentum) + BuyAndHold benchmark; **none evaluated on market data** |
@@ -65,6 +65,15 @@ Synthetic-data tests prove rules and causality, **not profitability**. No backte
 ### Decisions that belong to the owner
 1. Accept "no validated strategy" as the Phase 3 result, or approve a **new protocol version** for redesigned strategies (e.g. with portfolio-level risk limits from Phase 4). Note: the evaluation period has now been seen, so the untouched holdout is the only clean sample left and can be used once.
 2. Whether T4 (20 % drawdown) remains the right gate for a fully invested long-only crypto strategy, or whether the exposure/sizing rules should be added to the strategies first.
+
+## Phase 4 outcome (research data, diagnostics only; full report `quant/reports/phase4_risk_research_report.md`)
+
+- R1 overlay implemented (`quant/strategies_r1/`), 31 overlay tests + 12 engine tests, protocol v3 frozen before the run, 14 backtests, holdout untouched.
+- Run 1 was INVALID (overlay equity bug, found by cross-checking the breaker against reconstructed equity; fixed, errata in `protocol_v3.json`). Run 2 is the reported one. 2 of 3 CI runs used.
+- Result: R1 TrendEmaCross -19.0 % (DD 21.8 %), MomentumRoc -14.8 % (DD 23.1 %); R0 was +583 % / +1074 % with DD ~72-76 %. R1 fails T2-T8 and T10; T9 not evaluated. Lower drawdown, but negative after costs and still above the 20 % limit.
+- Bias: lookahead flags 1 trade in 2 of 4 periods for both R1 strategies (R0 was clean); likely overlay state-dependence but unproven, so T10 failed.
+- Ablations are descriptive and unselected; `no_stop_cooldown` (also reverts the chandelier to the fixed -10 % stop) looks better but is not attributable to one component and may not be adopted without a new protocol and the single holdout.
+- Upstream `Build (3.13)` fails only because 6 macOS jobs never get a runner (17 other jobs pass); not our change.
 
 ## GitHub CI results
 
@@ -144,6 +153,7 @@ defaults to **OKX** for the technical bias check; this is **not** the owner's fi
 
 ## Change log
 
+- 2026-11-25 — Phase 4: R1 risk overlay research (protocol v3, 2 research runs, run 1 invalid); R1 rejected on research data; holdout untouched.
 - 2026-11-24 — Phase 1: audit, `AGENTS.md`, `ROADMAP.md`, journal, `quant/` layout, safety policy, configs, scripts, Quant CI.
 - 2026-11-25 — fix: `quant/__init__.py` (mypy duplicate-module failure introduced by us).
 - 2026-11-25 — final audit: environment-variable bypass closed (+8 tests), Phase 2 acceptance criteria D1–D7,
