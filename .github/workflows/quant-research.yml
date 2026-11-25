@@ -1,0 +1,62 @@
+name: Quant research
+
+# Phase 3 research stages. Public data only, no credentials, simulated capital only.
+# Trigger a stage with a push to a claude/** branch whose head commit message contains the marker:
+#   [phase3-data]     download + validate OKX candles, print availability and dataset hash
+# (more stages are added together with their code). workflow_dispatch needs this file on the
+# default branch.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["claude/**"]
+
+concurrency:
+  group: "${{ github.workflow }}-${{ github.ref }}"
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  EXCHANGE: okx
+  DATA_START: "20200101"
+  DATA_END: "20261125"
+
+jobs:
+  data:
+    name: "download and validate data"
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[phase3-data]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          activate-environment: true
+          enable-cache: false
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: |
+          uv pip install -r quant/requirements.txt
+          uv pip install -e .
+
+      - name: Download and validate candles
+        shell: bash
+        run: bash quant/scripts/fetch_data.sh 2>&1 | tee user_data_fetch.log
+
+      - name: Upload data report
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: data-report-${{ github.sha }}
+          path: |
+            user_data/data_report.json
+            user_data_fetch.log
+          if-no-files-found: warn
+          retention-days: 30

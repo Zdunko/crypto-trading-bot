@@ -26,6 +26,7 @@ spot-only crypto trading research system. Read `PROJECT_STATUS.md` first, then `
 | Path | Owner | Notes |
 |---|---|---|
 | `freqtrade/`, `tests/`, `docs/`, `ft_client/`, root build files | upstream | **Do not modify.** Keeps upstream sync conflict-free. |
+| `.github/workflows/ci.yml` | upstream, **one fork patch** | Codecov upload step skipped unless `github.repository == 'freqtrade/freqtrade'` (needs a secret the fork must not have). Marked `FORK PATCH`; re-apply after upstream syncs. All upstream tests still run. |
 | `.github/workflows/quant-*.yml` | project | Our CI (`quant-ci.yml`) and bias checks (`quant-bias-check.yml`). Upstream workflows are left untouched. |
 | `quant/` | project | All project code, configs, research and docs. |
 | `quant/quantlab/` | project | Python package: safety policy, (later) metrics, validation, risk, reporting. |
