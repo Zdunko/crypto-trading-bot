@@ -200,3 +200,22 @@ def test_mixed_time_resolutions_like_real_feather_and_freqtrade_data(world):
     assert same(a["stats"], b["stats"]) and same(a["regimes"], b["regimes"])
     bench_ms, _ = buy_and_hold(ms, index, 1000.0, SCENARIOS["base"])
     pd.testing.assert_series_equal(bench_ms, ctx.bench["base"])
+
+
+def test_backtest_export_directory_exists_before_freqtrade_runs(tmp_path, monkeypatch):
+    """First CI run failed: Freqtrade cannot store results in a directory that does not exist."""
+    seen = {}
+
+    def fake_ft(args, check=True):
+        outdir = args[args.index("--backtest-directory") + 1]
+        seen["exists"] = __import__("os").path.isdir(outdir)
+        seen["fee"] = args[args.index("--fee") + 1]
+        return ""
+
+    monkeypatch.setattr(phase3, "USER_DATA", tmp_path)
+    monkeypatch.setattr(phase3, "ft", fake_ft)
+    monkeypatch.setattr(
+        "freqtrade.data.btanalysis.load_backtest_data", lambda *a, **k: pd.DataFrame()
+    )
+    phase3.backtest_trades("TrendEmaCross", "quant/strategies", "20210101-20250701", 0.001, "x")
+    assert seen == {"exists": True, "fee": "0.001"}

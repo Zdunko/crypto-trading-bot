@@ -233,6 +233,7 @@ def backtest_trades(
 
     outdir = USER_DATA / "bt" / label
     shutil.rmtree(outdir, ignore_errors=True)
+    outdir.mkdir(parents=True, exist_ok=True)  # Freqtrade does not create the export directory
     ft(
         ["backtesting", *common_args(), "--strategy-path", strategy_path, "--strategy", strategy,
          "--timerange", tr, "--fee", str(fee), "--export", "trades",
