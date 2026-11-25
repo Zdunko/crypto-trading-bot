@@ -590,6 +590,8 @@ def stage_audit(proto: dict) -> int:
         "2023-07-01",
         "2024-01-01",
     ):
+        if pd.Timestamp(start) > pd.Timestamp(per["end_exclusive"]) - pd.Timedelta(days=180):
+            continue
         idx = hourly_index(start, per["end_exclusive"])
         eq, used = buy_and_hold(ctx.candles, idx, wallet, BASE)
         starts[start] = {"pairs": len(used), **_bh_stats(eq, wallet)}
@@ -666,6 +668,8 @@ def main(argv: list[str] | None = None) -> int:
         "eval": stage_eval,
         "holdout": stage_holdout,
         "reconcile": stage_reconcile,
+        "eval_consistent": lambda p: stage_eval(p, consistent=True),
+        "audit": stage_audit,
     }
     return stages[cmd](proto)
 

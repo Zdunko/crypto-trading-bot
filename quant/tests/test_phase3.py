@@ -245,3 +245,51 @@ def test_consistent_engine_runs_end_to_end_and_never_reports_below_minus_100(wor
     for sc in ("base", "stress"):
         assert new["stats"][sc]["net_return"] >= -1.0
     assert phase3.stage_audit and phase3.stage_eval
+
+
+def test_every_cli_command_has_a_stage(monkeypatch):
+    """The first audit run died with KeyError: a command was accepted but not dispatched."""
+    called = []
+    for name in ("stage_bias", "stage_eval", "stage_holdout", "stage_reconcile", "stage_audit"):
+        monkeypatch.setattr(phase3, name, lambda *a, _n=name, **k: called.append((_n, k)) or 0)
+    monkeypatch.setattr(phase3, "guard", dict)
+    for cmd in ("bias", "eval", "holdout", "reconcile", "eval_consistent", "audit"):
+        assert phase3.main([cmd]) == 0, cmd
+    assert ("stage_eval", {"consistent": True}) in called
+    assert {n for n, _ in called} == {
+        "stage_bias",
+        "stage_eval",
+        "stage_holdout",
+        "stage_reconcile",
+        "stage_audit",
+    }
+
+
+def test_audit_stage_dry_run_with_fake_freqtrade(world, monkeypatch, capsys):
+    """Executes stage_audit end to end offline (the real one needs exchange metadata)."""
+    proto, ctx = world
+
+    def fake_backtest(name, path, tr, fee, label):
+        t = _raw_trades(ctx, fee, n=40, seed=len(name))
+        return t.assign(stake_amount=100.0, profit_ratio=0.0)
+
+    def fake_stats(path):
+        name = path.name.removeprefix("audit_")
+        return {"strategy": {name: {"total_trades": 40, "profit_factor": 1.0, "winrate": 0.5,
+                                    "profit_total_abs": 0.0, "final_balance": 1000.0,
+                                    "market_change": 0.1, "max_drawdown_account": 0.1,
+                                    "results_per_pair": [{"key": "BTC/USDT", "profit_total_abs": 0.0}]}}}  # fmt: skip
+
+    monkeypatch.setattr(phase3, "backtest_trades", fake_backtest)
+    monkeypatch.setattr(phase3, "build_context", lambda *a, **k: ctx)
+    monkeypatch.setattr("freqtrade.data.btanalysis.load_backtest_stats", fake_stats)
+    assert phase3.stage_audit(proto) == 0
+    text = capsys.readouterr().out
+    out = json.loads(
+        text.split("PHASE3B_AUDIT_JSON_BEGIN\n")[1].split("\nPHASE3B_AUDIT_JSON_END")[0]
+    )
+    assert set(out["native"]) == set(proto["strategies"]) | {proto["reference_strategy"]}
+    assert out["leakage"]["closes_identical"] and out["leakage"]["benchmark_identical"]
+    assert "equal-weight without SOL" in out["benchmarks"]["variants"]
+    assert out["benchmarks"]["start_date_sensitivity"]  # at least one start fits the short period
+    assert out["buy_and_hold_trades"]
