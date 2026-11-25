@@ -162,8 +162,8 @@ Ablations (descriptive only; not used to select anything):
 
 - Every R1 variant fails T2-T8 and T10 on research data; T9 was not evaluated (frozen parameters). Nothing is validated.
 - R1 does reduce the drawdown versus R0 (21.8 % / 23.1 % versus 72.2 % / 75.5 %) but it also loses money after costs, and the
-  drawdown is above the binding 20 % limit (T4 fails). The circuit breaker saw only Freqtrade fee-only equity, so a
-  drawdown passed 20 % without a halt (hourly MTM 21.8 % / 23.1 %); see quant/docs/phase4b for the corrected explanation (the breaker also ran in custom_stoploss, but saw a cheaper cost world); MomentumRoc halted once (2023-03-20), after which
+  drawdown is above the binding 20 % limit (T4 fails). The circuit breaker only observes equity at entry decisions, so a
+  drawdown can pass 20 % between decisions (hourly MTM 21.8 % / 23.1 %); MomentumRoc halted once (2023-03-20), after which
   it never traded again (backtest halts are terminal by design: no owner approval is possible in a backtest).
 - `no_stop_cooldown` switches off the cooldown rules AND returns to the original fixed -10 % stop (the chandelier is part of that
   component, see protocol). Its better numbers are therefore NOT attributable to the cooldown alone. It is descriptive, was not
