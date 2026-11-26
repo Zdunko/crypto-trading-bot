@@ -72,10 +72,13 @@ def test_amendment_a1_is_a_complete_auditable_chain_and_originals_are_preserved(
         assert P._norm_hash(P.QUANT_DIR / "protocol" / name) == h
     originals = {**json.loads((P.QUANT_DIR / "protocol/frozen_manifest_v4.json").read_text())["files"],
                  **json.loads((P.QUANT_DIR / "protocol/frozen_manifest_v5.json").read_text())["files"]}  # fmt: skip
+    final = {}
+    for am in P.load_amendments():  # the last amendment of a file defines its current hash
+        for ch in am["changes"]:
+            final[ch["file"]] = ch["to"]
     for ch in a["changes"]:
-        assert ch["from"] == originals[ch["file"]] and ch["to"] == P._norm_hash(
-            P.QUANT_DIR / ch["file"]
-        )
+        assert ch["from"] == originals[ch["file"]]
+        assert final[ch["file"]] == P._norm_hash(P.QUANT_DIR / ch["file"])
     changed = {f for f, h in originals.items() if P._norm_hash(P.QUANT_DIR / f) != h}
     listed = {c["file"] for am in P.load_amendments() for c in am["changes"]}
     assert changed == listed  # no file changed without being listed in an amendment

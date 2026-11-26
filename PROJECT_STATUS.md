@@ -102,6 +102,10 @@ Synthetic-data tests prove rules and causality, **not profitability**. No backte
 
 - Binance Vision archive keeps delisted symbols; a point-in-time universe of >= 30 liquid USDT assets is reconstructible from 2021-01 (84 at 1 M, 40 at 5 M median daily volume), with survivorship, identity, single-venue, no-order-book and CC BY-NC-SA licence caveats. Other free sources unsuitable. S2 GO (no data dependency); Family B and new market evaluation NO-GO until feasibility gate, identity table and full quality scan exist.
 
+## Phase 4C S2 (risk layer V2; `quant/docs/phase4c/s2_risk_v2_specification.md`)
+
+- Implemented the tiered state machine, persistence, manual authorisation, risk budget, active-window statistics and the order-level wrapper; synthetic validation only (466 local tests). Manifest v6; amendment A4 (causality helper). No market evaluation; Family A remains rejected; all risk numbers provisional.
+
 ## GitHub CI results
 
 | Check | Commit `c6cc24a` | Commit `5c9582f` |

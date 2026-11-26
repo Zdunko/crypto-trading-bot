@@ -314,7 +314,35 @@ def verify_all(quant_dir: Path = QUANT_DIR) -> list[str]:
         + verify_manifest_v3(quant_dir)
         + verify_manifest_v4(quant_dir)
         + verify_manifest_v5(quant_dir)
+        + verify_manifest_v6(quant_dir)
     )
+
+
+# ------------------------------------------------------------------ Risk layer V2 / protocol v6 freeze
+MANIFEST_V6_PATH = QUANT_DIR / "protocol" / "frozen_manifest_v6.json"
+V6_FILES = (
+    "protocol/protocol_v6_risk_v2.json",
+    "quantlab/risk_v2.py",
+    "quantlab/active_stats.py",
+)
+
+
+def build_manifest_v6(quant_dir: Path = QUANT_DIR) -> dict:
+    return {
+        "note": "Risk layer V2 freeze (S2): specification, state machine, active-window statistics.",
+        "files": {f: _norm_hash(quant_dir / f) for f in V6_FILES},
+    }
+
+
+def verify_manifest_v6(quant_dir: Path = QUANT_DIR) -> list[str]:
+    path = quant_dir / "protocol" / "frozen_manifest_v6.json"
+    if not path.exists():
+        return ["frozen_manifest_v6.json is missing"]
+    frozen = json.loads(path.read_text())["files"]
+    current = build_manifest_v6(quant_dir)["files"]
+    return [f"CHANGED after v6 freeze: {k}" for k in frozen if frozen[k] != current.get(k)] + [
+        f"NEW file not in v6 freeze: {k}" for k in current if k not in frozen
+    ]
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -371,7 +399,16 @@ def main(argv: list[str] | None = None) -> int:
         errs = consistency_errors() + verify_all()
         print("\n".join(errs) if errs else "protocol v2-v5 frozen and consistent")
         return 1 if errs else 0
-    print("usage: python -m quantlab.protocol freeze|verify|...|freeze5|verify5", file=sys.stderr)
+    if cmd == "freeze6":
+        MANIFEST_V6_PATH.write_text(
+            json.dumps(build_manifest_v6(), indent=1, sort_keys=True) + "\n"
+        )
+        print(f"wrote {MANIFEST_V6_PATH}")
+        return 0
+    print(
+        "usage: python -m quantlab.protocol freeze|verify|...|freeze5|verify5|freeze6",
+        file=sys.stderr,
+    )
     return 2
 
 

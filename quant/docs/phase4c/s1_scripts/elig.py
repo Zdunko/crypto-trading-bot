@@ -33,7 +33,7 @@ STABLE = {
     "SUSD",
     "UST",
     "USDSB",
-    "V" + "AI",
+    "VAI",  # codespell:ignore vai (VAI is a stablecoin ticker, not a typo)
     "EURI",
     "USD1",
     "XUSD",

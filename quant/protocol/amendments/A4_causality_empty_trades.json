@@ -1,0 +1,23 @@
+{
+ "id": "A4",
+ "date": "2026-11-26",
+ "title": "causality helper: an empty trade list is a valid, comparable result",
+ "reason": "Found while testing the risk wrapper (S2): mutation_mismatches_at raised KeyError('close_date') when a run produced no fills. Robustness fix only; no rule, parameter or threshold changed.",
+ "owner_approval": "Within the S2 scope approved by the owner on 2026-11-26 (implementation and synthetic validation of the risk layer).",
+ "preserves": {
+  "frozen_manifest_v4.json": "1336106a0f8086333b2c5263501de8e2a4c1f62bee5ddc9d1f87ad93b69485d3",
+  "frozen_manifest_v5.json": "4d0e2c9f26dc39e1b0df018a47bda8789c753aa14c27b43ad2136f8583fdd424"
+ },
+ "changes": [
+  {
+   "file": "quantlab/causality.py",
+   "from": "612e0ee96ff682aee7de2eb1d58917ea5eca5116cdfc6761340343e621d84e6e",
+   "to": "20701673849e9a6d2dbb836ce5e7227b0e4198a849ada2d91d1389ed7c165aa6",
+   "summary": "_closed_up_to(): empty or column-less trade lists compare as empty frames"
+  }
+ ],
+ "tests_added": [
+  "tests/test_risk_v2_engine.py (causality of the wrapped strategy with no fills)"
+ ],
+ "unchanged_parameters": "every rule, parameter, threshold and date"
+}

@@ -1,0 +1,8 @@
+{
+ "files": {
+  "protocol/protocol_v6_risk_v2.json": "c209ea8edd6ca6a7b1489a39e15ee27572a74b790cc3f6304bd223cf1b1df09f",
+  "quantlab/active_stats.py": "f05a6db2a421496d6f0371710c23b299491b675ff0007622143f7b3491f935b4",
+  "quantlab/risk_v2.py": "99f337972a10315927d926368faa192448e5fe8dcdaecae607f89f86811b5e73"
+ },
+ "note": "Risk layer V2 freeze (S2): specification, state machine, active-window statistics."
+}

@@ -102,6 +102,13 @@ def mutate_from_time(
     return out
 
 
+def _closed_up_to(trades: pd.DataFrame, last: pd.Timestamp) -> pd.DataFrame:
+    """Fills closed up to ``last``; an empty trade list (no columns) is a valid, comparable result."""
+    if trades.empty or "close_date" not in trades:
+        return pd.DataFrame()
+    return trades[trades["close_date"] <= last].reset_index(drop=True)
+
+
 def mutation_mismatches_at(
     make: Callable[[PriceData], Strategy],
     candles: dict[str, pd.DataFrame],
@@ -128,8 +135,7 @@ def mutation_mismatches_at(
     last = (
         t0 if not prices else t0 - pd.Timedelta(1, "ns")
     )  # price mutation changes candle k itself
-    ta = a.trades[a.trades["close_date"] <= last].reset_index(drop=True)
-    tb = b.trades[b.trades["close_date"] <= last].reset_index(drop=True)
+    ta, tb = _closed_up_to(a.trades, last), _closed_up_to(b.trades, last)
     if not ta.equals(tb):
         problems.append("fills up to candle k differ")
     upto = a.equity.index <= (t0 if not prices else t0 - pd.Timedelta(1, "ns"))
