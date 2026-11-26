@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+
 D = Path(__file__).resolve().parents[1] / "docs/phase4c"
 
 
@@ -54,11 +55,4 @@ def test_isolation_statement_does_not_overclaim():
 def test_roadmap_and_scope_make_no_purchase_and_do_not_run_original_s5():
     assert "Nothing is purchased" in read("s5_production_data_licensing_roadmap.md")
     s = read("s5_scope.md")
-    assert (
-        "NOT executed" in s
-        and "requires a prohibited activity"
-        in s.replace("**Yes.** ", "").replace(
-            "require a prohibited activity", "requires a prohibited activity"
-        )
-        or "prohibited" in s
-    )
+    assert "NOT executed" in s and "prohibited activity" in s
