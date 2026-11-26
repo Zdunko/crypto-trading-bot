@@ -4,6 +4,7 @@
     python -m quantlab.pit_build fetch RAW           # 1d then 1h files: guarded, rate-limited, resumable
     python -m quantlab.pit_build build RAW OUT       # quality scan, epochs, membership, manifest
     python -m quantlab.pit_build validate RAW OUT    # causality / perturbation evidence on the real data
+    python -m quantlab.pit_build gates RAW OUT OTHER_BUILD TESTS_PASSED   # apply the pre-registered criteria
 
 Development window only (months < 2025-07). Data (c) Binance, CC BY-NC-SA 4.0 (attribution
 "Binance Vision"); non-commercial research use only. No returns or strategy are computed here.
@@ -86,9 +87,10 @@ def fetch_all(raw: Path, client: Client, listing: dict[str, list[str]]) -> dict:
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=["discover", "fetch", "build", "validate"])
+    ap.add_argument("cmd", choices=["discover", "fetch", "build", "validate", "gates"])
     ap.add_argument("raw", type=Path)
     ap.add_argument("out", type=Path, nargs="?")
+    ap.add_argument("extra", nargs="*", help="gates: OTHER_BUILD_DIR TESTS_PASSED")
     ap.add_argument("--rate", type=float, default=DEFAULT_RATE)
     a = ap.parse_args(argv)
     a.raw.mkdir(parents=True, exist_ok=True)
@@ -106,7 +108,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     from quantlab import pit_run  # build / validate (second module, imported lazily)
 
-    return pit_run.main(a.cmd, a.raw, a.out)
+    return pit_run.main(a.cmd, a.raw, a.out, a.extra)
 
 
 if __name__ == "__main__":

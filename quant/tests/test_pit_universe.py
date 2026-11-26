@@ -394,3 +394,20 @@ def test_validate_runs_end_to_end_on_a_synthetic_archive(tmp_path, monkeypatch):
     assert res["B1"]["count"] == 0 and res["B2"]["all_before_cutoff"]
     assert res["R1_stability"]["identical_sha"] == 0 and res["R1_stability"]["s3_pinned"] == 1
     assert res["F3"]["requests_logged"] == len(lines)
+    gates = pit_run.evaluate(raw, out, out, tests_passed=1)  # thresholds come from s4_criteria.json
+    assert set(gates["gates"]) == {
+        g["id"] for g in json.loads(pit_run.CRITERIA.read_text())["gates"]
+    }
+    assert (
+        gates["verdict"] == "NO_GO" and "U3" in gates["failed"]
+    )  # 4-month toy archive is too shallow
+    assert (
+        gates["gates"]["M1"]["pass"]
+        and gates["gates"]["B1"]["pass"]
+        and gates["gates"]["Q1"]["pass"]
+    )
+    assert (
+        gates["gates"]["I1"]["pass"]
+        and gates["gates"]["I2"]["pass"]
+        and gates["gates"]["U1"]["pass"]
+    )

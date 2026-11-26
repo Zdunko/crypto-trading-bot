@@ -8,6 +8,7 @@ Development window only; no returns or strategy are computed anywhere.
 
 from __future__ import annotations
 
+import csv
 import gzip
 import json
 import random
@@ -341,12 +342,11 @@ def validate(raw: Path, out: Path) -> dict:
         p = ln.split("\t")
         if p[0] == "1d" and p[3] == "200":
             s3[(p[1], p[2])] = p[4]
-    files = gzip.open(out / "files.csv.gz", "rt", encoding="utf-8").read().splitlines()[1:]
     cur = {}
-    for ln in files:
-        p = ln.split(",")
-        if p[0] == "1d":
-            cur[(p[1], p[2])] = p[8]
+    with gzip.open(out / "files.csv.gz", "rt", encoding="utf-8", newline="") as fh:
+        for row in csv.DictReader(fh):
+            if row["interval"] == "1d":
+                cur[(row["symbol"], row["month"])] = row["sha256"]
     same = sum(1 for k, v in s3.items() if cur.get(k) == v)
     res["R1_stability"] = {"s3_pinned": len(s3), "identical_sha": same, "share": same / len(s3) if s3 else None,
                            "missing_now": sum(1 for k in s3 if k not in cur)}  # fmt: skip
@@ -359,10 +359,80 @@ def validate(raw: Path, out: Path) -> dict:
     return res
 
 
-def main(cmd: str, raw: Path, out: Path | None) -> int:
+def evaluate(raw: Path, out: Path, other_build: Path, tests_passed: int) -> dict:
+    """Apply the pre-registered S4 criteria (thresholds read from s4_criteria.json)."""
+    crit = json.loads(CRITERIA.read_text(encoding="utf-8"))
+    thr = {g["id"]: g.get("threshold") for g in crit["gates"]}
+    man = json.loads((out / "manifest.json").read_text(encoding="utf-8"))
+    val = json.loads((out / "validation.json").read_text(encoding="utf-8"))
+    other = json.loads((other_build / "manifest.json").read_text(encoding="utf-8"))
+    listing = json.loads((raw / "listing.json").read_text(encoding="utf-8"))
+    with gzip.open(out / "files.csv.gz", "rt", encoding="utf-8", newline="") as fh:
+        rows = list(csv.DictReader(fh))
+    n_daily = sum(len(v) for v in listing.values())
+    by = Counter((r["interval"], r["status"]) for r in rows)
+    ok_rows = [r for r in rows if r["status"] == "ok"]
+    store_months = [
+        p.name.rsplit("-", 2)[-2] + "-" + p.name.rsplit("-", 1)[-1][:2]
+        for p in (raw / "files").rglob("*.meta.json")
+    ]
+    classes = pu.load_classification(CLASSIFICATION)
+    chk = pu.classification_check(classes, sorted(listing))
+    parts = {
+        "files": pu.sha(gzip.open(out / "files.csv.gz", "rt", encoding="utf-8", newline="").read()),
+        "epochs": pu.sha(gzip.open(out / "epochs.csv.gz", "rt", encoding="utf-8", newline="").read()),
+        "membership": pu.sha(gzip.open(out / "membership.csv.gz", "rt", encoding="utf-8", newline="").read()),
+        "classification": man["parts"]["classification"],
+    }  # fmt: skip
+    unreasoned = [
+        r
+        for r in rows
+        if r["status"] != "ok" and not set(r["reasons"].split("|")) & set(pu.REASONS)
+    ]
+    u1 = [all(x["equal_by_mode"].values()) for x in val["U1"]]
+    g = {
+        "B1": {"pass": val["B1"]["count"] == 0 and max(store_months) < DEV_END,
+               "value": {"logged_requests": val["B1"]["requests_audited"], "holdout_urls": val["B1"]["count"],
+                         "store_files_audited": len(store_months), "max_store_month": max(store_months)}},
+        "B2": {"pass": val["B2"]["all_before_cutoff"] and tests_passed > 0, "value": val["B2"]},
+        "F1": {"pass": val["F1_failures"] == 0 and all(r["sha256"] == r["published_sha256"] for r in ok_rows),
+               "value": {"failures": val["F1_failures"], "ok_files": len(ok_rows),
+                         "quarantined": sum(1 for r in rows if r["status"] == "quarantined")}},
+        "F2": {"pass": tests_passed > 0 and val["R1_stability"]["share"] >= 0.999,
+               "value": "synthetic interrupted/resumed builds identical (tests); real fetch interrupted and "
+                        "resumed several times; every file verified against its published checksum"},
+        "F3": {"pass": val["F3"]["peak_in_any_1s_window"] <= thr["F3"] * val["F3"]["configured_rate"],
+               "value": val["F3"]},
+        "Q1": {"pass": by[("1h", "ok")] + by[("1h", "quarantined")] + by[("1h", "absent")] == n_daily
+               and by[("1d", "ok")] + by[("1d", "quarantined")] + by[("1d", "absent")] == n_daily,
+               "value": {"expected_per_interval": n_daily, "classified": {f"{k[0]}:{k[1]}": v for k, v in sorted(by.items())}}},
+        "Q2": {"pass": not unreasoned, "value": {"unreasoned": len(unreasoned)}},
+        "Q3": {"pass": tests_passed > 0, "value": f"{tests_passed} synthetic tests pass, incl. every reason code"},
+        "I1": {"pass": all(x["equal"] for x in val["I1"]) and len(val["I1"]) >= thr["I1"], "value": len(val["I1"])},
+        "I2": {"pass": all(x["equal"] for x in val["I2"]) and len(val["I2"]) >= thr["I2"], "value": len(val["I2"])},
+        "I3": {"pass": len(chk["unreviewed"]) == 0, "value": {"unreviewed": len(chk["unreviewed"]), "symbols": len(listing)}},
+        "U1": {"pass": all(u1) and len(u1) >= thr["U1"], "value": {"dates": len(u1), "modes": 6}},
+        "U2": {"pass": val["U2"]["ended_members_ever_1M"] > thr["U2"], "value": val["U2"]},
+        "U3": {"pass": val["U3"]["min"] >= thr["U3"], "value": val["U3"]},
+        "R1": {"pass": man["dataset_hash"] == other["dataset_hash"] and val["R1_stability"]["share"] >= thr["R1"],
+               "value": {"hash": man["dataset_hash"], "second_build_hash": other["dataset_hash"],
+                         "stability": val["R1_stability"]}},
+        "M1": {"pass": pu.dataset_hash(parts, man["params"]) == man["dataset_hash"] and parts == man["parts"],
+               "value": man["dataset_hash"]},
+    }  # fmt: skip
+    failed = sorted(k for k, v in g.items() if not v["pass"])
+    res = {"gates": g, "failed": failed, "verdict": "NO_GO" if failed else "GO"}
+    (out / "gates.json").write_text(json.dumps(res, indent=1, sort_keys=True), encoding="utf-8")
+    print(res["verdict"], failed)
+    return res
+
+
+def main(cmd: str, raw: Path, out: Path | None, extra: list[str] | None = None) -> int:
     out = out or QUANT / "dataset"
     if cmd == "build":
         build(raw, out)
-    else:
+    elif cmd == "validate":
         validate(raw, out)
+    else:
+        evaluate(raw, out, Path(extra[0]), int(extra[1]))  # type: ignore[index]
     return 0
