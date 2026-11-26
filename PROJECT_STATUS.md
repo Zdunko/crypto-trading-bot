@@ -119,6 +119,10 @@ Synthetic-data tests prove rules and causality, **not profitability**. No backte
 
 - The original S5 (first new family evaluation) needs a market evaluation and is NOT executed. Done: S4 dataset frozen (`protocol/s4_freeze_record.json`), limitations register (macOS cancelled jobs = unresolved infrastructure limitation, not passed tests), X1 investigation (eligibility unaffected, execution effect unbounded), identity review (conservative handling costs 0.07 % of decisions), holdout-isolation statement (with exposures), production-data licensing roadmap, causal fail-closed dataset loader + universe guard + research-budget enforcement (synthetic validation, 540 tests), ledger amendment A8. Still missing from the original plan: feasibility-gate tool and benchmark add-ons.
 
+## Phase 4C S6 feasibility gate and benchmark infrastructure (`quant/docs/phase4c/s6_report.md`)
+
+- S5-infra frozen (`protocol/s5_freeze_record.json`). Built with synthetic fixtures only: machine-readable pre-registration template and deterministic fail-closed feasibility gate (`quantlab/feasibility.py`; rejects Family A as specified, passes a synthetic example, never authorises a run), benchmark registry and engine-based benchmarks (cash, BTC buy-and-hold, point-in-time equal weight, simple trend, volatility-targeted, exposure-/volatility-matched, cash-mix at T4, random-timing null) with comparison statistics and Holm; risk review of stale held positions (frozen S2 layer fails safe for new risk but is blind to the loss of a delisted holding; recorded L-STALEPOS); design-only proposal for the next family (B2: cross-sectional momentum on the point-in-time universe; nothing implemented, budget unchanged N 43, 0 families); amendment A9. Original S5 (market evaluation) still unapproved.
+
 ## GitHub CI results
 
 | Check | Commit `c6cc24a` | Commit `5c9582f` |
@@ -197,6 +201,7 @@ defaults to **OKX** for the technical bias check; this is **not** the owner's fi
 
 ## Change log
 
+- 2026-11-26 — S6: feasibility gate + benchmark infrastructure (synthetic), stale-position review, design-only next-family proposal, amendment A9; no market evaluation.
 - 2026-11-26 — S5-infra: S4 freeze, investigations, loader/guard/budget (synthetic), amendment A8; original S5 not executed.
 - 2026-11-26 — S4: point-in-time dataset builder and dataset (GO, research only), licensing alternatives (documentation), amendment A7.
 - 2026-11-26 — S2 frozen (freeze record); S3 data feasibility gate: audit scripts, `quantlab/data_audit.py` (+15 tests), licensing findings, integration plan (design), ledger amendment A6. CONDITIONAL GO for data; no market evaluation.

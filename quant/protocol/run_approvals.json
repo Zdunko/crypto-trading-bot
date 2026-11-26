@@ -1,0 +1,5 @@
+{
+ "id": "run-approvals-v1",
+ "note": "A market run needs an explicit owner approval for an exact spec hash; this file is edited only on the owner's written instruction. Empty = no run is approved.",
+ "approvals": []
+}

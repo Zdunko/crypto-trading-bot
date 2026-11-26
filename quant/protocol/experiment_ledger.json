@@ -204,6 +204,17 @@
    "counts_toward_N": false,
    "criteria_preregistered": "quant/docs/phase4c/s5_criteria.json (commit 03af3d9)",
    "report": "quant/docs/phase4c/s5_report.md"
+  },
+  {
+   "id": "S6",
+   "date": "2026-11-26",
+   "purpose": "feasibility gate and benchmark infrastructure with synthetic fixtures; stale-position review; design-only family proposal (arithmetic on assumptions)",
+   "returns_evaluated": false,
+   "strategy_or_parameter_selection_influenced": false,
+   "market_observations_after_2025_06_read": false,
+   "counts_toward_N": false,
+   "criteria_preregistered": "quant/docs/phase4c/s6_criteria.json (commit f053d61)",
+   "report": "quant/docs/phase4c/s6_report.md"
   }
  ],
  "ledger_rule": "Every diagnostic or exploratory experiment is recorded; any experiment that influenced strategy or parameter selection counts toward N and the research budget."

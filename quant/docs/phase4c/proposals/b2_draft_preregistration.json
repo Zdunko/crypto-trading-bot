@@ -1,0 +1,218 @@
+{
+ "schema": "prereg-v1",
+ "family": {
+  "id": "B2-DRAFT",
+  "family_key": "xs_momentum_pit_universe",
+  "title": "Cross-sectional momentum on the point-in-time universe (design draft)",
+  "version": 1
+ },
+ "economic": {
+  "hypothesis": "Among liquid USDT spot assets, those with the strongest completed 60-day return (skipping the latest 7 days) continue to outperform the point-in-time universe average over the following week, net of costs.",
+  "rationale": "Attention-driven and flow-driven trends in crypto persist for weeks because information diffuses unevenly across a large, retail-heavy cross-section, and because arbitrage against such trends is costly in spot-only, no-shorting markets. The skip period removes very short-term reversal (bid-ask bounce, liquidity shocks).",
+  "counterparty": "Late-reacting retail flow and liquidity takers who sell winners too early or buy losers; the premium is compensation for crash risk (momentum crashes) and for crowded exits, not a free lunch.",
+  "expected_failure_modes": [
+   "Momentum crashes in sharp rebounds after drawdowns wipe out months of gains while long-only cannot hedge.",
+   "Transaction costs of weekly turnover (0.15 % per side in the BASE scenario) exceed the gross premium.",
+   "The premium exists only in small illiquid assets that the 1 M USDT eligibility filter and the 10 % participation cap exclude.",
+   "One market cycle: the result is driven by 2021 and does not repeat; identity breaks and delistings distort history."
+  ],
+  "falsifiable_prediction": "Net of BASE and STRESS costs, the top-quintile portfolio has a higher Sharpe than the point-in-time equal-weight benchmark with a paired-bootstrap lower bound above zero after Holm correction; if not, the hypothesis is rejected."
+ },
+ "strategy": {
+  "configurations": [
+   {
+    "id": "B2-1",
+    "role": "primary",
+    "description": "top quintile by 60-day return skipping 7 days, equal weight, weekly rebalance, long-only, cash when nothing qualifies",
+    "parameters": [
+     {
+      "name": "lookback_days",
+      "value": 60,
+      "kind": "convention",
+      "source": "typical one-to-three month momentum window in the literature (not verified here), fixed before any result"
+     },
+     {
+      "name": "skip_days",
+      "value": 7,
+      "kind": "convention",
+      "source": "one-week skip against short-term reversal, convention, fixed before any result"
+     },
+     {
+      "name": "top_fraction",
+      "value": 0.2,
+      "kind": "convention",
+      "source": "quintile, a standard portfolio-sort convention"
+     },
+     {
+      "name": "rebalance_days",
+      "value": 7,
+      "kind": "convention",
+      "source": "weekly, balance of signal decay and cost, convention"
+     }
+    ]
+   },
+   {
+    "id": "B2-2",
+    "role": "descriptive",
+    "description": "same rule without the skip (shows the value of the reversal skip)",
+    "parameters": [
+     {
+      "name": "lookback_days",
+      "value": 60,
+      "kind": "convention",
+      "source": "same as primary"
+     },
+     {
+      "name": "skip_days",
+      "value": 0,
+      "kind": "convention",
+      "source": "component test"
+     },
+     {
+      "name": "top_fraction",
+      "value": 0.2,
+      "kind": "convention",
+      "source": "same as primary"
+     },
+     {
+      "name": "rebalance_days",
+      "value": 7,
+      "kind": "convention",
+      "source": "same as primary"
+     }
+    ]
+   },
+   {
+    "id": "B2-3",
+    "role": "descriptive",
+    "description": "random selection of the same number of assets (signal-free control with equal turnover)",
+    "parameters": [
+     {
+      "name": "top_fraction",
+      "value": 0.2,
+      "kind": "convention",
+      "source": "same as primary"
+     },
+     {
+      "name": "rebalance_days",
+      "value": 7,
+      "kind": "convention",
+      "source": "same as primary"
+     },
+     {
+      "name": "seed",
+      "value": 20261127,
+      "kind": "convention",
+      "source": "fixed seed, no tuning"
+     }
+    ]
+   }
+  ],
+  "indicators": [
+   {
+    "name": "return",
+    "window": 60,
+    "input": "completed_candles",
+    "interval": "1d"
+   }
+  ],
+  "decision_time": "daily_close_completed",
+  "signal_inputs": [
+   "close"
+  ]
+ },
+ "data": {
+  "dataset_hash": "462288b14415edeb3aec73c9400fd8af977faf3105c1396f6f96d4fe3d4069be",
+  "interval": "1d",
+  "universe": {
+   "threshold": "1M",
+   "max_stale_days": 3
+  },
+  "warmup_days": 61,
+  "evaluation": {
+   "start": "2021-01-01",
+   "end_exclusive": "2025-07-01"
+  }
+ },
+ "execution": {
+  "engine": "quantlab.execution",
+  "fill": "next_candle_open",
+  "costs": {
+   "fee": 0.001,
+   "slippage": 0.0005,
+   "stress_multiple": 2.0
+  },
+  "max_participation": 0.1,
+  "min_notional": 5.0
+ },
+ "risk": {
+  "layer": "risk_v2",
+  "config_sha256": "7f9173399d3edf96e5e0c0d1f6b1599b5954252b51253e8e17d226b77eb44fdb",
+  "universe_guard": true,
+  "spot_only": true,
+  "leverage": false,
+  "shorting": false,
+  "averaging": false,
+  "position_adjustment": false
+ },
+ "expected": {
+  "assets": {
+   "lo": 80,
+   "hi": 300
+  },
+  "entries_per_asset_year": {
+   "lo": 1.5,
+   "hi": 4.0
+  },
+  "active_day_share": {
+   "lo": 0.9,
+   "hi": 1.0
+  },
+  "cluster_size": {
+   "lo": 5,
+   "hi": 12
+  },
+  "rho": {
+   "lo": 0.4,
+   "hi": 0.7
+  },
+  "serial_rho": {
+   "lo": 0.0,
+   "hi": 0.1
+  }
+ },
+ "hypotheses": [
+  {
+   "id": "H1",
+   "statement": "B2-1 net Sharpe exceeds the point-in-time equal-weight benchmark"
+  },
+  {
+   "id": "H2",
+   "statement": "B2-1 net annualised Sharpe is above zero"
+  }
+ ],
+ "benchmarks": [
+  "cash",
+  "btc_buy_hold",
+  "pit_equal_weight",
+  "B1",
+  "exposure_matched",
+  "volatility_matched",
+  "cash_mix_t4",
+  "random_timing_null"
+ ],
+ "budget": {
+  "new_configurations": 3
+ },
+ "declarations": {
+  "results_seen": false,
+  "prior_looks": 0,
+  "holdout_access": false,
+  "holdout_metadata_acknowledged": [
+   "S1_listing_keys_and_last_month",
+   "S3_survivorship_reporting",
+   "S4_post_cutoff_symbol_names",
+   "S4_request_log_gap"
+  ]
+ }
+}

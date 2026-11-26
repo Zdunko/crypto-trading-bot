@@ -1,0 +1,138 @@
+{
+ "schema": "prereg-v1",
+ "family": {
+  "id": "TODO",
+  "family_key": "TODO",
+  "title": "TODO",
+  "version": 1
+ },
+ "economic": {
+  "hypothesis": "TODO",
+  "rationale": "TODO",
+  "counterparty": "TODO",
+  "expected_failure_modes": [
+   "TODO",
+   "TODO"
+  ],
+  "falsifiable_prediction": "TODO"
+ },
+ "strategy": {
+  "configurations": [
+   {
+    "id": "P1",
+    "role": "primary",
+    "description": "TODO",
+    "parameters": [
+     {
+      "name": "TODO",
+      "value": 0,
+      "kind": "free",
+      "source": "TODO"
+     }
+    ]
+   }
+  ],
+  "indicators": [
+   {
+    "name": "TODO",
+    "window": 1,
+    "input": "completed_candles",
+    "interval": "1d"
+   }
+  ],
+  "decision_time": "daily_close_completed",
+  "signal_inputs": [
+   "TODO"
+  ]
+ },
+ "data": {
+  "dataset_hash": "462288b14415edeb3aec73c9400fd8af977faf3105c1396f6f96d4fe3d4069be",
+  "interval": "1d",
+  "universe": {
+   "threshold": "1M",
+   "max_stale_days": 3
+  },
+  "warmup_days": 1,
+  "evaluation": {
+   "start": "2021-01-01",
+   "end_exclusive": "2025-07-01"
+  }
+ },
+ "execution": {
+  "engine": "quantlab.execution",
+  "fill": "next_candle_open",
+  "costs": {
+   "fee": 0.001,
+   "slippage": 0.0005,
+   "stress_multiple": 2.0
+  },
+  "max_participation": 0.1,
+  "min_notional": 5.0
+ },
+ "risk": {
+  "layer": "risk_v2",
+  "config_sha256": "7f9173399d3edf96e5e0c0d1f6b1599b5954252b51253e8e17d226b77eb44fdb",
+  "universe_guard": true,
+  "spot_only": true,
+  "leverage": false,
+  "shorting": false,
+  "averaging": false,
+  "position_adjustment": false
+ },
+ "expected": {
+  "assets": {
+   "lo": 0,
+   "hi": 0
+  },
+  "entries_per_asset_year": {
+   "lo": 0,
+   "hi": 0
+  },
+  "active_day_share": {
+   "lo": 0.1,
+   "hi": 0.1
+  },
+  "cluster_size": {
+   "lo": 1,
+   "hi": 1
+  },
+  "rho": {
+   "lo": 0,
+   "hi": 0
+  },
+  "serial_rho": {
+   "lo": 0,
+   "hi": 0
+  }
+ },
+ "hypotheses": [
+  {
+   "id": "H1",
+   "statement": "TODO"
+  }
+ ],
+ "benchmarks": [
+  "cash",
+  "btc_buy_hold",
+  "pit_equal_weight",
+  "B1",
+  "exposure_matched",
+  "volatility_matched",
+  "cash_mix_t4",
+  "random_timing_null"
+ ],
+ "budget": {
+  "new_configurations": 1
+ },
+ "declarations": {
+  "results_seen": false,
+  "prior_looks": 0,
+  "holdout_access": false,
+  "holdout_metadata_acknowledged": [
+   "S1_listing_keys_and_last_month",
+   "S3_survivorship_reporting",
+   "S4_post_cutoff_symbol_names",
+   "S4_request_log_gap"
+  ]
+ }
+}

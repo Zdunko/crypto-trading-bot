@@ -1,0 +1,24 @@
+{
+ "historical": [
+  {
+   "config_hashes": [
+    "85dcd8c3b6fdcfee0bb9aca2117a3c0afda9c8e02c0bb44861620e34e9f9edec",
+    "f070856ce9654ff6c27c048211b6a2727dc2fda317a1bb05ad3bae56477b0686",
+    "de4ac062712b2ecad276d9f257d13403c96887263b1258f4950d490364df3c9e"
+   ],
+   "family_key": "trend_vol_scaled_basket",
+   "source": "protocol_v5_family_a.json (rejected as specified)"
+  }
+ ],
+ "id": "spec-registry-v1",
+ "note": "Frozen history of rejected families and evaluated configurations (never re-tested). New families are appended by amendment only.",
+ "registered": [],
+ "rejected_family_keys": [
+  "trend_ema_cross",
+  "mean_reversion_rsi_bb",
+  "breakout_donchian",
+  "momentum_roc",
+  "r1_risk_overlay",
+  "trend_vol_scaled_basket"
+ ]
+}
