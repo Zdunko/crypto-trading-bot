@@ -1,0 +1,19 @@
+{
+ "id": "A6",
+ "date": "2026-11-26",
+ "title": "Ledger: data audit S3 recorded",
+ "reason": "Owner requires all diagnostic work to be recorded; S3 data feasibility audit performed.",
+ "owner_approval": "Owner message 2026-11-26 (S2 conditionally accepted, S3 approved).",
+ "preserves": {
+  "frozen_manifest_v4.json": "1336106a0f8086333b2c5263501de8e2a4c1f62bee5ddc9d1f87ad93b69485d3"
+ },
+ "changes": [
+  {
+   "file": "protocol/experiment_ledger.json",
+   "from": "1f22586d397f00c856d60d4e208cd920c1a3838d6842f953147de121e3350ab4",
+   "to": "fc81607e31301a4c5f3bffcea87549206a9b25793adc816904db40aa2672d720",
+   "summary": "adds data_audits entry S3; no count changes"
+  }
+ ],
+ "unchanged_parameters": "every rule, parameter, threshold, date and count"
+}

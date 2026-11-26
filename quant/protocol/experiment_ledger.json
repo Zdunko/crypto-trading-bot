@@ -169,6 +169,18 @@
    "market_observations_after_2025_06_read": false,
    "counts_toward_N": false,
    "report": "quant/docs/phase4c/s1_data_audit_report.md"
+  },
+  {
+   "id": "S3",
+   "date": "2026-11-26",
+   "purpose": "data feasibility gate: data quality, point-in-time liquidity eligibility, identity flags, licence, resources (development period only)",
+   "returns_evaluated": false,
+   "strategy_or_parameter_selection_influenced": false,
+   "market_observations_after_2025_06_read": false,
+   "counts_toward_N": false,
+   "note": "daily closes and quote volumes of the development period were read for data-quality and eligibility counts only; BTC trailing return used for descriptive regime labels (coverage only)",
+   "criteria_preregistered": "quant/docs/phase4c/s3_criteria.json (commit 325aa33)",
+   "report": "quant/docs/phase4c/s3_feasibility_report.md"
   }
  ],
  "ledger_rule": "Every diagnostic or exploratory experiment is recorded; any experiment that influenced strategy or parameter selection counts toward N and the research budget."

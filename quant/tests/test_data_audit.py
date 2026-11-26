@@ -70,9 +70,9 @@ def test_duplicate_out_of_order_misaligned_outside():
     sw = rows_1d()
     sw[4], sw[5] = sw[5], sw[4]
     assert "out_of_order" in kinds(da.check_candles(sw, "1d", "2022-03"))
-    mis = rows_1d()
-    mis[2][0] = str(int(mis[2][0]) + 1)
-    assert "misaligned_timestamp" in kinds(da.check_candles(mis, "1d", "2022-03"))
+    shifted = rows_1d()
+    shifted[2][0] = str(int(shifted[2][0]) + 1)
+    assert "misaligned_timestamp" in kinds(da.check_candles(shifted, "1d", "2022-03"))
     out = rows_1d(start=LO + 10 * DAY)
     assert "outside_month" in kinds(da.check_candles(out, "1d", "2022-03"))
 
@@ -221,3 +221,10 @@ def test_gates_verdicts_and_each_gate_can_fail():
     for gate, (k, v) in breaks.items():
         r = da.evaluate_gates(CRIT, {**GOOD, k: v})
         assert r["verdict"] == "NO_GO" and gate in r["failed"], gate
+
+
+def test_partial_month_is_not_a_gap():
+    rs = rows_1d()[10:25]  # listed on day 11, delisted after day 25
+    r = da.check_candles(rs, "1d", "2022-03")
+    assert r.leading_missing == 10 and r.trailing_missing == 6
+    assert r.missing_candles == 0 and "gap" not in kinds(r) and not r.quarantined

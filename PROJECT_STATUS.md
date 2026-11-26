@@ -106,6 +106,11 @@ Synthetic-data tests prove rules and causality, **not profitability**. No backte
 
 - Implemented the tiered state machine, persistence, manual authorisation, risk budget, active-window statistics and the order-level wrapper; synthetic validation only (466 local tests). Manifest v6; amendment A4 (causality helper). No market evaluation; Family A remains rejected; all risk numbers provisional.
 
+## Phase 4C S2 freeze and S3 data feasibility gate (`quant/protocol/s2_freeze_record.json`, `quant/docs/phase4c/s3_feasibility_report.md`)
+
+- S2 frozen at commit `6d24202` (manifest v6, config hash, CI evidence in the freeze record; guarded by `tests/test_s2_freeze.py`); risk parameters and T1-T10 unchanged.
+- S3 (development-period data only, holdout never requested): pre-registered criteria (`s3_criteria.json`, commit `325aa33`) all pass -> **CONDITIONAL GO** for Binance Vision as a non-commercial research dataset: 21 518 daily files, 100 % checksum match, 0.014 % daily files quarantined, hourly sample (369 files) defect upper bound 1.95 %, >= 84 PIT-eligible assets at 1 M at every month start 2021-01..2025-06 (83 after identity exclusions), delisted assets retained (26-45 % of eligible cohorts later delisted), deterministic reproduction, 0.43 GB / 0.17 h for 1h data. Licence read from the primary Vision Dataset Terms: personal non-production backtesting permitted; live/paper/commercial/signal distribution not. Risk-layer x Freqtrade integration validation is design only (`s3_risk_integration_plan.md`). Ledger amendment A6. Family A stays rejected, Family B NO-GO, no market evaluation. Unresolved: identity table, whole-sample exclusion look-ahead, volume-only liquidity, one cycle (2 bear episodes), hourly quality sampled only, alternative sources unverifiable here.
+
 ## GitHub CI results
 
 | Check | Commit `c6cc24a` | Commit `5c9582f` |
@@ -184,6 +189,7 @@ defaults to **OKX** for the technical bias check; this is **not** the owner's fi
 
 ## Change log
 
+- 2026-11-26 — S2 frozen (freeze record); S3 data feasibility gate: audit scripts, `quantlab/data_audit.py` (+15 tests), licensing findings, integration plan (design), ledger amendment A6. CONDITIONAL GO for data; no market evaluation.
 - 2026-11-25 — Family A evaluated (one run): not credible, fails T1/T3/T4/T7; liquidity amendment A1, ledger amendment A2.
 - 2026-11-25 — Family A implemented and frozen (spec v5), synthetic tests and causality validation; no market evaluation.
 - 2026-11-25 — Phase 4B Stage 0: execution engine, causality tests, statistical rules, ledger, manifest v4 (no strategy, no holdout).

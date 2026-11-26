@@ -68,7 +68,9 @@ class FileReport:
     rows: int = 0
     expected_rows: int = 0
     findings: dict[str, int] = field(default_factory=dict)
-    missing_candles: int = 0
+    missing_candles: int = 0  # inside the first..last candle span only
+    leading_missing: int = 0
+    trailing_missing: int = 0
     zero_volume_share: float = 0.0
     ts_digits: int = 0
 
@@ -156,8 +158,12 @@ def check_candles(rows: list[list[str]], interval: str, ym: str) -> FileReport: 
     rep.zero_volume_share = zero / len(parsed)
     if zero:
         rep.add("zero_volume", zero)
-    uniq = {t for t in ts_ms if lo <= t < hi and (t - lo) % step == 0}
-    rep.missing_candles = max(0, rep.expected_rows - len(uniq))
+    uniq = sorted({t for t in ts_ms if lo <= t < hi and (t - lo) % step == 0})
+    if uniq:
+        # leading/trailing absence = partial month (listing/delisting inside it), not a gap
+        rep.leading_missing = (uniq[0] - lo) // step
+        rep.trailing_missing = (hi - step - uniq[-1]) // step
+        rep.missing_candles = max(0, (uniq[-1] - uniq[0]) // step + 1 - len(uniq))
     if rep.missing_candles:
         rep.add("gap", rep.missing_candles)
     return rep

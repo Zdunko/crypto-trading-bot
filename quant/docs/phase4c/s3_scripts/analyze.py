@@ -1,7 +1,7 @@
 """S3 audit analysis: deterministic, reads the scratch raw dir written by fetch.py, uses only
 quantlab.data_audit. No returns, no strategy. Output: JSON of aggregates + gz pin manifest.
 
-    python analyze.py <raw_dir> <out_json> <pin_manifest.tsv.gz> [fetch_seconds_1d]
+    python analyze.py <raw_dir> <out_json> <pin_manifest.tsv.gz> [requests_per_s] [p1_identical_json]
     python analyze.py sample <raw_dir> <sample_out.json>      # select the hourly sample (seeded)
 Data (c) Binance, CC BY-NC-SA 4.0 (attribution: Binance Vision).
 """
@@ -107,12 +107,13 @@ def select_sample(raw: Path, out: Path) -> None:
     print(f"sample {len(pick)} over {len(years)} years")
 
 
-def analyze(raw: Path, fetch_seconds: float | None) -> tuple[dict, list[str]]:
+def analyze(raw: Path, rate: float | None) -> tuple[dict, list[str]]:
     m1d = metas(raw, "1d")
     s1 = {r["symbol"]: r for r in csv.DictReader(S1_CSV.open())}
     present = defaultdict(list)
     reports, daily = {}, defaultdict(dict)
     quarantine, defect_counts = [], defaultdict(int)
+    d_missing = d_span = 0
     for r in m1d:
         if r["http"] != 200:
             continue
@@ -121,6 +122,8 @@ def analyze(raw: Path, fetch_seconds: float | None) -> tuple[dict, list[str]]:
         rows = read_rows(raw / "1d" / f"{sym}-1d-{ym}.zip")
         rep = da.check_candles(rows, "1d", ym)
         reports[(sym, ym)] = rep
+        d_missing += rep.missing_candles
+        d_span += rep.expected_rows - rep.leading_missing - rep.trailing_missing
         for k, n in rep.findings.items():
             defect_counts[k] += 1
         if rep.quarantined:
@@ -132,7 +135,8 @@ def analyze(raw: Path, fetch_seconds: float | None) -> tuple[dict, list[str]]:
     n_chk = sum(1 for r in m1d if r["http"] == 200 and r.get("checksum_ok"))
     # --- identity flags
     flags = {s: da.identity_flags(present[s], daily[s]) for s in present}
-    flagged = sorted(s for s, f in flags.items() if f["flagged"])
+    flagged_all = sorted(s for s, f in flags.items() if f["flagged"])
+    flagged = [s for s in flagged_all if is_asset(s)]  # exclusion set: eligible-type assets only
     # --- PIT eligibility at month starts
     starts = month_range("2021-01", "2025-06")
     assets = sorted(s for s in present if is_asset(s))
@@ -171,17 +175,20 @@ def analyze(raw: Path, fetch_seconds: float | None) -> tuple[dict, list[str]]:
     sm = sum(cnt_x[t] for t in starts)  # symbol-months across month starts (post-exclusion)
     gb = sm * mean_1h / 1e9
     reqs = 2 * sm
-    rate = (2 * n_files / fetch_seconds) if fetch_seconds else float("nan")
-    hours = reqs / rate / 3600 if fetch_seconds else float("nan")
+    hours = reqs / rate / 3600 if rate else float("nan")
+    rate = rate or float("nan")
     # --- hourly sample
     hq = []
     hfind = defaultdict(int)
+    h_missing = h_span = 0
     for r in hr_ok:
         rep = da.check_candles(
             read_rows(raw / "1h" / f"{r['symbol']}-1h-{r['month']}.zip"), "1h", r["month"]
         )
         for k in rep.findings:
             hfind[k] += 1
+        h_missing += rep.missing_candles
+        h_span += rep.expected_rows - rep.leading_missing - rep.trailing_missing
         if rep.quarantined:
             hq.append([r["symbol"], r["month"], rep.fatal])
     hn = len(hr_ok)
@@ -194,11 +201,13 @@ def analyze(raw: Path, fetch_seconds: float | None) -> tuple[dict, list[str]]:
         "checksum_ok_1h": h_chk,
         "defect_file_counts_1d": dict(sorted(defect_counts.items())),
         "quarantined_1d": quarantine,
+        "daily_missing_candle_share_inside_span": d_missing / d_span,
         "hourly_sample": {
             "n": hn,
             "defect_file_counts": dict(sorted(hfind.items())),
             "quarantined": hq,
             "mean_zip_bytes": mean_1h,
+            "missing_candle_share_inside_span": h_missing / h_span if h_span else None,
         },
         "identity_flagged": {
             s: {
@@ -208,6 +217,8 @@ def analyze(raw: Path, fetch_seconds: float | None) -> tuple[dict, list[str]]:
             for s in flagged
         },
         "identity_flagged_count": len(flagged),
+        "identity_flagged_non_asset_count": len(flagged_all) - len(flagged),
+        "identity_flagged_non_asset": [s for s in flagged_all if not is_asset(s)],
         "eligible_counts_by_month_start": cnt,
         "eligible_counts_1M_after_exclusions": cnt_x,
         "eligible_counts_5M_after_exclusions": cnt5_x,
