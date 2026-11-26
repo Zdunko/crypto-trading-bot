@@ -5,6 +5,7 @@ extend = "../pyproject.toml"
 known-first-party = ["quantlab"]
 
 [lint.per-file-ignores]
+"docs/phase4c/s1_scripts/*.py" = ["ALL"]  # one-off audit scripts, documented, not project code
 "tests/*" = ["S101", "E501", "RUF059", "C408"]  # E501: fixtures are verbatim log lines
 "quantlab/report.py" = ["E501"]  # markdown table rows
 "quantlab/report4.py" = ["E501", "ISC004"]  # markdown table rows

@@ -1,0 +1,174 @@
+{
+ "source": "Binance Vision spot monthly 1d klines via the public S3 endpoint; data (c) Binance, CC BY-NC-SA 4.0 (attribution: Binance Vision); aggregate counts only",
+ "rule": "asset = USDT pair excluding stablecoin/fiat bases and leveraged tokens; >= 60 daily candles in the 90 days before the date; median daily quote volume (USDT) over the last 90 days >= threshold; uses only data before the date; delisted symbols included",
+ "dates": {
+  "2018-07": {
+   "candidates_with_90d_history": 8,
+   "by_threshold_usdt_median_daily_quote_volume": {
+    "250000": {
+     "eligible": 8,
+     "delisted_by_2026_10": 1
+    },
+    "1000000": {
+     "eligible": 8,
+     "delisted_by_2026_10": 1
+    },
+    "5000000": {
+     "eligible": 7,
+     "delisted_by_2026_10": 1
+    },
+    "25000000": {
+     "eligible": 4,
+     "delisted_by_2026_10": 1
+    }
+   }
+  },
+  "2019-01": {
+   "candidates_with_90d_history": 17,
+   "by_threshold_usdt_median_daily_quote_volume": {
+    "250000": {
+     "eligible": 17,
+     "delisted_by_2026_10": 3
+    },
+    "1000000": {
+     "eligible": 15,
+     "delisted_by_2026_10": 2
+    },
+    "5000000": {
+     "eligible": 10,
+     "delisted_by_2026_10": 1
+    },
+    "25000000": {
+     "eligible": 3,
+     "delisted_by_2026_10": 0
+    }
+   }
+  },
+  "2020-01": {
+   "candidates_with_90d_history": 73,
+   "by_threshold_usdt_median_daily_quote_volume": {
+    "250000": {
+     "eligible": 41,
+     "delisted_by_2026_10": 9
+    },
+    "1000000": {
+     "eligible": 27,
+     "delisted_by_2026_10": 4
+    },
+    "5000000": {
+     "eligible": 9,
+     "delisted_by_2026_10": 1
+    },
+    "25000000": {
+     "eligible": 2,
+     "delisted_by_2026_10": 0
+    }
+   }
+  },
+  "2021-01": {
+   "candidates_with_90d_history": 162,
+   "by_threshold_usdt_median_daily_quote_volume": {
+    "250000": {
+     "eligible": 127,
+     "delisted_by_2026_10": 41
+    },
+    "1000000": {
+     "eligible": 84,
+     "delisted_by_2026_10": 22
+    },
+    "5000000": {
+     "eligible": 40,
+     "delisted_by_2026_10": 7
+    },
+    "25000000": {
+     "eligible": 13,
+     "delisted_by_2026_10": 1
+    }
+   }
+  },
+  "2022-01": {
+   "candidates_with_90d_history": 271,
+   "by_threshold_usdt_median_daily_quote_volume": {
+    "250000": {
+     "eligible": 271,
+     "delisted_by_2026_10": 120
+    },
+    "1000000": {
+     "eligible": 266,
+     "delisted_by_2026_10": 119
+    },
+    "5000000": {
+     "eligible": 186,
+     "delisted_by_2026_10": 65
+    },
+    "25000000": {
+     "eligible": 73,
+     "delisted_by_2026_10": 10
+    }
+   }
+  },
+  "2023-01": {
+   "candidates_with_90d_history": 317,
+   "by_threshold_usdt_median_daily_quote_volume": {
+    "250000": {
+     "eligible": 303,
+     "delisted_by_2026_10": 120
+    },
+    "1000000": {
+     "eligible": 170,
+     "delisted_by_2026_10": 49
+    },
+    "5000000": {
+     "eligible": 54,
+     "delisted_by_2026_10": 6
+    },
+    "25000000": {
+     "eligible": 13,
+     "delisted_by_2026_10": 1
+    }
+   }
+  },
+  "2024-01": {
+   "candidates_with_90d_history": 347,
+   "by_threshold_usdt_median_daily_quote_volume": {
+    "250000": {
+     "eligible": 345,
+     "delisted_by_2026_10": 130
+    },
+    "1000000": {
+     "eligible": 267,
+     "delisted_by_2026_10": 88
+    },
+    "5000000": {
+     "eligible": 112,
+     "delisted_by_2026_10": 22
+    },
+    "25000000": {
+     "eligible": 31,
+     "delisted_by_2026_10": 2
+    }
+   }
+  },
+  "2025-01": {
+   "candidates_with_90d_history": 372,
+   "by_threshold_usdt_median_daily_quote_volume": {
+    "250000": {
+     "eligible": 372,
+     "delisted_by_2026_10": 105
+    },
+    "1000000": {
+     "eligible": 352,
+     "delisted_by_2026_10": 94
+    },
+    "5000000": {
+     "eligible": 169,
+     "delisted_by_2026_10": 16
+    },
+    "25000000": {
+     "eligible": 62,
+     "delisted_by_2026_10": 2
+    }
+   }
+  }
+ }
+}

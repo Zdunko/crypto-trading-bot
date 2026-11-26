@@ -98,6 +98,10 @@ Synthetic-data tests prove rules and causality, **not profitability**. No backte
 
 - Owner accepted the rejection of Family A. Proposal: four-layer separation, tiered breaker (temporary reduction / defensive flatten with cooldown and staged re-entry / manual emergency shutdown), shadow-replay diagnostics, risk-matched benchmarks, feasibility gate, hard research budget. Family B judged not justified on current data. Nothing implemented; awaiting approval gate G0.
 
+## Phase 4C S1 data audit (`quant/docs/phase4c/s1_data_audit_report.md`)
+
+- Binance Vision archive keeps delisted symbols; a point-in-time universe of >= 30 liquid USDT assets is reconstructible from 2021-01 (84 at 1 M, 40 at 5 M median daily volume), with survivorship, identity, single-venue, no-order-book and CC BY-NC-SA licence caveats. Other free sources unsuitable. S2 GO (no data dependency); Family B and new market evaluation NO-GO until feasibility gate, identity table and full quality scan exist.
+
 ## GitHub CI results
 
 | Check | Commit `c6cc24a` | Commit `5c9582f` |

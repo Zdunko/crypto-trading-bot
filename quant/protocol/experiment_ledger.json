@@ -158,5 +158,18 @@
   "engine_runs_family_a": 31
  },
  "multiple_testing_rule": "N for DSR = 43 (40 before Family A + A1, A0, V0); any new family adds its configurations before its results are read",
- "all_data_before_2025_07_01_is_research_data": true
+ "all_data_before_2025_07_01_is_research_data": true,
+ "data_audits": [
+  {
+   "id": "S1",
+   "date": "2026-11-26",
+   "purpose": "free historical data sources, point-in-time universe feasibility",
+   "returns_evaluated": false,
+   "strategy_or_parameter_selection_influenced": false,
+   "market_observations_after_2025_06_read": false,
+   "counts_toward_N": false,
+   "report": "quant/docs/phase4c/s1_data_audit_report.md"
+  }
+ ],
+ "ledger_rule": "Every diagnostic or exploratory experiment is recorded; any experiment that influenced strategy or parameter selection counts toward N and the research budget."
 }
