@@ -186,15 +186,13 @@ def q5_defensive_timing_power(
                 f = rng.normal(0, 0.03, n)
                 up = f > 0
                 e = (rng.random(n) < np.where(up, base + kappa, base - kappa)).astype(float)
-                obs = float((e * f).mean())
                 eb = e[: nb * block].reshape(nb, block)
                 null = np.empty(draws)
                 for j in range(draws):
                     perm = eb[rng.permutation(nb)].ravel()
                     null[j] = (perm * f[: nb * block]).mean()
                 p = (1 + np.sum(null >= (e[: nb * block] * f[: nb * block]).mean())) / (draws + 1)
-                rej += p <= 0.05
-                del obs
+                rej += int(p <= 0.05)
             out[f"base{base}_kappa{kappa}"] = {"rejection_rate": rej / reps}
     return out
 
@@ -306,6 +304,68 @@ def q7_benchmark_comparisons(reps: int = 200, seed: int = 7, n: int = 1642) -> d
             "no_skill_paths_meeting_drawdown_and_beating_cash_mix": beats_mix / reps}  # fmt: skip
 
 
+def q6b_bounded_sleeve(paths: int = 30, seed: int = 11, years: float = 4.5) -> dict:
+    """Does a SMALL constant sleeve (a fraction of the wallet in an equal-weight crypto-like basket, rest cash) stay
+    clear of the frozen risk layer? Same synthetic factor model as q6 (note: its geometric drift is harsh at high
+    volatility). Reports invested-day share, share of paths shut down and the shutdown causes."""
+    import pandas as pd
+
+    from quantlab.execution import ExecConfig, Order, PriceData, Strategy, run
+    from quantlab.risk_v2 import RiskManagedStrategy, RiskStateMachine, RiskV2Config
+
+    class Hold(Strategy):
+        def __init__(self, pairs, total):
+            self.pairs, self.total = pairs, total
+
+        def on_candle(self, t, hist, view):
+            return [
+                Order(p, "buy", notional=self.total / len(self.pairs))
+                for p in self.pairs
+                if p not in view.positions
+            ]
+
+    n = int(years * DAYS)
+    idx = pd.date_range("2021-01-01", periods=n, freq="1D", tz="UTC")
+    pairs = [f"A{i}/USDT" for i in range(8)]
+    out: dict = {}
+    for frac in (1.0, 0.5, 0.25, 0.15):
+        for sd in (0.035, 0.05):
+            rng = np.random.default_rng(seed)
+            shares, shut = [], 0
+            causes: dict[str, int] = {}
+            for _ in range(paths):
+                f = rng.normal(0.0004, sd, n)
+                cands = {}
+                for p in pairs:
+                    r = math.sqrt(0.6) * f + math.sqrt(0.4) * rng.normal(0.0, sd, n)
+                    c = 100.0 * np.exp(np.cumsum(r))
+                    o = np.concatenate([[100.0], c[:-1]])
+                    cands[p] = pd.DataFrame(
+                        {
+                            "date": idx,
+                            "open": o,
+                            "high": np.maximum(o, c),
+                            "low": np.minimum(o, c),
+                            "close": c,
+                            "volume": 1e12,
+                        }
+                    )
+                machine = RiskStateMachine.new(RiskV2Config(), 1000.0)
+                res = run(
+                    RiskManagedStrategy(Hold(pairs, 1000.0 * frac), machine),
+                    PriceData(cands, idx),
+                    ExecConfig(wallet=1000.0),
+                )
+                shares.append(float((res.exposure > 0.01).mean()))
+                sh = next((r for r in machine.records if r["to"] == "SHUTDOWN"), None)
+                if sh is not None:
+                    shut += 1
+                    causes[sh["cause"]] = causes.get(sh["cause"], 0) + 1
+            out[f"fraction_{frac}_asset_daily_sd_{sd}"] = {"invested_day_share_mean": float(np.mean(shares)),
+                                                          "share_of_paths_shut_down": shut / paths, "shutdown_causes": causes}  # fmt: skip
+    return out
+
+
 def gate_power_under_exposure(doc: dict, shares: dict[str, tuple[float, float]]) -> dict:
     """Re-run the UNCHANGED gate's power arithmetic (A7) on a pre-registration with other invested-share ranges, e.g.
     those measured in q6 after the frozen risk layer. Arithmetic on declared ranges; nothing is evaluated."""
@@ -333,6 +393,7 @@ def run_all() -> dict:
         "q4_mde_validity": q4_mde_validity(),
         "q5_defensive_timing_power": q5_defensive_timing_power(),
         "q6_exposure_after_frozen_risk_layer": q6_exposure_after_risk_layer(),
+        "q6b_bounded_sleeve": q6b_bounded_sleeve(),
         "q7_benchmark_comparisons": q7_benchmark_comparisons(),
         "b2_draft_under_realistic_exposure": gate_power_under_exposure(
             json.loads(

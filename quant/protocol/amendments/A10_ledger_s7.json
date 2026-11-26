@@ -1,0 +1,19 @@
+{
+ "id": "A10",
+ "date": "2026-11-26",
+ "title": "Ledger: S7 audit entry (risk layer V3, gate methodology audit, family review, roadmap)",
+ "reason": "Owner requires all diagnostic work to be recorded.",
+ "owner_approval": "Owner message 2026-11-26 (S6 accepted, S7 authorised).",
+ "preserves": {
+  "frozen_manifest_v4.json": "1336106a0f8086333b2c5263501de8e2a4c1f62bee5ddc9d1f87ad93b69485d3"
+ },
+ "changes": [
+  {
+   "file": "protocol/experiment_ledger.json",
+   "from": "db6022acf8a2078bb43d250a368c607960449e407358ead7298abfd6615a0f10",
+   "to": "8446d854872507be3fe54f2782d02601db721e010d4060c754e1514195023bf3",
+   "summary": "adds data_audits entry S7; no count changes"
+  }
+ ],
+ "unchanged_parameters": "every rule, parameter, threshold, date and count"
+}

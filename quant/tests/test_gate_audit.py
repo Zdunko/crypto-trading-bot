@@ -89,3 +89,11 @@ def test_reduced_reruns_are_deterministic_and_agree_in_direction():
     q6 = ga.q6_exposure_after_risk_layer(paths=4, seed=9)
     assert all(0.0 <= v["invested_day_share_mean"] <= 1.0 for v in q6.values())
     assert ga.q6_exposure_after_risk_layer(paths=4, seed=9) == q6
+
+
+def test_q6b_small_sleeves_do_not_escape_the_frozen_layer_in_the_harsh_synthetic_world():
+    q = R["q6b_bounded_sleeve"]
+    assert all(v["share_of_paths_shut_down"] >= 0.25 for v in q.values())
+    flat = sum(v["shutdown_causes"].get("flat_cycles", 0) for v in q.values())
+    floor = sum(v["shutdown_causes"].get("tier3_floor", 0) for v in q.values())
+    assert flat > 10 * max(floor, 1) // 2  # the flat-cycle cap, not the 18 % floor, ends most runs

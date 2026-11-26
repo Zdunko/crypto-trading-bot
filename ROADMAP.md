@@ -68,3 +68,7 @@ No result may change a rule, parameter, threshold or period; "no strategy valida
 ## Out of scope (permanent unless the owner changes the rules)
 Live trading with real funds, leverage, futures, margin, shorting, martingale,
 unbounded DCA, paid APIs or infrastructure without approval.
+
+## Production readiness (documentation only, updated 2026-11-26)
+
+The detailed, staged roadmap (legally permitted data, exchange integration, execution reconciliation, independent out-of-sample validation, paper trading, monitoring, security and emergency shutdown, criteria for eventual limited-capital live deployment) is in `quant/docs/phase4c/s7_production_readiness_roadmap.md`. It starts nothing: every stage needs separate written owner approval, and the current dataset is research-only (see `quant/docs/phase4c/s4_licensing_alternatives.md`).

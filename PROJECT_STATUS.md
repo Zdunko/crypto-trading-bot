@@ -123,6 +123,10 @@ Synthetic-data tests prove rules and causality, **not profitability**. No backte
 
 - S5-infra frozen (`protocol/s5_freeze_record.json`). Built with synthetic fixtures only: machine-readable pre-registration template and deterministic fail-closed feasibility gate (`quantlab/feasibility.py`; rejects Family A as specified, passes a synthetic example, never authorises a run), benchmark registry and engine-based benchmarks (cash, BTC buy-and-hold, point-in-time equal weight, simple trend, volatility-targeted, exposure-/volatility-matched, cash-mix at T4, random-timing null) with comparison statistics and Holm; risk review of stale held positions (frozen S2 layer fails safe for new risk but is blind to the loss of a delisted holding; recorded L-STALEPOS); design-only proposal for the next family (B2: cross-sectional momentum on the point-in-time universe; nothing implemented, budget unchanged N 43, 0 families); amendment A9. Original S5 (market evaluation) still unapproved.
 
+## Phase 4C S7 risk integrity and research methodology review (`quant/docs/phase4c/s7_report.md`)
+
+- S6 accepted and frozen (`protocol/s6_acceptance_record.json`); budget unchanged (N 43/52, 0 families). **Risk layer V3** (`quantlab/risk_v3.py`, spec `protocol/risk_v3_spec.json`, 51 synthetic tests; `risk_v2.py` untouched): elapsed-time stale detection (48 h), hourly monitoring independent of the strategy clock, explicit DELISTED/SUSPENDED/UNTRADEABLE/MISSING handling, conservative valuation that cannot hide drawdown, zero/partial-recovery sensitivity, identical to V2 when nothing is impaired; not yet used by any evaluation. **Gate methodology audit** (synthetic simulations, stored): v1 gate overstates effective episodes under overlap/regimes, exposure-favouring statistic, cannot check declared exposure; v2 proposal not adopted. **Family review**: B2 and three candidates, recommendation NO-GO (minimum detectable relative IR ~1.2 on 4.5 years). Production-readiness roadmap (documentation). Amendment A10, natural-order amendment loading fix. Original S5 and B2 remain unapproved.
+
 ## GitHub CI results
 
 | Check | Commit `c6cc24a` | Commit `5c9582f` |
@@ -201,6 +205,7 @@ defaults to **OKX** for the technical bias check; this is **not** the owner's fi
 
 ## Change log
 
+- 2026-11-26 — S7: risk layer V3 (synthetic), gate methodology audit, family design review (NO-GO), production roadmap, amendment A10; no strategy, no market evaluation.
 - 2026-11-26 — S6: feasibility gate + benchmark infrastructure (synthetic), stale-position review, design-only next-family proposal, amendment A9; no market evaluation.
 - 2026-11-26 — S5-infra: S4 freeze, investigations, loader/guard/budget (synthetic), amendment A8; original S5 not executed.
 - 2026-11-26 — S4: point-in-time dataset builder and dataset (GO, research only), licensing alternatives (documentation), amendment A7.

@@ -235,7 +235,13 @@ AMENDMENTS_DIR = QUANT_DIR / "protocol" / "amendments"
 
 
 def load_amendments(amend_dir: Path = AMENDMENTS_DIR) -> list[dict]:
-    return [json.loads(p.read_text()) for p in sorted(amend_dir.glob("A*.json"))]
+    def number(
+        p: Path,
+    ) -> int:  # natural order: A10 follows A9 (a plain sort would put A10 before A1_...)
+        digits = "".join(ch for ch in p.name[1:].split("_")[0] if ch.isdigit())
+        return int(digits) if digits else 0
+
+    return [json.loads(p.read_text()) for p in sorted(amend_dir.glob("A*.json"), key=number)]
 
 
 def amended_expectations(
