@@ -80,7 +80,10 @@ def test_amendment_a1_is_a_complete_auditable_chain_and_originals_are_preserved(
         assert ch["from"] == originals[ch["file"]]
         assert final[ch["file"]] == P._norm_hash(P.QUANT_DIR / ch["file"])
     changed = {f for f, h in originals.items() if P._norm_hash(P.QUANT_DIR / f) != h}
-    listed = {c["file"] for am in P.load_amendments() for c in am["changes"]}
+    scoped = [
+        am for am in P.load_amendments() if set(am.get("manifests", ["v4", "v5"])) & {"v4", "v5"}
+    ]
+    listed = {c["file"] for am in scoped for c in am["changes"]}
     assert changed == listed  # no file changed without being listed in an amendment
     assert P.verify_all() == []
 

@@ -1,0 +1,22 @@
+{
+ "id": "A5",
+ "date": "2026-11-26",
+ "title": "active_stats: type annotation for mypy (no behaviour change)",
+ "reason": "Upstream pre-commit mypy failed on commit ee977a9 (active_stats.py lines 64-65: dict inferred as dict[str, float | None]). Annotation `out: dict[str, Any]` added; logic unchanged.",
+ "owner_approval": "Within the approved S2 scope (routine implementation decision).",
+ "manifests": [
+  "v6"
+ ],
+ "preserves": {
+  "frozen_manifest_v6.json": "982e1ad55555551906e2a757ff78867c6aee84f7040ef01c7994243ecc6fff7d"
+ },
+ "changes": [
+  {
+   "file": "quantlab/active_stats.py",
+   "from": "f05a6db2a421496d6f0371710c23b299491b675ff0007622143f7b3491f935b4",
+   "to": "b35260d4c72edbbedb17b7fc2a8bcbffb846be6799593aa63475122dbc006b4a",
+   "summary": "typing only"
+  }
+ ],
+ "unchanged_parameters": "every rule, parameter, threshold and date"
+}

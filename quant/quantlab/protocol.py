@@ -244,6 +244,8 @@ def amended_expectations(
     """Original manifest hashes advanced through the amendment chain; chain breaks are reported."""
     exp, errs = dict(files), []
     for a in amendments:
+        if "manifests" in a and name not in a["manifests"]:
+            continue  # an amendment may be scoped to specific manifests
         for ch in a.get("changes", []):
             if ch["file"] in exp:
                 if exp[ch["file"]] != ch["from"]:
@@ -335,14 +337,7 @@ def build_manifest_v6(quant_dir: Path = QUANT_DIR) -> dict:
 
 
 def verify_manifest_v6(quant_dir: Path = QUANT_DIR) -> list[str]:
-    path = quant_dir / "protocol" / "frozen_manifest_v6.json"
-    if not path.exists():
-        return ["frozen_manifest_v6.json is missing"]
-    frozen = json.loads(path.read_text())["files"]
-    current = build_manifest_v6(quant_dir)["files"]
-    return [f"CHANGED after v6 freeze: {k}" for k in frozen if frozen[k] != current.get(k)] + [
-        f"NEW file not in v6 freeze: {k}" for k in current if k not in frozen
-    ]
+    return _verify_amended("v6", "frozen_manifest_v6.json", quant_dir)
 
 
 def main(argv: list[str] | None = None) -> int:

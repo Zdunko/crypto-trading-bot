@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import math
+from typing import Any
 
 import numpy as np
 import pandas as pd
@@ -50,7 +51,7 @@ def active_stats(
     invested = (ex > 1e-9) | (prev_ex > 1e-9) | (np.abs(ret) > 1e-12)
     n_cal = len(eq)
     window = int(np.flatnonzero(invested).max()) + 1 if invested.any() else 0
-    out = {
+    out: dict[str, Any] = {
         "calendar_days": n_cal,
         "trading_window_days": window,
         "invested_days": int(invested.sum()),
