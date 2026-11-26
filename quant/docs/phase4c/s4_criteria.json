@@ -1,0 +1,156 @@
+{
+ "id": "S4-criteria-v1",
+ "purpose": "Pre-registered, measurable acceptance criteria for S4 (point-in-time dataset builder). Committed BEFORE any S4 implementation or download. Thresholds are engineering/feasibility thresholds, not tuned to results.",
+ "scope": {
+  "dev_window": "2017-08 .. 2025-06 (months), cutoff 2025-06-30 inclusive",
+  "quote": "USDT spot",
+  "intervals": [
+   "1d",
+   "1h"
+  ],
+  "forbidden": "any request, key, size, timestamp or byte of a month >= 2025-07 (includes listings, symbol metadata derived from later months, and the S1 coverage table, which carries post-cutoff last_month values and is NOT an input of the builder)",
+  "no_performance": "no returns, PnL, backtests, strategy signals or parameter selection of any kind"
+ },
+ "definitions": {
+  "eligibility": "asset-epoch eligible at date T if, using only COMPLETED daily candles (open+1d <= T) of the epoch, >= 60 of the 90 days before T exist and the median quote volume >= threshold; thresholds {1e6, 5e6}",
+  "epoch_break": "a new identity epoch starts at the first candle after a coverage gap of >= 2 whole months, or at a daily close-to-close ratio >= 10 or <= 0.1; detected from candles up to and including that candle only; eligibility history never crosses an epoch boundary",
+  "classification": "explicit table dataset/asset_classification.json is the only authority; name patterns are alarms only; a pattern-suspect base missing from the table is reported as classification_unreviewed and blocks the build",
+  "reason_codes": [
+   "checksum_mismatch",
+   "malformed_row",
+   "bad_timestamp_unit",
+   "nonpositive_price",
+   "negative_volume",
+   "ohlc_inconsistent",
+   "duplicate_timestamp",
+   "out_of_order",
+   "repeated_block",
+   "misaligned_timestamp",
+   "outside_month",
+   "empty",
+   "fetch_failed",
+   "absent_expected",
+   "extra_rows"
+  ],
+  "rate_limit": "configured 30 requests/s (global token bucket); peak measured per 1-second window"
+ },
+ "gates": [
+  {
+   "id": "B1",
+   "name": "holdout boundary",
+   "rule": "request log contains 0 URLs/keys with month >= 2025-07 and 0 response keys >= 2025-07",
+   "threshold": 0
+  },
+  {
+   "id": "B2",
+   "name": "no post-cutoff influence on membership",
+   "rule": "adding/removing symbols or files that have only months >= 2025-07 changes no membership (synthetic + real-data perturbation)"
+  },
+  {
+   "id": "F1",
+   "name": "integrity",
+   "rule": "every downloaded file sha256 == published .CHECKSUM, else quarantined with checksum_mismatch after one refetch; unresolved fetch failures = 0",
+   "threshold": 0
+  },
+  {
+   "id": "F2",
+   "name": "resumability",
+   "rule": "a build interrupted at an arbitrary point and resumed yields the identical dataset hash as an uninterrupted build (synthetic transport with fault injection, plus one real interrupted run)"
+  },
+  {
+   "id": "F3",
+   "name": "rate limiting",
+   "rule": "measured peak request rate over any 1-second window <= 1.25 x configured limit",
+   "threshold": 1.25
+  },
+  {
+   "id": "Q1",
+   "name": "complete hourly scan",
+   "rule": "every (candidate symbol, dev month) that has a daily file was requested for 1h and classified present/absent; unscanned = 0",
+   "threshold": 0
+  },
+  {
+   "id": "Q2",
+   "name": "explicit reasons",
+   "rule": "every quarantined or absent-expected file carries a reason code from the closed set; unreasoned = 0",
+   "threshold": 0
+  },
+  {
+   "id": "Q3",
+   "name": "detector completeness",
+   "rule": "each reason code produced by a synthetic file in tests"
+  },
+  {
+   "id": "I1",
+   "name": "identity epochs causal",
+   "rule": "epoch tables computed on data truncated at each of 8 seeded cutoffs equal the full-data table restricted to <= cutoff",
+   "threshold": 8
+  },
+  {
+   "id": "I2",
+   "name": "no future-dependent exclusion",
+   "rule": "membership at every seeded date T computed on data truncated at T equals membership from the full data (prefix invariance, real data, 12 seeded dates)",
+   "threshold": 12
+  },
+  {
+   "id": "I3",
+   "name": "classification",
+   "rule": "100 % of candidate bases resolved by the explicit table; classification_unreviewed = 0",
+   "threshold": 0
+  },
+  {
+   "id": "U1",
+   "name": "causal liquidity",
+   "rule": "for 20 seeded dates, replacing every candle with open >= T by adversarial values (volume x1000, volume 0, deleted, duplicated files) leaves membership at T identical",
+   "threshold": 20
+  },
+  {
+   "id": "U2",
+   "name": "survivorship preserved",
+   "rule": "assets whose last candle is before 2025-06-01 appear as members at earlier dates (count > 0) and are not removed from past membership",
+   "threshold": 0
+  },
+  {
+   "id": "U3",
+   "name": "depth",
+   "rule": ">= 30 eligible epochs at 1 M USDT at every month start 2021-01..2025-06 using epoch + causal rules (no global exclusions)",
+   "threshold": 30
+  },
+  {
+   "id": "R1",
+   "name": "reproducibility",
+   "rule": "two independent builds from the same pinned raw files, one of them in a separate process, give identical dataset hash; archive stability: >= 99.9 % of S3-pinned daily files have the identical sha256 when re-downloaded",
+   "threshold": 0.999
+  },
+  {
+   "id": "M1",
+   "name": "manifest completeness",
+   "rule": "manifest lists every file (sha256, size, status/reason), code hash, criteria hash, classification hash and the dataset hash; recomputing the hash from the manifest reproduces it"
+  }
+ ],
+ "report_only": [
+  {
+   "id": "X1",
+   "name": "cross-interval consistency",
+   "rule": "share of symbol-months where daily volume equals the sum of hourly volume (relative tolerance 1e-6) and first/last candle dates agree"
+  },
+  {
+   "id": "S2",
+   "name": "survivorship per cohort"
+  },
+  {
+   "id": "D1",
+   "name": "coverage",
+   "rule": "symbols, epochs, files, quarantine counts by reason, identity events by type"
+  },
+  {
+   "id": "L1",
+   "name": "licensing alternatives",
+   "rule": "documentation only; verified permissions separated from unresolved legal questions"
+  }
+ ],
+ "decision": {
+  "GO": "all gates pass",
+  "NO_GO": "any gate fails; failure documented, thresholds not changed after the fact"
+ }
+}
