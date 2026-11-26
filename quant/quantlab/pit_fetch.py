@@ -9,6 +9,7 @@ No network access happens at import time and the transport is injectable for tes
 from __future__ import annotations
 
 import hashlib
+import http.client
 import json
 import re
 import threading
@@ -52,8 +53,8 @@ class HttpTransport:
                 return r.status, r.read()
         except urllib.error.HTTPError as e:
             return e.code, b""
-        except (urllib.error.URLError, TimeoutError, OSError):
-            return 0, b""
+        except (urllib.error.URLError, TimeoutError, OSError, http.client.HTTPException):
+            return 0, b""  # incl. IncompleteRead / dropped connections: retried by Client.get
 
 
 class RateLimiter:

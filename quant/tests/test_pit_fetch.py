@@ -172,3 +172,16 @@ def test_non_ascii_symbols_are_percent_encoded(monkeypatch):
         f"{pf.BASE}?prefix={pf.KLINES}币安人生USDT/1d/币安人生USDT-1d-2024-"
     ) == (200, b"ok")
     assert seen[0].isascii() and "%E5%B8%81" in seen[0] and "?prefix=" in seen[0]
+
+
+def test_dropped_connections_are_retryable_not_fatal(monkeypatch):
+    import http.client
+
+    def boom(u, timeout):
+        raise http.client.IncompleteRead(b"x" * 10, 5)
+
+    monkeypatch.setattr(pf.urllib.request, "urlopen", boom)
+    assert pf.HttpTransport().get(f"{pf.BASE}/{pf.KLINES}X/1d/X-1d-2021-01.zip") == (0, b"")
+    c = pf.Client(pf.HttpTransport(), pf.RateLimiter(1e6), retries=2, backoff=0)
+    with pytest.raises(pf.FetchError):  # fail closed after the retry budget, never a crash
+        c.get(f"{pf.BASE}/{pf.KLINES}X/1d/X-1d-2021-01.zip")
