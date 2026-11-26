@@ -193,6 +193,17 @@
    "note": "development-window candles read for data quality, epochs and liquidity eligibility only; the archive's root listing returned the NAMES of USDT symbols listed after 2025-06 (names only: no keys, dates, sizes or bytes); they have no development-window file and never entered any table",
    "criteria_preregistered": "quant/docs/phase4c/s4_criteria.json (commit 58ba372)",
    "report": "quant/docs/phase4c/s4_dataset_builder_report.md"
+  },
+  {
+   "id": "S5",
+   "date": "2026-11-26",
+   "purpose": "S5-infra preparatory investigations on the development window: daily/hourly volume discrepancy (X1) and identity-epoch review; loader/guard/budget infrastructure (synthetic)",
+   "returns_evaluated": false,
+   "strategy_or_parameter_selection_influenced": false,
+   "market_observations_after_2025_06_read": false,
+   "counts_toward_N": false,
+   "criteria_preregistered": "quant/docs/phase4c/s5_criteria.json (commit 03af3d9)",
+   "report": "quant/docs/phase4c/s5_report.md"
   }
  ],
  "ledger_rule": "Every diagnostic or exploratory experiment is recorded; any experiment that influenced strategy or parameter selection counts toward N and the research budget."

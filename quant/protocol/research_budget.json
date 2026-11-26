@@ -1,0 +1,19 @@
+{
+ "id": "research-budget-v1",
+ "source": "risk_and_evaluation_protocol_v2_proposal.md section 8 (approved with Phase 4C)",
+ "caps": {
+  "max_further_families": 3,
+  "max_configurations_per_family": 3,
+  "max_total_n": 52,
+  "max_market_runs_per_family": 1,
+  "stop_after_consecutive_rejected_under_v2": 2
+ },
+ "state": {
+  "total_n": 43,
+  "note_n": "N=43 as recorded in experiment_ledger.json (multiple_testing_rule); Family A and everything before it are inside N",
+  "further_families": [],
+  "consecutive_rejected_under_v2": 0,
+  "note_rejected": "Family A was evaluated before protocol V2 and does not count toward the V2 stop rule"
+ },
+ "family_record_format": {"id": "string", "configurations": "int", "market_runs": "int", "status": "preregistered | evaluated_accepted | evaluated_rejected"}
+}

@@ -1,0 +1,19 @@
+{
+ "id": "A8",
+ "date": "2026-11-26",
+ "title": "Ledger: S5-infra investigations recorded",
+ "reason": "Owner requires all diagnostic work to be recorded.",
+ "owner_approval": "Owner message 2026-11-26 (S4 accepted, S5-infra authorised).",
+ "preserves": {
+  "frozen_manifest_v4.json": "1336106a0f8086333b2c5263501de8e2a4c1f62bee5ddc9d1f87ad93b69485d3"
+ },
+ "changes": [
+  {
+   "file": "protocol/experiment_ledger.json",
+   "from": "699865048949606cd69225ed3db247fd4922186a62cc7ea5d5b4f53a6ba0c187",
+   "to": "90385b107b221e4639b0e5efe18a923f17ac5294b28064a5b41a13db15298935",
+   "summary": "adds data_audits entry S5; no count changes"
+  }
+ ],
+ "unchanged_parameters": "every rule, parameter, threshold, date and count"
+}

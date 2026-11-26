@@ -115,6 +115,10 @@ Synthetic-data tests prove rules and causality, **not profitability**. No backte
 
 - Pre-registered criteria (`s4_criteria.json`, commit `58ba372`): all 16 gates pass -> GO for a research-only dataset. Development window 2017-08..2025-06 only; 593 USDT symbols, 43 036 files (daily and hourly, complete scan), 11 quarantined with reason codes, 636 identity epochs, explicit asset classification (no regex), causal liquidity eligibility; causality verified on the real data (prefix invariance and adversarial future perturbation), deterministic dataset hash `462288b1...` reproduced by an independent build, archive stable against the S3 pins (21 518/21 518). Licensing alternatives investigated as documentation only: nothing but Binance Vision is verified, and it is research-only. Ledger amendment A7. No market evaluation; Family A rejected; Family B not approved; risk parameters and T1-T10 unchanged.
 
+## Phase 4C S5-infra (`quant/docs/phase4c/s5_report.md`)
+
+- The original S5 (first new family evaluation) needs a market evaluation and is NOT executed. Done: S4 dataset frozen (`protocol/s4_freeze_record.json`), limitations register (macOS cancelled jobs = unresolved infrastructure limitation, not passed tests), X1 investigation (eligibility unaffected, execution effect unbounded), identity review (conservative handling costs 0.07 % of decisions), holdout-isolation statement (with exposures), production-data licensing roadmap, causal fail-closed dataset loader + universe guard + research-budget enforcement (synthetic validation, 540 tests), ledger amendment A8. Still missing from the original plan: feasibility-gate tool and benchmark add-ons.
+
 ## GitHub CI results
 
 | Check | Commit `c6cc24a` | Commit `5c9582f` |
@@ -193,6 +197,7 @@ defaults to **OKX** for the technical bias check; this is **not** the owner's fi
 
 ## Change log
 
+- 2026-11-26 — S5-infra: S4 freeze, investigations, loader/guard/budget (synthetic), amendment A8; original S5 not executed.
 - 2026-11-26 — S4: point-in-time dataset builder and dataset (GO, research only), licensing alternatives (documentation), amendment A7.
 - 2026-11-26 — S2 frozen (freeze record); S3 data feasibility gate: audit scripts, `quantlab/data_audit.py` (+15 tests), licensing findings, integration plan (design), ledger amendment A6. CONDITIONAL GO for data; no market evaluation.
 - 2026-11-25 — Family A evaluated (one run): not credible, fails T1/T3/T4/T7; liquidity amendment A1, ledger amendment A2.

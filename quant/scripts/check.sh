@@ -10,6 +10,8 @@ echo "== ruff format";  ruff format --check quant
 echo "== pytest";       (cd quant && python -m pytest -q)
 echo "== safety policy"
 (cd quant && python -m quantlab.safety configs/base.json configs/backtest.json)
+echo "== research budget"
+(cd quant && python -m quantlab.budget check)
 echo "== frozen protocol"
 (cd quant && python -m quantlab.protocol verify5)
 echo "== strategy policy"
