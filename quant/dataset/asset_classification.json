@@ -1,0 +1,2388 @@
+{
+ "authority": "this table; name patterns are alarms only",
+ "evidence_level": "curated-unverified (ticker semantics; not checked against exchange announcements)",
+ "id": "S4-asset-classification-v1",
+ "listed_but_not_in_dev_window": [],
+ "scope": "USDT symbols with at least one development-window file (months < 2025-07)",
+ "symbols": {
+  "1000CATUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "1000CHEEMSUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "1000SATSUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "1INCHDOWNUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "1INCHUPUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "1INCHUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "1MBABYDOGEUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "AAVEDOWNUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "AAVEUPUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "AAVEUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ACAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ACEUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ACHUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ACMUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ACTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ACXUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ADADOWNUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "ADAUPUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "ADAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ADXUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "AERGOUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "AEURUSDT": {
+   "class": "stablecoin",
+   "valid_from": "inception"
+  },
+  "AEVOUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "AGIXUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "AGLDUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "AIONUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "AIUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "AIXBTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "AKROUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ALCXUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ALGOUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ALICEUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ALPACAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ALPHAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ALPINEUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ALTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "AMBUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "AMPUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ANCUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ANIMEUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ANKRUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ANTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ANYUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "APEUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "API3USDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "APTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ARBUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ARDRUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ARKMUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ARKUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ARPAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ARUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ASRUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ASTRUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ASTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ATAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ATMUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ATOMUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "AUCTIONUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "AUDIOUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "AUDUSDT": {
+   "class": "fiat",
+   "note": "fiat quote currency traded as a pair; missed by the old S1 list",
+   "valid_from": "inception"
+  },
+  "AUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "AUTOUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "AVAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "AVAXUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "AWEUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "AXLUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "AXSUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BABYUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BADGERUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BAKEUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BALUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BANANAS31USDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BANANAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BANDUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BARUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BATUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BBUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BCCUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BCHABCUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BCHDOWNUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "BCHSVUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BCHUPUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "BCHUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BEAMUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BEAMXUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BEARUSDT": {
+   "class": "leveraged_token",
+   "note": "short name that the old regex (length > 4) missed; ticker semantics: bitcoin leveraged token",
+   "valid_from": "inception"
+  },
+  "BELUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BERAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BETAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BETHUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BICOUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BIFIUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BIGTIMEUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BIOUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BKRWUSDT": {
+   "class": "stablecoin",
+   "note": "KRW-pegged stablecoin; missed by the old S1 list",
+   "valid_from": "inception"
+  },
+  "BLURUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BLZUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BMTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BNBBEARUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "BNBBULLUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "BNBDOWNUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "BNBUPUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "BNBUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BNSOLUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BNTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BNXUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BOMEUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BONDUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BONKUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BROCCOLI714USDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BSWUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BTCDOWNUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "BTCSTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BTCUPUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "BTCUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BTGUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BTSUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BTTCUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BTTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BULLUSDT": {
+   "class": "leveraged_token",
+   "note": "short name that the old regex (length > 4) missed; ticker semantics: bitcoin leveraged token",
+   "valid_from": "inception"
+  },
+  "BURGERUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "BUSDUSDT": {
+   "class": "stablecoin",
+   "valid_from": "inception"
+  },
+  "BZRXUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "C98USDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "CAKEUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "CATIUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "CELOUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "CELRUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "CETUSUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "CFXUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "CGPTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "CHESSUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "CHRUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "CHZUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "CITYUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "CKBUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "CLVUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "COCOSUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "COMBOUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "COMPUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "COOKIEUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "COSUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "COTIUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "COWUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "CREAMUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "CRVUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "CTKUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "CTSIUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "CTXCUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "CVCUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "CVPUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "CVXUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "CYBERUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "DAIUSDT": {
+   "class": "stablecoin",
+   "valid_from": "inception"
+  },
+  "DARUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "DASHUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "DATAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "DCRUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "DEGOUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "DENTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "DEXEUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "DFUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "DGBUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "DIAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "DNTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "DOCKUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "DODOUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "DOGEUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "DOGSUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "DOTDOWNUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "DOTUPUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "DOTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "DREPUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "DUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "DUSKUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "DYDXUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "DYMUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "EDUUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "EGLDUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "EIGENUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ELFUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ENAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ENJUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ENSUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "EOSBEARUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "EOSBULLUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "EOSDOWNUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "EOSUPUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "EOSUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "EPICUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "EPSUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "EPXUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ERDUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ERNUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ETCUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ETHBEARUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "ETHBULLUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "ETHDOWNUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "ETHFIUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ETHUPUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "ETHUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "EURIUSDT": {
+   "class": "stablecoin",
+   "valid_from": "inception"
+  },
+  "EURUSDT": {
+   "class": "fiat",
+   "valid_from": "inception"
+  },
+  "FARMUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "FDUSDUSDT": {
+   "class": "stablecoin",
+   "valid_from": "inception"
+  },
+  "FETUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "FIDAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "FILDOWNUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "FILUPUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "FILUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "FIOUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "FIROUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "FISUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "FLMUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "FLOKIUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "FLOWUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "FLUXUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "FORMUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "FORTHUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "FORUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "FRONTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "FTMUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "FTTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "FUNUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "FXSUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "GALAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "GALUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "GASUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "GBPUSDT": {
+   "class": "fiat",
+   "valid_from": "inception"
+  },
+  "GFTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "GHSTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "GLMRUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "GLMUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "GMTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "GMXUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "GNOUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "GNSUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "GPSUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "GRTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "GTCUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "GTOUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "GUNUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "GUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "GXSUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "HAEDALUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "HARDUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "HBARUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "HCUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "HEIUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "HFTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "HIFIUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "HIGHUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "HIVEUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "HMSTRUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "HNTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "HOMEUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "HOOKUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "HOTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "HUMAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "HYPERUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ICPUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ICXUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "IDEXUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "IDUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ILVUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "IMXUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "INITUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "INJUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "IOSTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "IOTAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "IOTXUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "IOUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "IQUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "IRISUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "JASMYUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "JOEUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "JSTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "JTOUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "JUPUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "JUVUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "KAIAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "KAITOUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "KAVAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "KDAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "KEEPUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "KERNELUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "KEYUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "KLAYUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "KMDUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "KMNOUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "KNCUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "KP3RUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "KSMUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "LAYERUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "LAZIOUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "LDOUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "LENDUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "LEVERUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "LINAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "LINKDOWNUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "LINKUPUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "LINKUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "LISTAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "LITUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "LOKAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "LOOMUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "LPTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "LQTYUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "LRCUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "LSKUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "LTCDOWNUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "LTCUPUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "LTCUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "LTOUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "LUMIAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "LUNAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "LUNCUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "MAGICUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "MANAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "MANTAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "MASKUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "MATICUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "MAVUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "MBLUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "MBOXUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "MCOUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "MCUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "MDTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "MDXUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "MEMEUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "METISUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "MEUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "MFTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "MINAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "MIRUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "MITHUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "MKRUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "MLNUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "MOBUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "MOVEUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "MOVRUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "MTLUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "MUBARAKUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "MULTIUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "NANOUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "NBSUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "NBTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "NEARUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "NEBLUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "NEIROUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "NEOUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "NEWTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "NEXOUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "NFPUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "NILUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "NKNUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "NMRUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "NOTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "NPXSUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "NTRNUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "NULSUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "NUUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "NXPCUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "OAXUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "OCEANUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "OGNUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "OGUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "OMGUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "OMNIUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "OMUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ONDOUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ONEUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ONGUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ONTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "OOKIUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "OPUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ORCAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ORDIUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ORNUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "OSMOUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "OXTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "PARTIUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "PAXGUSDT": {
+   "class": "commodity_token",
+   "valid_from": "inception"
+  },
+  "PAXUSDT": {
+   "class": "stablecoin",
+   "valid_from": "inception"
+  },
+  "PDAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "PENDLEUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "PENGUUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "PEOPLEUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "PEPEUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "PERLUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "PERPUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "PHAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "PHBUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "PIVXUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "PIXELUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "PLAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "PNTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "PNUTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "POLSUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "POLUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "POLYUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "POLYXUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "PONDUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "PORTALUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "PORTOUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "POWRUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "PROMUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "PROSUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "PSGUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "PUNDIXUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "PYRUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "PYTHUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "QIUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "QKCUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "QNTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "QTUMUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "QUICKUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "RADUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "RAMPUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "RAREUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "RAYUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "RDNTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "REDUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "REEFUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "REIUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "RENDERUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "RENUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "REPUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "REQUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "RESOLVUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "REZUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "RGTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "RIFUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "RLCUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "RNDRUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "RONINUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ROSEUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "RPLUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "RSRUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "RUNEUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "RVNUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "SAGAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "SAHARAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "SANDUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "SANTOSUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "SCRTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "SCRUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "SCUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "SEIUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "SFPUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "SHELLUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "SHIBUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "SIGNUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "SKLUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "SLFUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "SLPUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "SNTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "SNXUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "SOLUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "SOLVUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "SOPHUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "SPELLUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "SPKUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "SRMUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "SSVUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "STEEMUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "STGUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "STMXUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "STORJUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "STORMUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "STOUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "STPTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "STRATUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "STRAXUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "STRKUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "STXUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "SUIUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "SUNUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "SUPERUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "SUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "SUSDUSDT": {
+   "class": "stablecoin",
+   "valid_from": "inception"
+  },
+  "SUSHIDOWNUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "SUSHIUPUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "SUSHIUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "SXPDOWNUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "SXPUPUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "SXPUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "SXTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "SYNUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "SYRUPUSDT": {
+   "class": "asset",
+   "note": "name matches the leveraged-token pattern but is a normal asset (false positive of the old regex)",
+   "valid_from": "inception"
+  },
+  "SYSUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "TAOUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "TCTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "TFUELUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "THETAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "THEUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "TIAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "TKOUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "TLMUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "TNSRUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "TOMOUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "TONUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "TORNUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "TRBUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "TRIBEUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "TROYUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "TRUMPUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "TRUUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "TRXDOWNUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "TRXUPUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "TRXUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "TSTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "TURBOUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "TUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "TUSDUSDT": {
+   "class": "stablecoin",
+   "valid_from": "inception"
+  },
+  "TUTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "TVKUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "TWTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "UFTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "UMAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "UNFIUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "UNIDOWNUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "UNIUPUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "UNIUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "USD1USDT": {
+   "class": "stablecoin",
+   "valid_from": "inception"
+  },
+  "USDCUSDT": {
+   "class": "stablecoin",
+   "valid_from": "inception"
+  },
+  "USDPUSDT": {
+   "class": "stablecoin",
+   "valid_from": "inception"
+  },
+  "USDSBUSDT": {
+   "class": "stablecoin",
+   "valid_from": "inception"
+  },
+  "USDSUSDT": {
+   "class": "stablecoin",
+   "valid_from": "inception"
+  },
+  "USTCUSDT": {
+   "class": "stablecoin",
+   "note": "post-collapse ticker of the same instrument family; treated as stablecoin like UST",
+   "valid_from": "inception"
+  },
+  "USTUSDT": {
+   "class": "stablecoin",
+   "note": "stablecoin until its 2022 depeg; class is the instrument type, applied from inception",
+   "valid_from": "inception"
+  },
+  "USUALUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "UTKUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "VANAUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "VANRYUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "VELODROMEUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "VENUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "VETUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "VGXUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "VIBUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "VICUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "VIDTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "VIRTUALUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "VITEUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "VOXELUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "VTHOUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "WANUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "WAVESUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "WAXPUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "WBETHUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "WBTCUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "WCTUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "WIFUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "WINGUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "WINUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "WLDUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "WNXMUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "WOOUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "WRXUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "WTCUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "WUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "XAIUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "XECUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "XEMUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "XLMDOWNUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "XLMUPUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "XLMUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "XMRUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "XNOUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "XRPBEARUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "XRPBULLUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "XRPDOWNUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "XRPUPUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "XRPUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "XTZDOWNUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "XTZUPUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "XTZUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "XUSDUSDT": {
+   "class": "stablecoin",
+   "valid_from": "inception"
+  },
+  "XVGUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "XVSUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "XZCUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "YFIDOWNUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "YFIIUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "YFIUPUSDT": {
+   "class": "leveraged_token",
+   "valid_from": "inception"
+  },
+  "YFIUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "YGGUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ZECUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ZENUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ZILUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ZKUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ZROUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  },
+  "ZRXUSDT": {
+   "class": "asset",
+   "valid_from": "inception"
+  }
+ }
+}
