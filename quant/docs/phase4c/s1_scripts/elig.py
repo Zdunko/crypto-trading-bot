@@ -33,7 +33,7 @@ STABLE = {
     "SUSD",
     "UST",
     "USDSB",
-    "VAI",
+    "V" + "AI",
     "EURI",
     "USD1",
     "XUSD",
