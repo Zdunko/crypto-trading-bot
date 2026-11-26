@@ -117,8 +117,16 @@ def check_keys(keys: list[str]) -> None:
 class Client:
     """Single choke point for every request: guard, rate limit, retry, request log."""
 
-    def __init__(self, transport: Transport, limiter: RateLimiter, retries: int = 4, backoff=1.0):
+    def __init__(
+        self,
+        transport: Transport,
+        limiter: RateLimiter,
+        retries: int = 4,
+        backoff=1.0,
+        log_path: Path | None = None,
+    ):
         self.t, self.limiter, self.retries, self.backoff = transport, limiter, retries, backoff
+        self.log_path = log_path  # append-only request log, flushed per request (survives crashes)
         self.requests: list[str] = []
         self._lock = threading.Lock()
 
@@ -128,6 +136,9 @@ class Client:
             self.limiter.acquire()
             with self._lock:
                 self.requests.append(url)
+                if self.log_path is not None:
+                    with self.log_path.open("a", encoding="utf-8") as f:
+                        f.write(f"{time.time():.3f}\t{url}\n")
             status, body = self.t.get(url)
             if status in (200, 404):
                 return status, body

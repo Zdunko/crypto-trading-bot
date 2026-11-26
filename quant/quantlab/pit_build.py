@@ -33,8 +33,8 @@ DEFAULT_RATE = 30.0
 THREADS = 48
 
 
-def make_client(rate: float) -> Client:
-    return Client(HttpTransport(), RateLimiter(rate))
+def make_client(rate: float, log_path: Path | None = None) -> Client:
+    return Client(HttpTransport(), RateLimiter(rate), log_path=log_path)
 
 
 def discover(raw: Path, client: Client) -> dict[str, list[str]]:
@@ -91,7 +91,8 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("out", type=Path, nargs="?")
     ap.add_argument("--rate", type=float, default=DEFAULT_RATE)
     a = ap.parse_args(argv)
-    client = make_client(a.rate)
+    a.raw.mkdir(parents=True, exist_ok=True)
+    client = make_client(a.rate, a.raw / "requests_append.log")
     if a.cmd in ("discover", "fetch"):
         listing = discover(a.raw, client)
         (a.raw / "listing.json").write_text(json.dumps(listing, sort_keys=True), encoding="utf-8")
@@ -100,10 +101,8 @@ def main(argv: list[str] | None = None) -> int:
             rep = fetch_all(a.raw, client, listing)
             rep["requests_log_sample"] = client.requests[:3]
             (a.raw / "fetch_report.json").write_text(json.dumps(rep, indent=1), encoding="utf-8")
-            (a.raw / "requests.log").write_text("\n".join(client.requests), encoding="utf-8")
             print(json.dumps({k: v for k, v in rep.items() if k != "failures"}), flush=True)
             return 1 if rep["failures"] else 0
-        (a.raw / "requests_discover.log").write_text("\n".join(client.requests), encoding="utf-8")
         return 0
     from quantlab import pit_run  # build / validate (second module, imported lazily)
 

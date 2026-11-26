@@ -308,15 +308,31 @@ def validate(raw: Path, out: Path) -> dict:
     # B1: request logs
     bad_urls, n_urls = [], 0
     for f in sorted(raw.glob("requests*.log")):
-        for u in f.read_text(encoding="utf-8").splitlines():
+        for line in f.read_text(encoding="utf-8").splitlines():
+            u = line.split("\t")[-1]
             n_urls += 1
             if any(f"{y}-{m}" >= DEV_END for y, m in re.findall(r"-(\d{4})-(\d{2})(?!\d)", u)):
                 bad_urls.append(u)
     res["B1"] = {"requests_audited": n_urls, "holdout_urls": bad_urls[:5], "count": len(bad_urls)}
-    # F3
+    # F3: peak requests in any 1-second window, recomputed from the append-only log of all runs
+    stamps = sorted(
+        float(ln.split("\t")[0])
+        for f in raw.glob("requests*.log")
+        for ln in f.read_text(encoding="utf-8").splitlines()
+        if "\t" in ln
+    )
+    peak, j = 0, 0
+    for i, t in enumerate(stamps):
+        while stamps[j] <= t - 1.0 + 1e-9:
+            j += 1
+        peak = max(peak, i - j + 1)
     fr = json.loads((raw / "fetch_report.json").read_text(encoding="utf-8"))
     res["F3"] = {
-        k: fr[k] for k in ("requests", "configured_rate", "peak_requests_per_second", "jobs")
+        "requests_logged": len(stamps),
+        "configured_rate": fr["configured_rate"],
+        "peak_in_any_1s_window": peak,
+        "final_run_peak": fr["peak_requests_per_second"],
+        "jobs": fr["jobs"],
     }
     res["F1_failures"] = len(fr["failures"])
     # R1 archive stability against the S3 pins

@@ -348,3 +348,49 @@ def test_build_is_deterministic_resumable_and_hash_recomputable(tmp_path):
         tmp_path / "a", tmp_path / "out_e", classification=cls, allow_incomplete=True
     )
     assert man["reason_counts"]["fetch_failed"] == 1
+
+
+def test_validate_runs_end_to_end_on_a_synthetic_archive(tmp_path, monkeypatch):
+    objs, listing = _archive(tmp_path)
+    cls = tmp_path / "classes.json"
+    syms = {s: {"class": "asset"} for s in ("AAAUSDT", "BBBUSDT")} | {
+        "ADAUPUSDT": {"class": "leveraged_token"}
+    }
+    cls.write_text(json.dumps({"symbols": syms}), encoding="utf-8")
+    raw = tmp_path / "raw"
+    raw.mkdir()
+    (raw / "listing.json").write_text(json.dumps(listing), encoding="utf-8")
+    log = raw / "requests_append.log"
+    client = pf.Client(FakeS3(objs), pf.RateLimiter(1e6), retries=1, backoff=0, log_path=log)
+    st = pf.Store(raw / "files")
+    for itv in ("1d", "1h"):
+        for s in listing:
+            for m in listing[s]:
+                pf.fetch_file(client, st, s, itv, m)
+    lines = log.read_text().splitlines()
+    assert len(lines) == len(client.requests) and all(len(x.split("\t")) == 2 for x in lines)
+    (raw / "fetch_report.json").write_text(
+        json.dumps(
+            {
+                "jobs": 1,
+                "failures": [],
+                "requests": len(lines),
+                "configured_rate": 30.0,
+                "peak_requests_per_second": 20,
+            }
+        ),
+        encoding="utf-8",
+    )
+    out = tmp_path / "out"
+    pit_run.build(raw, out, classification=cls)
+    pins = tmp_path / "s3pins.tsv.gz"
+    with gzip.open(pins, "wt") as g:
+        g.write("1d\tAAAUSDT\t2020-10\t200\tdeadbeef\t1\n")
+    monkeypatch.setattr(pit_run, "S3_PINS", pins)
+    monkeypatch.setattr(pit_run, "CLASSIFICATION", cls)
+    res = pit_run.validate(raw, out)
+    assert all(x["equal"] for x in res["I1"]) and all(x["equal"] for x in res["I2"])
+    assert all(all(x["equal_by_mode"].values()) for x in res["U1"])
+    assert res["B1"]["count"] == 0 and res["B2"]["all_before_cutoff"]
+    assert res["R1_stability"]["identical_sha"] == 0 and res["R1_stability"]["s3_pinned"] == 1
+    assert res["F3"]["requests_logged"] == len(lines)
