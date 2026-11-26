@@ -1,0 +1,41 @@
+{
+ "id": "S4-run-provenance (non-deterministic facts of the single real run; not part of the dataset hash)",
+ "python": "3.13.18",
+ "platform": "Linux-6.18.44-fc-v880-x86_64-with-glibc2.39",
+ "request_log": {
+  "requests_logged": 77368,
+  "first": "2026-11-26T14:24:47.977000+00:00",
+  "last": "2026-11-26T15:08:25.944000+00:00",
+  "note": "append-only log was introduced after the first ~25 minutes of the run; earlier requests (symbol discovery, first fetch passes) are NOT in the log; their safety rests on the URL guard (unit-tested) and on the store audit (every stored file/meta is a month < 2025-07)"
+ },
+ "fetch_report_last_run": {
+  "jobs": 43036,
+  "failures": [],
+  "requests": 42913,
+  "configured_rate": 30.0,
+  "peak_requests_per_second": 30
+ },
+ "interruptions": [
+  {
+   "what": "symbol discovery crashed (non-ASCII symbol names in the archive; URL was not percent-encoded)",
+   "fix": "percent-encoding in HttpTransport + test",
+   "resumed": true
+  },
+  {
+   "what": "fetch deliberately killed with SIGKILL at 3717 committed files, restarted",
+   "result": "no committed file redone, no .part left behind",
+   "resumed": true
+  },
+  {
+   "what": "fetch killed a second time to switch on the append-only request log",
+   "resumed": true
+  },
+  {
+   "what": "fetch crashed with http.client.IncompleteRead at 21645 committed files",
+   "fix": "HTTPException treated as retryable + test",
+   "resumed": true
+  }
+ ],
+ "code_note": "the fetch phase ran partly with earlier revisions of pit_fetch.py / pit_build.py (differences: transport error handling, request logging, lint/typing); build, validate and gates were run with the final committed code (manifest code_sha256)",
+ "s3_cross_check": "all 21518 daily files re-downloaded here have the same sha256 as the S3 pin manifest produced hours earlier (validation.json R1_stability)"
+}

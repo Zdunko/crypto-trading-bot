@@ -1,0 +1,375 @@
+{
+ "B1": {
+  "count": 0,
+  "holdout_urls": [],
+  "requests_audited": 77368
+ },
+ "B2": {
+  "all_before_cutoff": true,
+  "max_candle_open_ms": 1751241600000
+ },
+ "F1_failures": 0,
+ "F3": {
+  "configured_rate": 30.0,
+  "final_run_peak": 30,
+  "jobs": 43036,
+  "peak_in_any_1s_window": 32,
+  "requests_logged": 77368
+ },
+ "I1": [
+  {
+   "cutoff": "2024-01",
+   "equal": true
+  },
+  {
+   "cutoff": "2023-09",
+   "equal": true
+  },
+  {
+   "cutoff": "2019-05",
+   "equal": true
+  },
+  {
+   "cutoff": "2019-11",
+   "equal": true
+  },
+  {
+   "cutoff": "2022-02",
+   "equal": true
+  },
+  {
+   "cutoff": "2022-06",
+   "equal": true
+  },
+  {
+   "cutoff": "2021-05",
+   "equal": true
+  },
+  {
+   "cutoff": "2025-02",
+   "equal": true
+  }
+ ],
+ "I2": [
+  {
+   "date": "2020-02",
+   "equal": true,
+   "n": 40
+  },
+  {
+   "date": "2023-05",
+   "equal": true,
+   "n": 331
+  },
+  {
+   "date": "2022-09",
+   "equal": true,
+   "n": 339
+  },
+  {
+   "date": "2021-08",
+   "equal": true,
+   "n": 359
+  },
+  {
+   "date": "2024-10",
+   "equal": true,
+   "n": 364
+  },
+  {
+   "date": "2020-05",
+   "equal": true,
+   "n": 55
+  },
+  {
+   "date": "2024-09",
+   "equal": true,
+   "n": 380
+  },
+  {
+   "date": "2023-04",
+   "equal": true,
+   "n": 313
+  },
+  {
+   "date": "2023-03",
+   "equal": true,
+   "n": 272
+  },
+  {
+   "date": "2022-12",
+   "equal": true,
+   "n": 259
+  },
+  {
+   "date": "2024-12",
+   "equal": true,
+   "n": 441
+  },
+  {
+   "date": "2021-03",
+   "equal": true,
+   "n": 221
+  }
+ ],
+ "R1_stability": {
+  "identical_sha": 21518,
+  "missing_now": 0,
+  "s3_pinned": 21518,
+  "share": 1.0
+ },
+ "S2": {
+  "2021-01": {
+   "ended_before_2025_06": 16,
+   "members": 84
+  },
+  "2022-01": {
+   "ended_before_2025_06": 85,
+   "members": 265
+  },
+  "2023-01": {
+   "ended_before_2025_06": 32,
+   "members": 168
+  },
+  "2024-01": {
+   "ended_before_2025_06": 53,
+   "members": 267
+  },
+  "2025-01": {
+   "ended_before_2025_06": 37,
+   "members": 352
+  }
+ },
+ "U1": [
+  {
+   "date": "2024-04",
+   "equal_by_mode": {
+    "delete": true,
+    "duplicate": true,
+    "price_x1000": true,
+    "random": true,
+    "volume_x1000": true,
+    "volume_zero": true
+   }
+  },
+  {
+   "date": "2019-10",
+   "equal_by_mode": {
+    "delete": true,
+    "duplicate": true,
+    "price_x1000": true,
+    "random": true,
+    "volume_x1000": true,
+    "volume_zero": true
+   }
+  },
+  {
+   "date": "2025-02",
+   "equal_by_mode": {
+    "delete": true,
+    "duplicate": true,
+    "price_x1000": true,
+    "random": true,
+    "volume_x1000": true,
+    "volume_zero": true
+   }
+  },
+  {
+   "date": "2021-07",
+   "equal_by_mode": {
+    "delete": true,
+    "duplicate": true,
+    "price_x1000": true,
+    "random": true,
+    "volume_x1000": true,
+    "volume_zero": true
+   }
+  },
+  {
+   "date": "2020-02",
+   "equal_by_mode": {
+    "delete": true,
+    "duplicate": true,
+    "price_x1000": true,
+    "random": true,
+    "volume_x1000": true,
+    "volume_zero": true
+   }
+  },
+  {
+   "date": "2022-10",
+   "equal_by_mode": {
+    "delete": true,
+    "duplicate": true,
+    "price_x1000": true,
+    "random": true,
+    "volume_x1000": true,
+    "volume_zero": true
+   }
+  },
+  {
+   "date": "2023-03",
+   "equal_by_mode": {
+    "delete": true,
+    "duplicate": true,
+    "price_x1000": true,
+    "random": true,
+    "volume_x1000": true,
+    "volume_zero": true
+   }
+  },
+  {
+   "date": "2021-09",
+   "equal_by_mode": {
+    "delete": true,
+    "duplicate": true,
+    "price_x1000": true,
+    "random": true,
+    "volume_x1000": true,
+    "volume_zero": true
+   }
+  },
+  {
+   "date": "2024-08",
+   "equal_by_mode": {
+    "delete": true,
+    "duplicate": true,
+    "price_x1000": true,
+    "random": true,
+    "volume_x1000": true,
+    "volume_zero": true
+   }
+  },
+  {
+   "date": "2022-11",
+   "equal_by_mode": {
+    "delete": true,
+    "duplicate": true,
+    "price_x1000": true,
+    "random": true,
+    "volume_x1000": true,
+    "volume_zero": true
+   }
+  },
+  {
+   "date": "2021-10",
+   "equal_by_mode": {
+    "delete": true,
+    "duplicate": true,
+    "price_x1000": true,
+    "random": true,
+    "volume_x1000": true,
+    "volume_zero": true
+   }
+  },
+  {
+   "date": "2019-05",
+   "equal_by_mode": {
+    "delete": true,
+    "duplicate": true,
+    "price_x1000": true,
+    "random": true,
+    "volume_x1000": true,
+    "volume_zero": true
+   }
+  },
+  {
+   "date": "2023-06",
+   "equal_by_mode": {
+    "delete": true,
+    "duplicate": true,
+    "price_x1000": true,
+    "random": true,
+    "volume_x1000": true,
+    "volume_zero": true
+   }
+  },
+  {
+   "date": "2022-02",
+   "equal_by_mode": {
+    "delete": true,
+    "duplicate": true,
+    "price_x1000": true,
+    "random": true,
+    "volume_x1000": true,
+    "volume_zero": true
+   }
+  },
+  {
+   "date": "2019-04",
+   "equal_by_mode": {
+    "delete": true,
+    "duplicate": true,
+    "price_x1000": true,
+    "random": true,
+    "volume_x1000": true,
+    "volume_zero": true
+   }
+  },
+  {
+   "date": "2019-12",
+   "equal_by_mode": {
+    "delete": true,
+    "duplicate": true,
+    "price_x1000": true,
+    "random": true,
+    "volume_x1000": true,
+    "volume_zero": true
+   }
+  },
+  {
+   "date": "2021-06",
+   "equal_by_mode": {
+    "delete": true,
+    "duplicate": true,
+    "price_x1000": true,
+    "random": true,
+    "volume_x1000": true,
+    "volume_zero": true
+   }
+  },
+  {
+   "date": "2020-10",
+   "equal_by_mode": {
+    "delete": true,
+    "duplicate": true,
+    "price_x1000": true,
+    "random": true,
+    "volume_x1000": true,
+    "volume_zero": true
+   }
+  },
+  {
+   "date": "2024-03",
+   "equal_by_mode": {
+    "delete": true,
+    "duplicate": true,
+    "price_x1000": true,
+    "random": true,
+    "volume_x1000": true,
+    "volume_zero": true
+   }
+  },
+  {
+   "date": "2019-09",
+   "equal_by_mode": {
+    "delete": true,
+    "duplicate": true,
+    "price_x1000": true,
+    "random": true,
+    "volume_x1000": true,
+    "volume_zero": true
+   }
+  }
+ ],
+ "U2": {
+  "ended_members_ever_1M": 126,
+  "epochs_ended_before_2025_06": 229,
+  "members_ever_1M": 498
+ },
+ "U3": {
+  "at": "2021-01",
+  "min": 84
+ },
+ "seed": 20261126
+}

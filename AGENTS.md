@@ -32,6 +32,7 @@ spot-only crypto trading research system. Read `PROJECT_STATUS.md` first, then `
 | `quant/quantlab/` | project | Python package: safety policy, (later) metrics, validation, risk, reporting. |
 | `quant/strategies/` | project | Freqtrade strategy classes (`--strategy-path quant/strategies`) + `quant_common.py`. Every strategy must pass `quantlab.strategy_policy` (checked by `check.sh`). Specs live in `quant/docs/strategies/` and are written **before** the code runs on data. |
 | `quant/configs/` | project | Layered configs, no secrets. Do not name files `config*.json` (gitignored upstream). |
+| `quant/dataset/` | project | Point-in-time dataset tables (manifest, file quality, epochs, membership, classification) built by `quantlab.pit_build`; derived from Binance Vision data (CC BY-NC-SA 4.0, non-commercial research only). No raw data is committed. |
 | `quant/journal/` | project | Research journal, one dated file per study. |
 | `quant/docs/` | project | Audit, architecture and research notes. |
 | `AGENTS.md`, `ROADMAP.md`, `PROJECT_STATUS.md` | project | Keep current at the end of every task. |

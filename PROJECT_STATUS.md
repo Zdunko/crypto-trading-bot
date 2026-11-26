@@ -111,6 +111,10 @@ Synthetic-data tests prove rules and causality, **not profitability**. No backte
 - S2 frozen at commit `6d24202` (manifest v6, config hash, CI evidence in the freeze record; guarded by `tests/test_s2_freeze.py`); risk parameters and T1-T10 unchanged.
 - S3 (development-period data only, holdout never requested): pre-registered criteria (`s3_criteria.json`, commit `325aa33`) all pass -> **CONDITIONAL GO** for Binance Vision as a non-commercial research dataset: 21 518 daily files, 100 % checksum match, 0.014 % daily files quarantined, hourly sample (369 files) defect upper bound 1.95 %, >= 84 PIT-eligible assets at 1 M at every month start 2021-01..2025-06 (83 after identity exclusions), delisted assets retained (26-45 % of eligible cohorts later delisted), deterministic reproduction, 0.43 GB / 0.17 h for 1h data. Licence read from the primary Vision Dataset Terms: personal non-production backtesting permitted; live/paper/commercial/signal distribution not. Risk-layer x Freqtrade integration validation is design only (`s3_risk_integration_plan.md`). Ledger amendment A6. Family A stays rejected, Family B NO-GO, no market evaluation. Unresolved: identity table, whole-sample exclusion look-ahead, volume-only liquidity, one cycle (2 bear episodes), hourly quality sampled only, alternative sources unverifiable here.
 
+## Phase 4C S4 point-in-time dataset builder (`quant/docs/phase4c/s4_dataset_builder_report.md`, `quant/dataset/`)
+
+- Pre-registered criteria (`s4_criteria.json`, commit `58ba372`): all 16 gates pass -> GO for a research-only dataset. Development window 2017-08..2025-06 only; 593 USDT symbols, 43 036 files (daily and hourly, complete scan), 11 quarantined with reason codes, 636 identity epochs, explicit asset classification (no regex), causal liquidity eligibility; causality verified on the real data (prefix invariance and adversarial future perturbation), deterministic dataset hash `462288b1...` reproduced by an independent build, archive stable against the S3 pins (21 518/21 518). Licensing alternatives investigated as documentation only: nothing but Binance Vision is verified, and it is research-only. Ledger amendment A7. No market evaluation; Family A rejected; Family B not approved; risk parameters and T1-T10 unchanged.
+
 ## GitHub CI results
 
 | Check | Commit `c6cc24a` | Commit `5c9582f` |
@@ -189,6 +193,7 @@ defaults to **OKX** for the technical bias check; this is **not** the owner's fi
 
 ## Change log
 
+- 2026-11-26 — S4: point-in-time dataset builder and dataset (GO, research only), licensing alternatives (documentation), amendment A7.
 - 2026-11-26 — S2 frozen (freeze record); S3 data feasibility gate: audit scripts, `quantlab/data_audit.py` (+15 tests), licensing findings, integration plan (design), ledger amendment A6. CONDITIONAL GO for data; no market evaluation.
 - 2026-11-25 — Family A evaluated (one run): not credible, fails T1/T3/T4/T7; liquidity amendment A1, ledger amendment A2.
 - 2026-11-25 — Family A implemented and frozen (spec v5), synthetic tests and causality validation; no market evaluation.

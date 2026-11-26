@@ -1,0 +1,62 @@
+{
+ "code_sha256": {
+  "data_audit.py": "ca7ef9fddc5f26311ad329e63e4a9b9a2393f4083951b3c1d6068796f7385850",
+  "pit_build.py": "2e87aad76e849d77d838816b7ae3170194edd929cdc556ade62892dcab67301f",
+  "pit_fetch.py": "6b939e90f01ad7f080b1f1aa9e4953c50a0e9eae4f061891b98090ee0948195e",
+  "pit_run.py": "5cf4c07b50b27df07f3511feb4a39515c8b00cd9f53e7b7d5f2ce760850e11fb",
+  "pit_universe.py": "f4b3c67ff4a22ec90f68884f5bed47c783e17f45cf6b2e71b3ac301fb340f196"
+ },
+ "counts": {
+  "epochs": 636,
+  "files": 43036,
+  "membership_rows": 21139,
+  "status": {
+   "1d:ok": 21515,
+   "1d:quarantined": 3,
+   "1h:ok": 21510,
+   "1h:quarantined": 8
+  },
+  "symbols": 593
+ },
+ "criteria_sha256": "1e5d61fc11016f1826223c689ddc2a03f25952146628b0a650078d5714a1e574",
+ "dataset_hash": "462288b14415edeb3aec73c9400fd8af977faf3105c1396f6f96d4fe3d4069be",
+ "id": "S4-dataset-manifest",
+ "identity_events": {
+  "gap": 8,
+  "jump_down": 14,
+  "jump_up": 21
+ },
+ "listing_sha256": "628ba4fbda910c73f0520d521cc264d90a71a34621822ad9ff0d4bdd5e0d843f",
+ "params": {
+  "dates": [
+   "2017-09",
+   "2025-06"
+  ],
+  "dev_end_exclusive": "2025-07",
+  "gap_months": 2,
+  "jump": 10.0,
+  "min_days": 60,
+  "quote": "USDT",
+  "thresholds": {
+   "1M": 1000000.0,
+   "5M": 5000000.0
+  },
+  "window_days": 90
+ },
+ "parts": {
+  "classification": "3a6f61537f819a8b12f9093dac415d4ab06fad62ca1e9beca30f74e7919f95a6",
+  "epochs": "f8d2a3df73153d86891afd5b00a81aacfe4460c38d4156f820a96a6c79946c26",
+  "files": "c53d36d17aba0bd105914748d169045966d74b7ce25247493b26c57d8eed9f9f",
+  "membership": "d5a1a081e422deed9f9ac541dcf48a49597c3ce1ed96e7af6aa313d37f8db9af"
+ },
+ "reason_counts": {
+  "duplicate_timestamp": 1,
+  "misaligned_timestamp": 6,
+  "negative_volume": 2,
+  "ohlc_inconsistent": 2,
+  "out_of_order": 1,
+  "repeated_block": 1
+ },
+ "source": "Binance Vision spot monthly klines (c) Binance, CC BY-NC-SA 4.0, attribution Binance Vision; non-commercial research only",
+ "window": "months 2017-08 .. 2025-06"
+}
