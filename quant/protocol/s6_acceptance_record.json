@@ -1,0 +1,36 @@
+{
+ "accepted_commit": "f03c633c243d470240eb64ea657594324d44fa7d",
+ "ci_evidence": "Freqtrade CI run 45896752233 on f03c633: 24 success, 5 skipped, 0 failed, including all six macOS jobs; Quant CI 45896752362 and zizmor 45896752232 success",
+ "files": {
+  "docs/phase4c/s6_criteria.json": "ee25010bc0765bd75ac4ec5f90bd75ca156fbf00a7d6dd5e70e8a9689a448236",
+  "docs/phase4c/s6_report.md": "1efeaa60f1735663d34689e54966caf84ead78dd3ceb6cd4073a56918afb61c6",
+  "protocol/benchmark_registry.json": "8b436a6f1301f9f7b14c6180c0cc90c8a3b5b3a26b688b0a4567e82bd0f5adb1",
+  "protocol/preregistration_template.json": "d1004466edc544dd29acf8a86453d64e749add2f75e6a169e826da81b27c4ce1",
+  "protocol/research_budget.json": "ef211156f81bb00100e0968a06266a11629444ec95d1809812549c19a26b1df7",
+  "protocol/run_approvals.json": "d9631caecb365d4aea7835453851ad5e87e341d96053780fbafebad115b5bf7d",
+  "protocol/s2_freeze_record.json": "72294727c60356473fd082b67c4e48b12ed937fe96fb3429d084ee8250410a87",
+  "protocol/s4_freeze_record.json": "a67c6ddb1ce470f3fe5bf4ea7c2d3faa098d65984ac6911c8d6e3ae2ab86d878",
+  "protocol/s5_freeze_record.json": "80412562f64b38b2441af8a8e29bccca4bc207a635a7ed016ef04ba66d62a56d",
+  "protocol/s6_freeze_record.json": "6fc73d6634569c7fba1288aa0c4f85677ae72cf6abed04dde9651b1c887eed6e",
+  "protocol/spec_registry.json": "27e27d5cfd4209ae0084f50c2c56fde38df9baf31676006d4da9c33c685787b8",
+  "tests/test_benchmark_pit_integration.py": "0a05780f4e0aac736b14cec0f4fb744fd27f1f8ae8c8de63b753df99658f5b28",
+  "tests/test_benchmarks.py": "76fada4a960e626dd8e1800ea74505c790c240c7f72a96c12fc7372f7673d249",
+  "tests/test_feasibility.py": "271cae6de546087b1ee8ead537922a2e59fb3892d124b3585b5ac506fc0e0fa7",
+  "tests/test_s6_freeze.py": "22f71d7745eff87ebe31a0e2d857672c720a1e368a36a6ba108fb8706fa96590",
+  "tests/test_stale_review.py": "fe7e9bb832c9053daf03c54bff19033fb3a644095058a17cc61d960633ec21c0"
+ },
+ "historical_freeze_records": [
+  "protocol/s2_freeze_record.json",
+  "protocol/s4_freeze_record.json",
+  "protocol/s5_freeze_record.json",
+  "protocol/s6_freeze_record.json"
+ ],
+ "id": "S6-acceptance-record",
+ "research_budget": {
+  "cap": 52,
+  "further_families": 0,
+  "total_n": 43
+ },
+ "status": "S6 accepted by the owner (GO for research infrastructure and synthetic validation). Frozen: all S6 artifacts, criteria, benchmarks, registries and reports. Changes need a new version and an amendment. Family B2 is NOT approved (no implementation, registration or evaluation).",
+ "tests_at_acceptance": 591
+}

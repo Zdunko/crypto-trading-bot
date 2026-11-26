@@ -1,0 +1,144 @@
+{
+ "id": "S7-criteria-v1",
+ "purpose": "Pre-registered acceptance criteria of S7 (risk integrity: risk layer V3 for stale/untradeable assets; feasibility-gate methodology audit; strategy family design review; production-readiness roadmap). Committed BEFORE any S7 code or analysis. Thresholds are fixed here and never tuned to results.",
+ "scope": "synthetic fixtures and simulations only; no strategy implementation or registration, no market backtest or optimisation, no Family B/B2 approval, no holdout access (not even metadata), no research-budget increase (N stays 43/52), no change to T1-T10, S2 parameters or any frozen artifact, no paper/live trading, no paid service; the existing feasibility gate and its thresholds are NOT modified",
+ "risk_v3_fixed_parameters": {
+  "stale_horizon_hours": 48,
+  "monitor_interval_hours": 1,
+  "gate_recovery_fraction": 0.0,
+  "sensitivity_recoveries": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "drawdown_limit_t4": 0.2,
+  "v2_config": "RiskV2Config() unchanged (tiers 10/15/18 %, hard limit 25 %, cooldown 14 d)",
+  "note": "the 48-hour protection horizon of S2 is kept; a different horizon needs separate approval"
+ },
+ "freeze": [
+  {
+   "id": "F1",
+   "rule": "s6_acceptance_record.json holds the sha256 of all accepted S6 artifacts and a test recomputes them; all historical freeze tests (S2, S4, S5, S6) pass; protocol verification and T1-T10 unchanged"
+  },
+  {
+   "id": "F2",
+   "rule": "research budget state unchanged: N 43 of 52, 0 further families, no run approval"
+  }
+ ],
+ "risk_v3": [
+  {
+   "id": "R1",
+   "rule": "elapsed-time stale detection: a held asset without a candle for >= 48 elapsed hours raises the integrity alarm at the same elapsed time for candle intervals of 1 h and 4 h (within one candle), independent of candle count"
+  },
+  {
+   "id": "R2",
+   "rule": "strategy timeframe separated from risk monitoring: a daily-decision strategy on hourly monitoring calls the inner strategy once per day and the risk machine every hour; a monitoring cadence coarser than 1 hour is refused at run time (fail closed)"
+  },
+  {
+   "id": "R3",
+   "rule": "explicit asset statuses: DELISTED, SUSPENDED, UNTRADEABLE and MISSING held assets raise the alarm immediately and are valued conservatively; an asset that resumes printing before the horizon causes no alarm; after an alarm SHUTDOWN is permanent"
+  },
+  {
+   "id": "R4",
+   "rule": "liquidation is never assumed: an impaired position stays in the position list, the machine never reaches a state that treats the book as flat while it exists, and the unliquidatable set is reported"
+  },
+  {
+   "id": "R5",
+   "rule": "three valuations are separate and closed-form on synthetic fixtures: last-known (engine), conservative risk valuation (impaired positions at recovery fraction r of last-known; r = 0 drives the gates), realized (closed trades plus explicit write-offs)"
+  },
+  {
+   "id": "R6",
+   "rule": "recovery sensitivity for r in {0, 0.25, 0.5, 0.75, 1}: equity and drawdown monotone in r, r = 1 equals last-known, r = 0 equals the conservative equity"
+  },
+  {
+   "id": "R7",
+   "rule": "stale valuation cannot hide drawdown: in a synthetic case where last-known drawdown is below 20 % and conservative drawdown is above it, V3 trips the protection immediately and the capital-protection report FAILS while the last-known view passes"
+  },
+  {
+   "id": "R8",
+   "rule": "S2 preserved: risk_v2.py, RiskV2Config and its freeze unchanged; with no impairment V3 equals the V2 wrapper (identical engine hash and identical transition records) on >= 5 seeded scenarios; hourly stale detection happens at the same elapsed time as V2"
+  },
+  {
+   "id": "R9",
+   "rule": "no threshold change: drawdown limit 20 %, tiers 10/15/18 %, hard limit 25 % and every other V2 parameter asserted equal inside V3"
+  },
+  {
+   "id": "R10",
+   "rule": "determinism: identical engine hash in two processes; a tracker rebuilt from history equals the incrementally updated one"
+  },
+  {
+   "id": "R11",
+   "rule": "property tests on >= 30 seeded scenarios: conservative equity <= last-known equity always, HWM monotone, no buy after SHUTDOWN, an impaired position never valued above r x last-known in the conservative view"
+  },
+  {
+   "id": "R12",
+   "rule": "versioned specification protocol/risk_v3_spec.json (version 3.0.0, config hash) and an S7 freeze record"
+  }
+ ],
+ "methodology_audit": [
+  {
+   "id": "M1",
+   "rule": "each of the seven questions of the owner is answered in s7_gate_methodology_audit.md with a stated verdict (justified / not justified / not decidable) and synthetic evidence labelled as simulation, not market evidence"
+  },
+  {
+   "id": "M2",
+   "rule": "the existing gate (quantlab/feasibility.py), its thresholds and the S6 criteria are byte-unchanged (S6 acceptance test)"
+  },
+  {
+   "id": "M3",
+   "rule": "all calibration simulations are seeded, deterministic and stored as JSON with their parameters; a test re-runs a reduced version and compares"
+  },
+  {
+   "id": "M4",
+   "rule": "if improvements are justified they appear only as a separately versioned PROPOSAL (feasibility_methodology_v2_proposal.json) with rationale, calibration results and adoption criteria, marked not adopted"
+  }
+ ],
+ "candidates": [
+  {
+   "id": "C1",
+   "rule": "B2 reassessed plus at most three economically distinct candidates; each has hypothesis and counterparty, return sources, failure modes, parameter/configuration count, expected exposure and turnover, feasibility assumptions with uncertainty, risk compatibility, benchmarks, budget need"
+  },
+  {
+   "id": "C2",
+   "rule": "assumptions and measured evidence are labelled separately; measured means data in this repository (S3/S4/S5/S6 results) or a stored simulation"
+  },
+  {
+   "id": "C3",
+   "rule": "no rejected family under a new name: each candidate is compared with the rejected family keys and feature-checked"
+  },
+  {
+   "id": "C4",
+   "rule": "an explicit recommendation (GO for at most one candidate only if evidence supports it, otherwise NO-GO); the research budget is not touched"
+  }
+ ],
+ "roadmap": [
+  {
+   "id": "P1",
+   "rule": "production-readiness roadmap covers legally permitted data, exchange integration, execution reconciliation, independent out-of-sample validation, paper trading, operational monitoring, security and emergency shutdown, and measurable criteria for eventual limited-capital live deployment; documentation only, no action"
+  }
+ ],
+ "regression": [
+  {
+   "id": "G1",
+   "rule": "full local suite and check.sh pass"
+  },
+  {
+   "id": "G2",
+   "rule": "CI on the final code commit: Quant CI, zizmor, pre-commit and all upstream jobs; any cancelled job is recorded as an infrastructure limitation, any real failure fixed"
+  },
+  {
+   "id": "G3",
+   "rule": "ledger amendment A10 records the S7 audit work (no count change)"
+  },
+  {
+   "id": "G4",
+   "rule": "no strategy family implemented or registered: research_budget.json, spec_registry.json registered list and run_approvals.json unchanged"
+  }
+ ],
+ "decision": {
+  "GO": "all criteria met (GO for S7 infrastructure/documentation only)",
+  "NO_GO": "any criterion fails; documented, thresholds not changed after the fact"
+ }
+}
