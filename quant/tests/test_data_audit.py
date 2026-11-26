@@ -177,7 +177,9 @@ def test_fetch_guard_refuses_holdout():
 
 
 CRIT = json.loads(
-    (Path(__file__).resolve().parents[1] / "docs/phase4c/s3_criteria.json").read_text()
+    (Path(__file__).resolve().parents[1] / "docs/phase4c/s3_criteria.json").read_text(
+        encoding="utf-8"
+    )
 )
 GOOD = dict(
     L1_permitted=True,

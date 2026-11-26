@@ -25,7 +25,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parents[2]))  # quant/
 from quantlab import data_audit as da  # noqa: E402
 
-CRIT = json.loads((HERE.parent / "s3_criteria.json").read_text())
+CRIT = json.loads((HERE.parent / "s3_criteria.json").read_text(encoding="utf-8"))
 S1_CSV = HERE.parent / "s1_binance_usdt_coverage.csv"
 STABLE = {
     "USDC",
@@ -68,7 +68,7 @@ def read_rows(zpath: Path) -> list[list[str]]:
 
 
 def metas(raw: Path, itv: str) -> list[dict]:
-    out = [json.loads(p.read_text()) for p in sorted((raw / itv).glob("*.json"))]
+    out = [json.loads(p.read_text(encoding="utf-8")) for p in sorted((raw / itv).glob("*.json"))]
     out.sort(key=lambda r: (r["symbol"], r["month"]))
     return out
 
@@ -109,7 +109,7 @@ def select_sample(raw: Path, out: Path) -> None:
 
 def analyze(raw: Path, rate: float | None) -> tuple[dict, list[str]]:
     m1d = metas(raw, "1d")
-    s1 = {r["symbol"]: r for r in csv.DictReader(S1_CSV.open())}
+    s1 = {r["symbol"]: r for r in csv.DictReader(S1_CSV.open(encoding="utf-8", newline=""))}
     present = defaultdict(list)
     reports: dict = {}
     daily: defaultdict[str, dict] = defaultdict(dict)

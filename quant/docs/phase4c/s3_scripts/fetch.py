@@ -41,7 +41,7 @@ def guard(ym: str) -> None:
 
 def universe() -> dict[str, list[str]]:
     out = {}
-    for r in csv.DictReader(S1_CSV.open()):
+    for r in csv.DictReader(S1_CSV.open(encoding="utf-8", newline="")):
         b = min(r["last_month"], "2025-06")
         if r["first_month"] <= b:
             out[r["symbol"]] = months(r["first_month"], b)
@@ -68,7 +68,7 @@ def one(job: tuple[str, str, str], raw: Path) -> dict:
     f = d / f"{sym}-{itv}-{ym}.zip"
     meta = d / f"{sym}-{itv}-{ym}.json"
     if meta.exists():
-        return json.loads(meta.read_text())
+        return json.loads(meta.read_text(encoding="utf-8"))
     url = f"{BASE}/{sym}/{itv}/{sym}-{itv}-{ym}.zip"
     c, z = curl(url)
     rec = {"symbol": sym, "interval": itv, "month": ym, "http": c}
@@ -88,7 +88,7 @@ def main() -> int:
     if mode == "all":
         jobs = [(s, itv, m) for s, ms in uni.items() for m in ms]
     else:
-        jobs = [tuple(j) for j in json.loads(Path(sys.argv[4]).read_text())]
+        jobs = [tuple(j) for j in json.loads(Path(sys.argv[4]).read_text(encoding="utf-8"))]
     t = time.time()
     with ThreadPoolExecutor(32) as ex:
         res = list(ex.map(lambda j: one(j, raw), jobs))

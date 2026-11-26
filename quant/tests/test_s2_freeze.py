@@ -11,11 +11,12 @@ from quantlab.risk_v2 import RiskV2Config
 
 
 Q = Path(__file__).resolve().parents[1]
-REC = json.loads((Q / "protocol/s2_freeze_record.json").read_text())
+REC = json.loads((Q / "protocol/s2_freeze_record.json").read_text(encoding="utf-8"))
 
 
 def sha(p: Path) -> str:
-    return hashlib.sha256(p.read_bytes()).hexdigest()
+    # CRLF normalised (as quantlab.protocol does) so Windows checkouts hash identically
+    return hashlib.sha256(p.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
 
 
 def test_frozen_files_and_manifest_unchanged():
