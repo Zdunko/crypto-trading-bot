@@ -111,8 +111,10 @@ def analyze(raw: Path, rate: float | None) -> tuple[dict, list[str]]:
     m1d = metas(raw, "1d")
     s1 = {r["symbol"]: r for r in csv.DictReader(S1_CSV.open())}
     present = defaultdict(list)
-    reports, daily = {}, defaultdict(dict)
-    quarantine, defect_counts = [], defaultdict(int)
+    reports: dict = {}
+    daily: defaultdict[str, dict] = defaultdict(dict)
+    quarantine: list = []
+    defect_counts: defaultdict[str, int] = defaultdict(int)
     d_missing = d_span = 0
     for r in m1d:
         if r["http"] != 200:
@@ -158,7 +160,7 @@ def analyze(raw: Path, rate: float | None) -> tuple[dict, list[str]]:
         s2[t] = {"eligible": len(e), "delisted_by_2026_10": len([s for s in e if s in dead])}
     # --- regimes from BTC closes strictly before month start
     btc = daily["BTCUSDT"]
-    reg_months = defaultdict(int)
+    reg_months: defaultdict[str, int] = defaultdict(int)
     reg_by_month = {}
     for t in starts:
         ms = month_start_ms(t)
@@ -179,7 +181,7 @@ def analyze(raw: Path, rate: float | None) -> tuple[dict, list[str]]:
     rate = rate or float("nan")
     # --- hourly sample
     hq = []
-    hfind = defaultdict(int)
+    hfind: defaultdict[str, int] = defaultdict(int)
     h_missing = h_span = 0
     for r in hr_ok:
         rep = da.check_candles(
