@@ -1,0 +1,89 @@
+{
+ "id": "S5-criteria-v1",
+ "purpose": "Pre-registered acceptance criteria of S5-infra (infrastructure, integration, synthetic validation, preparatory investigations). Committed BEFORE any S5 implementation or analysis. Thresholds are engineering assumptions, never tuned to results.",
+ "scope": "see s5_scope.md; the original S5 (first new family evaluation) is NOT in scope and is not executed",
+ "assumptions": {
+  "max_stale_days": 3,
+  "note": "a member whose last completed daily candle is more than 3 days old is treated as stale (not tradable for new entries); an engineering default, frozen here, not optimised"
+ },
+ "preparatory": [
+  {
+   "id": "P1",
+   "name": "S4 freeze",
+   "rule": "s4_freeze_record.json holds the sha256 of every S4 dataset file, manifest, criteria, classification, listing, provenance and the dataset hash; a test recomputes them (CRLF-normalised); S4 criteria file hash equals the one committed at 58ba372"
+  },
+  {
+   "id": "P2",
+   "name": "limitations register",
+   "rule": "s4_limitations_register.md lists every outstanding limitation with id, evidence, effect and status; includes the 6 cancelled macOS jobs as an unresolved infrastructure limitation (not passed tests); no S4 criterion is edited"
+  },
+  {
+   "id": "P3",
+   "name": "X1 investigation",
+   "rule": "every inconsistent month (1029) is assigned to exactly one cause class (sum equals 1029, an explicit 'unexplained' class allowed); impact on liquidity eligibility reported as the number of membership decisions that change when daily quote volume is replaced by the hourly-derived volume (frozen dataset untouched); execution impact reported from the hourly volume deltas (sign and size of the liquidity-budget error)"
+  },
+  {
+   "id": "P4",
+   "name": "identity review",
+   "rule": "all 43 epoch breaks are reviewed with candle evidence (price ratio, base and quote volume around the event); the effect of conservative handling is quantified (asset-days removed from eligibility after crash-type breaks); S4 stays frozen; any alternative is a proposal only"
+  },
+  {
+   "id": "P5",
+   "name": "holdout isolation statement",
+   "rule": "s5_holdout_isolation_statement.md separates what is supported by evidence from what is not claimed; covers the S1 listing (post-cutoff keys/sizes), the S1 table last_month use in S3, the S4 root listing names, the incomplete request log"
+  },
+  {
+   "id": "P6",
+   "name": "licensing roadmap",
+   "rule": "s5_production_data_licensing_roadmap.md: phases, questions, evidence levels (verified / search-summary / unknown), decision gates, no purchase, no assumed permission"
+  },
+  {
+   "id": "P7",
+   "name": "scope confirmation",
+   "rule": "s5_scope.md states that the original S5 requires a prohibited activity and is not executed"
+  }
+ ],
+ "gates": [
+  {
+   "id": "L1",
+   "name": "loader fail-closed",
+   "rule": "each of these raises a specific exception and never returns data: dataset hash differs from the freeze record; any dataset file altered; unknown symbol; date outside 2017-09..2025-06 or at/after the cutoff 2025-07-01; quarantined month; absent month; stored file sha256 differs from the manifest; stale member (last candle > 3 days) excluded from universe_at; missing store file; all covered by synthetic tests",
+   "threshold": 9
+  },
+  {
+   "id": "L2",
+   "name": "loader causality",
+   "rule": "for >= 20 seeded (symbol, as_of) cases, candles(as_of) and universe_at(as_of) are identical when every later month file is deleted or corrupted (proves later files are never read) and when later candles are mutated",
+   "threshold": 20
+  },
+  {
+   "id": "L3",
+   "name": "determinism",
+   "rule": "repeated loads are identical; the hash of a synthetic engine run through the loader is identical across two processes"
+  },
+  {
+   "id": "L4",
+   "name": "universe guard integration",
+   "rule": "with the Stage 0 engine on synthetic data: buys of non-members/stale/unknown pairs are blocked with a logged reason, sells always pass, held positions are never force-sold by the guard, a loader exception blocks all buys (fail closed); when every pair is a member the engine result hash equals the unguarded run; composition with RiskManagedStrategy is deterministic"
+  },
+  {
+   "id": "L5",
+   "name": "budget enforcement",
+   "rule": "quantlab.budget check runs in check.sh; synthetic ledgers exceeding any cap (3 families, 3 configurations per family, N 52, one market run per family) or triggering the stop rule (two consecutive rejected families) make it fail; the real ledger passes and shows N=43, 1 family"
+  },
+  {
+   "id": "L6",
+   "name": "no network and no regression",
+   "rule": "loader/guard/budget code runs with sockets disabled; the full suite and check.sh pass; verify_all, S2 freeze and S4 freeze tests pass; frozen manifests unchanged"
+  },
+  {
+   "id": "L7",
+   "name": "CI",
+   "rule": "Quant CI, zizmor, pre-commit and all Linux/Windows upstream test jobs pass on the final HEAD; cancelled macOS jobs are recorded as an unresolved infrastructure limitation, never as passed tests"
+  }
+ ],
+ "decision": {
+  "GO": "all preparatory items delivered and all gates pass (GO for S5-infra only; it does not authorise the original S5)",
+  "NO_GO": "any gate fails; documented, thresholds not changed after the fact"
+ }
+}
