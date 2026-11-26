@@ -1,0 +1,50 @@
+{
+ "branch": "claude/freqtrade-trading-system-b82aek",
+ "ci_evidence": {
+  "freqtrade_ci_run": 45847633065,
+  "head": "e2d71c6",
+  "limitation": "the cancelled macOS jobs are an UNRESOLVED infrastructure limitation: macOS was never tested; they are not passed tests",
+  "quant_ci_run": 45847633005,
+  "summary": "17 jobs success (all Linux and Windows test jobs, online tests, Pre-commit checks), 5 skipped, 6 macOS jobs CANCELLED (no runner assigned), aggregate Build (3.13) failed only because of them",
+  "zizmor_run": 45847632915
+ },
+ "code_sha256_in_manifest": {
+  "data_audit.py": "ca7ef9fddc5f26311ad329e63e4a9b9a2393f4083951b3c1d6068796f7385850",
+  "pit_build.py": "2e87aad76e849d77d838816b7ae3170194edd929cdc556ade62892dcab67301f",
+  "pit_fetch.py": "6b939e90f01ad7f080b1f1aa9e4953c50a0e9eae4f061891b98090ee0948195e",
+  "pit_run.py": "5cf4c07b50b27df07f3511feb4a39515c8b00cd9f53e7b7d5f2ce760850e11fb",
+  "pit_universe.py": "f4b3c67ff4a22ec90f68884f5bed47c783e17f45cf6b2e71b3ac301fb340f196"
+ },
+ "criteria": {
+  "path": "quant/docs/phase4c/s4_criteria.json",
+  "sha256": "1e5d61fc11016f1826223c689ddc2a03f25952146628b0a650078d5714a1e574",
+  "sha256_at_pre_registration_commit_58ba372": "1e5d61fc11016f1826223c689ddc2a03f25952146628b0a650078d5714a1e574"
+ },
+ "dataset_hash": "462288b14415edeb3aec73c9400fd8af977faf3105c1396f6f96d4fe3d4069be",
+ "files": {
+  "asset_classification.json": "3a6f61537f819a8b12f9093dac415d4ab06fad62ca1e9beca30f74e7919f95a6",
+  "dev_window_listing.json": "b208441a6a568a096b8b1966ef55cf321a519546b5ea5fd42232ecc84f4f8dde",
+  "epochs.csv.gz": "e31e9228488d32d16653bca43a191df8183fecdf022bfe2398431425e943faed",
+  "files.csv.gz": "106f98a86142d40ea90eb37d22ca9b326da51ffdc81ecefafe9bf9c935d66eab",
+  "gates.json": "47cbbbb81e60e297d249c7b37fa43aef28d544f2c23f329b228801e677ae41b7",
+  "manifest.json": "ef8484bab0496e4f90a78cd005274fa6b77dcd1fbfe34516db0f5882a132921e",
+  "membership.csv.gz": "fa17fc7f3143ceb14d6b6122fc4cc0fd98638a6feeb72e1c2d12a4fdd9fc8311",
+  "provenance_run.json": "34828deef07a66e097deb04c8a977a848e29f123b2ba3c7f350c39a936f56971",
+  "quality_summary.json": "027796132dbc14f3c00f52603681e91945ceb7cc86140003c118deeea574ba9f",
+  "validation.json": "ad832bdf05012fc4188fdca69a568ca0486142a5427a55458890a1cd931480ea"
+ },
+ "frozen_at_commit": "e2d71c6863426269c53a68b443ef71c2dd8870e9",
+ "id": "S4-freeze-record",
+ "manifest_parts": {
+  "classification": "3a6f61537f819a8b12f9093dac415d4ab06fad62ca1e9beca30f74e7919f95a6",
+  "epochs": "f8d2a3df73153d86891afd5b00a81aacfe4460c38d4156f820a96a6c79946c26",
+  "files": "c53d36d17aba0bd105914748d169045966d74b7ce25247493b26c57d8eed9f9f",
+  "membership": "d5a1a081e422deed9f9ac541dcf48a49597c3ce1ed96e7af6aa313d37f8db9af"
+ },
+ "reports": {
+  "s4_dataset_builder_report.md": "7759aa120c7379a66bcababa52cc91829ead012139d3e4e2e8dc36a673182d20",
+  "s4_licensing_alternatives.md": "7d40915014a106d8543793a80042f2ca24dfeac74119969ad0e6892a25b4eaee"
+ },
+ "status": "S4 dataset frozen after owner's acceptance (CONDITIONAL GO, research-only). No S4 criterion, threshold, table or manifest may change; a revision needs a new version, a new pre-registration and an amendment.",
+ "unresolved_limitations": "see s4_limitations_register.md"
+}

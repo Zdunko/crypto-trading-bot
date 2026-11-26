@@ -1,0 +1,189 @@
+{
+ "assets": [
+  {
+   "base_volume_ratio_7d": 548.506213393788,
+   "class": "asset",
+   "date": "2023-02-22",
+   "k": 1,
+   "price_ratio": 0.009031339031339031,
+   "quote_volume_ratio_7d": 4.953702242311396,
+   "reason": "jump_down",
+   "signature": "other_or_insufficient",
+   "symbol": "BNXUSDT"
+  },
+  {
+   "base_volume_ratio_7d": 0.0009326523025381404,
+   "class": "asset",
+   "date": "2021-01-23",
+   "k": 1,
+   "price_ratio": 1295.3956834532373,
+   "quote_volume_ratio_7d": 1.2501777497654176,
+   "reason": "jump_up",
+   "signature": "rescale_signature",
+   "symbol": "COCOSUSDT"
+  },
+  {
+   "base_volume_ratio_7d": NaN,
+   "class": "asset",
+   "date": "2023-05-12",
+   "k": 1,
+   "price_ratio": NaN,
+   "quote_volume_ratio_7d": NaN,
+   "reason": "gap",
+   "signature": "other_or_insufficient",
+   "symbol": "CVCUSDT"
+  },
+  {
+   "base_volume_ratio_7d": 0.058642280035994455,
+   "class": "asset",
+   "date": "2021-04-02",
+   "k": 1,
+   "price_ratio": 107.57760194765673,
+   "quote_volume_ratio_7d": 7.169752537890909,
+   "reason": "jump_up",
+   "signature": "volume_surge",
+   "symbol": "DREPUSDT"
+  },
+  {
+   "base_volume_ratio_7d": NaN,
+   "class": "asset",
+   "date": "2023-09-22",
+   "k": 1,
+   "price_ratio": NaN,
+   "quote_volume_ratio_7d": NaN,
+   "reason": "gap",
+   "signature": "other_or_insufficient",
+   "symbol": "FTTUSDT"
+  },
+  {
+   "base_volume_ratio_7d": 5026.197897523856,
+   "class": "asset",
+   "date": "2022-05-11",
+   "k": 1,
+   "price_ratio": 0.061678121420389455,
+   "quote_volume_ratio_7d": 3.387133236423457,
+   "reason": "jump_down",
+   "signature": "other_or_insufficient",
+   "symbol": "LUNAUSDT"
+  },
+  {
+   "base_volume_ratio_7d": 531.2208200418769,
+   "class": "asset",
+   "date": "2022-05-12",
+   "k": 2,
+   "price_ratio": 0.000297149224626242,
+   "quote_volume_ratio_7d": 0.9858678705285372,
+   "reason": "jump_down",
+   "signature": "other_or_insufficient",
+   "symbol": "LUNAUSDT"
+  },
+  {
+   "base_volume_ratio_7d": NaN,
+   "class": "asset",
+   "date": "2022-05-31",
+   "k": 3,
+   "price_ratio": NaN,
+   "quote_volume_ratio_7d": NaN,
+   "reason": "jump_up",
+   "signature": "other_or_insufficient",
+   "symbol": "LUNAUSDT"
+  },
+  {
+   "base_volume_ratio_7d": 1879.369499390436,
+   "class": "asset",
+   "date": "2023-07-21",
+   "k": 1,
+   "price_ratio": 0.000804177897574124,
+   "quote_volume_ratio_7d": 1.323797540830928,
+   "reason": "jump_down",
+   "signature": "rescale_signature",
+   "symbol": "QUICKUSDT"
+  },
+  {
+   "base_volume_ratio_7d": 2170.356972705946,
+   "class": "asset",
+   "date": "2021-06-18",
+   "k": 1,
+   "price_ratio": 0.0011986798201073555,
+   "quote_volume_ratio_7d": 2.3232444503553165,
+   "reason": "jump_down",
+   "signature": "rescale_signature",
+   "symbol": "SUNUSDT"
+  },
+  {
+   "base_volume_ratio_7d": NaN,
+   "class": "asset",
+   "date": "2018-10-19",
+   "k": 1,
+   "price_ratio": NaN,
+   "quote_volume_ratio_7d": NaN,
+   "reason": "gap",
+   "signature": "other_or_insufficient",
+   "symbol": "VENUSDT"
+  },
+  {
+   "base_volume_ratio_7d": NaN,
+   "class": "asset",
+   "date": "2022-11-09",
+   "k": 1,
+   "price_ratio": NaN,
+   "quote_volume_ratio_7d": NaN,
+   "reason": "jump_down",
+   "signature": "other_or_insufficient",
+   "symbol": "VIDTUSDT"
+  }
+ ],
+ "by_class": {
+  "asset": 12,
+  "leveraged_token": 28,
+  "stablecoin": 3
+ },
+ "by_reason": {
+  "gap": 8,
+  "jump_down": 14,
+  "jump_up": 21
+ },
+ "conservative_handling_cost": {
+  "frozen_membership_decisions": 21139,
+  "removed_by_epoch_reset_total": 15,
+  "removed_by_threshold": {
+   "1M": 9,
+   "5M": 6
+  },
+  "share_of_frozen": 0.0007095889114906098,
+  "symbols_affected": 5,
+  "top_symbols": [
+   [
+    "LUNAUSDT",
+    4
+   ],
+   [
+    "SUNUSDT",
+    4
+   ],
+   [
+    "BNXUSDT",
+    3
+   ],
+   [
+    "VIDTUSDT",
+    2
+   ],
+   [
+    "DREPUSDT",
+    2
+   ]
+  ]
+ },
+ "events_total": 43,
+ "signature_counts_all": {
+  "other_or_insufficient": 16,
+  "rescale_signature": 24,
+  "volume_surge": 3
+ },
+ "signature_counts_assets": {
+  "other_or_insufficient": 8,
+  "rescale_signature": 3,
+  "volume_surge": 1
+ }
+}
