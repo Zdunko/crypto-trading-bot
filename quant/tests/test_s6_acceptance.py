@@ -8,6 +8,7 @@ from pathlib import Path
 
 from quantlab import budget
 
+
 Q = Path(__file__).resolve().parents[1]
 REC = json.loads((Q / "protocol/s6_acceptance_record.json").read_text(encoding="utf-8"))
 
