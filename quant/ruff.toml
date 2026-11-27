@@ -15,6 +15,7 @@ extend-immutable-calls = ["quant.quantlab.family_a.FamilyAConfig"]
 "docs/phase4c/s1_scripts/*.py" = ["ALL"]  # one-off audit scripts, documented, not project code
 "docs/phase4c/s3_scripts/*.py" = ["ALL"]  # audit scripts (scratch fetch + analysis), documented, not project code
 "docs/phase4c/s4_scripts/*.py" = ["ALL"]  # one-off generator, documented
+"docs/phase4c/m3_scripts/*.py" = ["ALL"]  # one-off acquisition script, documented, not project code
 "docs/phase4c/s5_scripts/*.py" = ["ALL"]  # one-off investigation scripts, documented
 "tests/*" = ["S101", "E501", "RUF059", "C408"]  # E501: fixtures are verbatim log lines
 "tests/test_pit_universe.py" = ["S311", "SIM115"]
