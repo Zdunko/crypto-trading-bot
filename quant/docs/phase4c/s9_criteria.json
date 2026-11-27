@@ -1,0 +1,83 @@
+{
+ "id": "S9-criteria-v1",
+ "purpose": "Pre-registered acceptance criteria of S9 (Evidence Ladder, signal-hypothesis design and selection, V3 minimum integration plan, licensing request list, roadmap to paper trading). Committed BEFORE any S9 design document or code. Weights, scores' rubric, seeds, scenarios and decision rules are fixed here and are never tuned to results.",
+ "scope": "design, synthetic simulation and documentation only; no strategy implementation, registration or evaluation; no market experiment of any kind (including exploratory); no holdout access (not even metadata); no change to T1-T10, S2/S6 thresholds, historical manifests or acceptance records; research budget N stays 43/52 with 0 further families registered in S9; no paper/live trading; no paid service; no merge/deploy; Family A stays rejected and none of B, B2, C1, C2, C3 is revived",
+ "freeze": [
+  {"id": "F1", "rule": "S8 is frozen only after the job-level result of every job on fb4e8f9 is recorded accurately (success, failure, cancelled, skipped each named with reason); s8_acceptance_record.json holds the sha256 of every accepted S8 artifact and a test recomputes them"},
+  {"id": "F2", "rule": "budget state, run approvals, spec registry, T1-T10, all manifests and S2-S8 freeze/acceptance records unchanged"}
+ ],
+ "evidence_ladder": {
+  "levels": ["L1 predictive signal", "L2 economic viability after realistic costs", "L3 robustness across assets, periods, regimes", "L4 forward paper trading and operational reliability", "L5 controlled live deployment (separate explicit approval)"],
+  "rules": [
+   "each level has its own pre-registered question, data, test, multiplicity correction and rejection criteria",
+   "passing level k is reported as passing level k only; any document, report or code path that states or implies a higher level is a defect",
+   "levels are entered in order; a level may not be started before the previous level has an accepted written outcome",
+   "T1-T10 are not modified and are not reinterpreted: they remain the criteria of the original strategy-evaluation protocol; a signal that passes L1 or L2 is not a validated strategy under T1-T10",
+   "no rejected strategy is reclassified; the ladder never re-tests Family A or the Phase 3 strategies",
+   "L5 exists only as a label and is unreachable without a separate written owner approval"
+  ],
+  "required_fields_per_level": ["question", "claim_type", "data", "statistic", "null_hypothesis", "multiplicity_correction", "rejection_criteria", "budget_accounting", "what_passing_does_not_mean"]
+ },
+ "hypotheses": {
+  "count": 3,
+  "must_be_economically_distinct_mechanisms": true,
+  "forbidden_reuse": ["trend_ema_cross", "mean_reversion_rsi_bb", "breakout_donchian", "momentum_roc", "r1_risk_overlay", "trend_vol_scaled_basket", "Family A"],
+  "required_fields": ["economic_rationale", "signal_definition", "point_in_time_data", "prediction_horizon", "expected_turnover", "cost_sensitivity", "regime_dependence", "lookahead_and_survivorship_risks", "null_hypothesis", "multiple_testing_correction", "rejection_criteria", "estimated_power"],
+  "constraint": "spot long-only implementable (the short side may be used only for the L1 signal test, never in a tradable claim); at most 1 scalar parameter fixed ex ante per hypothesis; no fitted model"
+ },
+ "selection_rubric": {
+  "criteria": {"economic_plausibility": 0.35, "research_feasibility": 0.25, "implementation_simplicity": 0.20, "expected_practical_value": 0.20},
+  "scale": "integer 1 (worst) to 5 (best)",
+  "scores_are_assigned_from": "stated a-priori reasons (mechanism, point-in-time data availability, simulated power under the pre-registered scenarios, number of parameters, turnover and cost arithmetic); never from observed market performance, which does not exist for these signals in this repository",
+  "decision": "recommend exactly the hypothesis with the highest weighted score; ties broken by lower expected turnover, then by fewer parameters; the scores and the ranking are stored in docs/phase4c/s9_selection.json and a test recomputes the ranking"
+ },
+ "power_study": {
+  "seed": 20261128,
+  "days": 1642,
+  "replications": 400,
+  "daily_idiosyncratic_sd": 0.02,
+  "market_factor_sd": 0.025,
+  "sector_factors": {"clusters": 5, "sd": 0.01},
+  "assets": [10, 40, 100],
+  "ic_grid": [0.005, 0.01, 0.02],
+  "one_sided_alpha": 0.05,
+  "test": "mean of the daily cross-sectional Pearson IC series with Newey-West standard error, lag 10",
+  "dependence_scenarios": ["baseline_student_t3_noise", "regime_dependent_skill", "volatility_clustering_noise"],
+  "regime_dependent_skill": "skill is present at twice its average strength in one regime state and absent in the other (two-state Markov chain, daily stay probability 0.99), so the IC series is strongly autocorrelated",
+  "powered_means": "power >= 0.80 at the hypothesis' minimum economically relevant IC under the most pessimistic of the three scenarios",
+  "minimum_economically_relevant_ic": {
+   "formula": "IC_min = margin * annual_one_way_turnover * cost_one_way / (top_quintile_mean_z * idiosyncratic_sd * 365)",
+   "margin": 2.0,
+   "cost_one_way": 0.0015,
+   "top_quintile_mean_z": 1.4,
+   "note": "cost_one_way is the S6 minimum fee 0.001 plus slippage 0.0005; the turnover of each hypothesis is a declared assumption, not a measurement; the formula ignores the short side because only the long side is tradable"
+  }
+ },
+ "budget_accounting": {
+  "rules": [
+   "no signal experiment on market data exists before its family is registered under the existing budget mechanism with owner approval",
+   "the recommended hypothesis would be ONE family: it consumes one of the 3 remaining family slots and adds at most 3 configurations to N (43 -> at most 46 of 52); the two non-selected hypotheses are not tested and consume nothing",
+   "an L1 test of a pre-registered configuration is counted once; re-running an identical pre-registered configuration does not add to N; any changed definition, horizon, universe threshold or parameter is a new configuration and adds to N",
+   "no exploratory market experiment is allowed; looking at market-derived summary statistics of a candidate signal before pre-registration counts as an experiment and is forbidden",
+   "S9 itself adds nothing to N"
+  ]
+ },
+ "inference_protocol": {
+  "must_include": ["HAC (Newey-West) or block-bootstrap standard errors with the lag fixed ex ante", "Holm correction across all pre-registered configurations and horizons of the family", "distinct statements of statistical significance (L1), economic significance (L2: net of costs against buy-and-hold and cash and exposure-matched comparators) and tradability (capacity, min notional, participation cap, V3 risk layer)", "researcher-degrees-of-freedom controls: one universe rule, one fixed formula per configuration, fixed evaluation window, no dropping of assets or periods after seeing results, a registered stop rule"]
+ },
+ "v3_integration_plan": {
+  "primary_assumption": "zero recovery (gate_recovery 0.0) for assets that are delisted, suspended, untradeable or missing",
+  "sensitivity": [0.0, 0.25, 0.5, 0.75, 1.0],
+  "rule": "an assumed recovery value is a valuation input, never executable liquidity; a position in an impaired asset is never assumed sold",
+  "required_tests": ["G1", "G3", "G5"],
+  "scope_limit": "no infrastructure beyond what G1, G3 and G5 require; no code in S9"
+ },
+ "licensing": {
+  "rule": "list the exact primary-source documents and the minimum owner actions; no network request to a host already found unreachable is repeated; no commercial usage right is assumed"
+ },
+ "roadmap": {
+  "must_include": ["milestones", "estimated implementation effort", "decision gates", "explicit termination conditions"],
+  "constraint": "concise; paper trading is a milestone to be approved later, not started"
+ },
+ "deliverable": "final report in Croatian with exactly one recommended hypothesis and a ready-to-approve implementation plan; then stop and wait for explicit owner approval"
+}
