@@ -127,6 +127,11 @@ Synthetic-data tests prove rules and causality, **not profitability**. No backte
 
 - S6 accepted and frozen (`protocol/s6_acceptance_record.json`); budget unchanged (N 43/52, 0 families). **Risk layer V3** (`quantlab/risk_v3.py`, spec `protocol/risk_v3_spec.json`, 51 synthetic tests; `risk_v2.py` untouched): elapsed-time stale detection (48 h), hourly monitoring independent of the strategy clock, explicit DELISTED/SUSPENDED/UNTRADEABLE/MISSING handling, conservative valuation that cannot hide drawdown, zero/partial-recovery sensitivity, identical to V2 when nothing is impaired; not yet used by any evaluation. **Gate methodology audit** (synthetic simulations, stored): v1 gate overstates effective episodes under overlap/regimes, exposure-favouring statistic, cannot check declared exposure; v2 proposal not adopted. **Family review**: B2 and three candidates, recommendation NO-GO (minimum detectable relative IR ~1.2 on 4.5 years). Production-readiness roadmap (documentation). Amendment A10, natural-order amendment loading fix. Original S5 and B2 remain unapproved.
 
+## Phase 4C S8 research feasibility resolution and methodology redesign (`quant/docs/phase4c/s8_report.md`)
+
+- Pre-registered (`s8_criteria.json`, commit a54ff97) before any code. **Decision: NO-GO under the pre-registered rule** (`s8_decision_framework.md`): no path reaches 80 % power at IR 0.5 (4.5 y: 0.22-0.33; 13 y: 0.49-0.56; ~25 y needed) and the only verified data licence is research-only. Synthetic study (`quantlab/design_study.py`, stored results, 11 tests): HAC and block L10 keep size <= 0.07; dependence inflation of return series is small (0.97-1.23); non-significance is not evidence of negative performance; shuffled K-fold leaks (+0.085 IC on noise); more assets are 1.4-1.7 effective assets for absolute claims; cross-sectional breadth helps only through the achievable IR (assumed); best-of-43 null Sharpe 1.04.
+- Licensing: 12 primary URLs unreachable (host not resolvable) -> all venues except Binance Vision remain **unverified**. Risk V3: not ready for adoption (needs integration tests G1, G3, G5 and an owner decision on recovery). v2 methodology proposal still not adopted. S6 gate, thresholds, T1-T10, manifests, budget (N 43/52), holdout all unchanged. No strategy, no market evaluation.
+
 ## GitHub CI results
 
 | Check | Commit `c6cc24a` | Commit `5c9582f` |
@@ -220,3 +225,4 @@ defaults to **OKX** for the technical bias check; this is **not** the owner's fi
   residual-risk and CI documentation.
 - 2026-11-25 — Phase 2 (approved): strategy specs, 5 strategies, `quant_common`, `strategy_policy`, 78 new tests,
   Phase 3 threshold proposal, `quant-research.yml` (bias stage), always-on informational network probe.
+- 2026-11-27 — S8: pre-registered design study (synthetic), methodology review, data/licensing verification attempt (unverified), V3 adoption review, decision framework: NO-GO under the pre-registered rule; no strategy, no market evaluation.
