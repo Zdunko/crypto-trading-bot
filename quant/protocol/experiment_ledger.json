@@ -263,13 +263,19 @@
    },
    "diagnostic_replay": {
     "stage": "M4 / L2 economic viability",
-    "status": "registered, not yet executed",
+    "status": "EXECUTED once (2026-11-27); consumed",
     "preregistration": "protocol/m4_l2_preregistration.json",
     "spec_sha256": "8f18168550ca9af879296c2de2655be36ac8a5bc4b786da610968b749d9c7435",
     "owner_approval": "protocol/m4_owner_approval.json",
     "adds_configurations": 0,
     "N_after": 45,
-    "rule": "approved diagnostic replay per family (protocol V2 section 8); executed once; no rerun"
+    "rule": "approved diagnostic replay per family (protocol V2 section 8); executed once; no rerun",
+    "result_file": "docs/phase4c/m4_l2_results.json",
+    "result_sha256": "2d64e8e8591548d475d27f3039d8d5b31613f8e3f2718818d3debad92d0541a4",
+    "outcome": "L2 NO-GO for H1-h7 (failed A4, A5) and for H1-h28 (failed A3, A4, A5); Risk Management V3 reached SHUTDOWN at 2021-02-23 (h=7) and 2021-05-19 (h=28)",
+    "holdout_accessed": false,
+    "n_after": 45,
+    "diagnostic_replays_used": 1
    }
   }
  ]
