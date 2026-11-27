@@ -25,6 +25,7 @@ known-first-party = ["quantlab"]
 "quantlab/budget.py" = ["E501"]
 "quantlab/gate_audit.py" = ["E501", "C901", "PLR0912", "PLR0913", "PLR0914", "PLR0915", "PLC0415", "E731"]  # seeded simulation study, one function per question
 "quantlab/design_study.py" = ["E501", "C901", "PLR0912", "PLR0913", "PLR0914", "PLR0915", "PLC0415", "E731", "PLR2004", "SLF001"]  # seeded simulation study, one function per question
+"quantlab/signal_power.py" = ["E501", "C901", "PLR0912", "PLR0913", "PLR0914", "PLR0915", "PLR2004"]  # seeded synthetic power study
 "quantlab/risk_v3.py" = ["E501", "C901", "PLR0912", "PLR0913", "PLR0914"]  # V3 wrapper mirrors the V2 order logic
 "quantlab/benchmarks.py" = ["E501", "C901", "PLR0913", "PLR0914"]  # engine-based benchmarks, formulas kept inline
 "quantlab/feasibility.py" = ["E501", "C901", "PLR0912", "PLR0915", "BLE001"]  # one check per rule; broad except is the fail-closed design

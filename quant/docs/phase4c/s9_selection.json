@@ -1,0 +1,49 @@
+{
+ "id": "S9-selection-v1",
+ "criteria": "docs/phase4c/s9_criteria.json (selection_rubric)",
+ "assigned": "BEFORE the S9 power simulation was run and without any market data; scores come from the stated reasons only. They are not edited after the simulation.",
+ "hypotheses": [
+  {
+   "id": "H1",
+   "name": "Lottery-demand avoidance (MAX effect)",
+   "mechanism": "behavioural: retail demand for lottery-like payoffs overprices coins with extreme recent single-day gains; they earn lower subsequent returns",
+   "free_parameters": {"window_days": 28},
+   "annual_one_way_turnover_assumption": 12.0,
+   "scores": {"economic_plausibility": 4, "research_feasibility": 3, "implementation_simplicity": 4, "expected_practical_value": 3},
+   "reasons": {
+    "economic_plausibility": "a named behavioural mechanism with an observable proxy; crypto spot is retail-heavy; the literature is NOT verified in this environment, so this is a hypothesis, not a fact",
+    "research_feasibility": "needs only point-in-time daily closes (available); cross-section N >= 40 from 2021 (S1 counts); detection power limited like every candidate",
+    "implementation_simplicity": "one formula, one fixed window, no fitted model, ranks only",
+    "expected_practical_value": "weekly rebalance gives high turnover (cost-sensitive) and a long-only portfolio captures only the avoid-the-lottery half of the spread"
+   }
+  },
+  {
+   "id": "H2",
+   "name": "Post-listing hype decay (listing-age filter)",
+   "mechanism": "supply/novelty: newly listed coins attract attention and are overpriced relative to their later cash-flow-free fundamentals; the premium decays with age",
+   "free_parameters": {"age_cutoff_days": 365},
+   "annual_one_way_turnover_assumption": 1.5,
+   "scores": {"economic_plausibility": 3, "research_feasibility": 2, "implementation_simplicity": 5, "expected_practical_value": 3},
+   "reasons": {
+    "economic_plausibility": "the mechanism is plausible but age also proxies size, liquidity and survival, so the signal is hard to separate from known confounds; listing date is the Binance listing, not the coin's true age",
+    "research_feasibility": "few young coins at any date and the skill would be concentrated in them, so the cross-sectional test has a small effective sample",
+    "implementation_simplicity": "no price calculation; needs only the point-in-time listing date",
+    "expected_practical_value": "lowest turnover, nearly cost-insensitive, but it acts more like a universe filter than an alpha source"
+   }
+  },
+  {
+   "id": "H3",
+   "name": "Illiquidity compensation (Amihud)",
+   "mechanism": "liquidity risk premium: investors demand compensation for holding assets that are costly to trade; illiquidity measured as mean absolute return per unit of quote volume",
+   "free_parameters": {"window_days": 60},
+   "annual_one_way_turnover_assumption": 3.0,
+   "scores": {"economic_plausibility": 4, "research_feasibility": 3, "implementation_simplicity": 4, "expected_practical_value": 2},
+   "reasons": {
+    "economic_plausibility": "a standard risk-compensation mechanism, distinct from behavioural ones; untested in this environment",
+    "research_feasibility": "needs daily close and quote volume (available); same cross-sectional power as the others",
+    "implementation_simplicity": "one formula, one fixed window, ranks only",
+    "expected_practical_value": "the premium sits in the least liquid quintile where slippage, capacity, minimum notional and delisting risk are worst; the assumed cost per trade is most likely understated there"
+   }
+  }
+ ]
+}
