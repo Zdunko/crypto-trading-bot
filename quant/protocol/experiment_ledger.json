@@ -246,7 +246,21 @@
    "counts_toward_N": true,
    "charged_before_results_read": true,
    "ladder_level": "L1",
-   "note": "the 43 earlier configurations are unchanged; multiple_testing_rule keeps its recorded baseline N = 43 and this family adds its two configurations"
+   "note": "the 43 earlier configurations are unchanged; multiple_testing_rule keeps its recorded baseline N = 43 and this family adds its two configurations",
+   "market_run": {
+    "executed": "2026-11-27",
+    "result_file": "docs/phase4c/m3_l1_results.json",
+    "result_sha256": "53a3862df0d199efadcd7d391bbf297ea68ee67ec8b12fe0fd2534b651aba8aa",
+    "configurations_reported": [
+     "H1-h7",
+     "H1-h28"
+    ],
+    "outcome": "both configurations passed the registered L1 criteria (L1 only)",
+    "market_runs_consumed": 1,
+    "holdout_accessed": false,
+    "data": "Binance Vision spot 1d klines 2020-11-01..2025-06-29, 15699 files verified against the S4 manifest",
+    "read_before_registration": false
+   }
   }
  ]
 }

@@ -1,0 +1,18 @@
+{
+ "decision": "L1 PASS (both registered configurations)",
+ "files": {
+  "docs/phase4c/m3_l1_report.md": "15fc10990d59761aba492a9625343c2a5bec34f9a87017fc3cb02384653dd13f",
+  "docs/phase4c/m3_l1_results.json": "53a3862df0d199efadcd7d391bbf297ea68ee67ec8b12fe0fd2534b651aba8aa",
+  "docs/phase4c/m3_licensing_questions.md": "b4935166bae622fcfb845ae828209cae56a1c4300c880990d17f4449d6a7a966",
+  "docs/phase4c/m3_scripts/fetch_1d_parallel.py": "2367ef082b9d1ecf14a74a8539d753ed89c1a93841ce8f4fb2d55f63875872a4",
+  "protocol/amendments/A13_ledger_h1_run.json": "4819a717dcf6ec25a100e81e87a3a658c6a0a640da22d9464d3d680b3761cc8d",
+  "protocol/amendments/A14_budget_h1_run.json": "58847acbb5e37f20985f45f2ebb4328c81b4cc9aad4fca70822db55c8585d74c",
+  "protocol/h1_l1_preregistration.json": "dcf05980e1603dc9618fbed24b1358b968d514cd576662064d9b87f301833e64",
+  "protocol/m2_freeze_record.json": "1c852b45c5208caae77de5cef9eb3204eed8b4fdfcf3591958279ff278bfad43",
+  "quantlab/l1_max3.py": "2e4cdf62442b3e674e908878fc4bcf5e5822dd550b5ecebd17cbbfd8ab5d0a47",
+  "quantlab/l1_run.py": "2ae508d6f8e8eaaf0fbc46228657715193714db01a831b9f692feac4e830533b",
+  "tests/test_m3_results.py": "a94486c028c05b9652f4acd76bf4411b55d97488851bc9e70d9c4f8d19d2db63"
+ },
+ "id": "M3-freeze-v1",
+ "result_level": "L1 only"
+}

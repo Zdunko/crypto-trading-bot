@@ -26,13 +26,21 @@ def main(store_dir: str, rate: float = 25.0) -> int:
     ds = pl.PitDataset.open(l1_run.DATASET, store_dir)
     ev, un = spec["evaluation"], spec["universe"]
     months = [f"{y}-{mo:02d}" for y in range(2020, 2026) for mo in range(1, 13)]
-    months = [x for x in months if ev["panel_first_candle_open"][:7] <= x <= ev["last_candle_open"][:7]]
+    months = [
+        x for x in months if ev["panel_first_candle_open"][:7] <= x <= ev["last_candle_open"][:7]
+    ]
     symbols = {ev["regime"]["reference_symbol"]}
     for mo in months:
         if mo >= "2021-01":
-            symbols |= set(ds.universe_at(pd.Timestamp(mo + "-01", tz="UTC"), un["threshold"], un["max_stale_days"]))
+            symbols |= set(
+                ds.universe_at(
+                    pd.Timestamp(mo + "-01", tz="UTC"), un["threshold"], un["max_stale_days"]
+                )
+            )
     jobs = [(s, mo) for s in sorted(symbols) for mo in months if mo in ds.listing.get(s, [])]
-    client = pf.Client(pf.HttpTransport(), pf.RateLimiter(rate), log_path=Path(store_dir) / "request_log.tsv")
+    client = pf.Client(
+        pf.HttpTransport(), pf.RateLimiter(rate), log_path=Path(store_dir) / "request_log.tsv"
+    )
     store = pf.Store(store_dir)
     bad = []
 
@@ -48,7 +56,17 @@ def main(store_dir: str, rate: float = 25.0) -> int:
         statuses = list(ex.map(one, jobs))
     from collections import Counter
 
-    print(json.dumps({"jobs": len(jobs), "symbols": len(symbols), "statuses": dict(Counter(statuses)), "errors": bad[:5], "peak_requests_per_second": client.limiter.peak_per_second()}))
+    print(
+        json.dumps(
+            {
+                "jobs": len(jobs),
+                "symbols": len(symbols),
+                "statuses": dict(Counter(statuses)),
+                "errors": bad[:5],
+                "peak_requests_per_second": client.limiter.peak_per_second(),
+            }
+        )
+    )
     return 1 if bad else 0
 
 

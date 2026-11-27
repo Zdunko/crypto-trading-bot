@@ -76,3 +76,5 @@ The detailed, staged roadmap (legally permitted data, exchange integration, exec
 S8 (research feasibility resolution) found that no backtest-only path reaches 80 % power at IR 0.5 and recommends NO-GO under its pre-registered rule; any change of claim type is an owner decision. See `quant/docs/phase4c/s8_decision_framework.md`. It starts nothing.
 
 S9 proposes a staged Evidence Ladder (L1-L5) and a concrete path (H1) to a paper-trading bot in `quant/docs/phase4c/s9_roadmap.md`; every milestone needs separate written owner approval. It starts nothing.
+
+M0-M3 (H1) executed: L1 PASS for the MAX3 signal on research-only data, flagged as a low-volatility signal; next gate (L2) needs separate owner approval and a new pre-registration. See `quant/docs/phase4c/m3_l1_report.md`.

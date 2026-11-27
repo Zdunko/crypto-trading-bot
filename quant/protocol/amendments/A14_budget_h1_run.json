@@ -1,0 +1,36 @@
+{
+ "id": "A14",
+ "date": "2026-11-27",
+ "manifests": [],
+ "title": "Pinned artifact changed by the single H1 market run: research budget (market_runs 1, status evaluated_accepted at level L1)",
+ "reason": "The registered run consumed the family's single market run; earlier freeze records are not edited, the successor hash is declared here.",
+ "owner_approval": "protocol/h1_owner_approval.json",
+ "preserves": {},
+ "changes": [
+  {
+   "file": "protocol/research_budget.json",
+   "from": "1a390009c8c13a991a5a2bb0c175a10a20a1021fbd3286399ffcdbb63374fcae",
+   "to": "af4b2a506c026e978f2c1a1b9d312bbd62918cdce9ed0e0ebffca9ffe60be350",
+   "summary": "h1_lottery_max3: market_runs 0 -> 1, status preregistered -> evaluated_accepted (result_level L1 only)"
+  }
+ ],
+ "budget_state_after": {
+  "total_n": 45,
+  "note_n": "N=43 as recorded in experiment_ledger.json (multiple_testing_rule); Family A and everything before it are inside N",
+  "further_families": [
+   {
+    "id": "h1_lottery_max3",
+    "configurations": 2,
+    "market_runs": 1,
+    "status": "evaluated_accepted",
+    "result_level": "L1 only (not L2, not L3)",
+    "result_file": "docs/phase4c/m3_l1_results.json",
+    "result_sha256": "53a3862df0d199efadcd7d391bbf297ea68ee67ec8b12fe0fd2534b651aba8aa"
+   }
+  ],
+  "consecutive_rejected_under_v2": 0,
+  "note_rejected": "Family A was evaluated before protocol V2 and does not count toward the V2 stop rule",
+  "note_families": "H1 registered by A11 (N 43 -> 45); its single registered L1 run was executed on 2026-11-27 (market_runs 1 of 1): both configurations passed the registered L1 criteria; this is an L1 result only. Amendment A13/A14."
+ },
+ "unchanged_parameters": "caps, N (45), every earlier count"
+}

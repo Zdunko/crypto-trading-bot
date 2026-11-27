@@ -15,13 +15,16 @@
    {
     "id": "h1_lottery_max3",
     "configurations": 2,
-    "market_runs": 0,
-    "status": "preregistered"
+    "market_runs": 1,
+    "status": "evaluated_accepted",
+    "result_level": "L1 only (not L2, not L3)",
+    "result_file": "docs/phase4c/m3_l1_results.json",
+    "result_sha256": "53a3862df0d199efadcd7d391bbf297ea68ee67ec8b12fe0fd2534b651aba8aa"
    }
   ],
   "consecutive_rejected_under_v2": 0,
   "note_rejected": "Family A was evaluated before protocol V2 and does not count toward the V2 stop rule",
-  "note_families": "H1 registered by amendment A11 (owner approval 2026-11-27): one family, two configurations (7-day and 28-day horizons); N 43 -> 45; charged before any result is read."
+  "note_families": "H1 registered by A11 (N 43 -> 45); its single registered L1 run was executed on 2026-11-27 (market_runs 1 of 1): both configurations passed the registered L1 criteria; this is an L1 result only. Amendment A13/A14."
  },
  "family_record_format": {
   "id": "string",
