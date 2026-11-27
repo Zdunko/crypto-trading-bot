@@ -1,5 +1,14 @@
 {
  "id": "run-approvals-v1",
  "note": "A market run needs an explicit owner approval for an exact spec hash; this file is edited only on the owner's written instruction. Empty = no run is approved.",
- "approvals": []
+ "approvals": [
+  {
+   "family_id": "h1_lottery_max3",
+   "approved_by": "owner",
+   "spec_hash": "469607453ca5261c83d7903ed95ea69fdee87f05b47878d0472feb551cc48741",
+   "text_sha256": "2365e40c11c318cfa67b71e8097c5f30f95b10d2f9da1e7fb68ecfb77876ba11",
+   "scope": "L1 only: the two registered configurations, development-period data only, one execution; no L2/L3",
+   "source": "owner message of 2026-11-27"
+  }
+ ]
 }

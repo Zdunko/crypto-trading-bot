@@ -9,11 +9,24 @@
   "stop_after_consecutive_rejected_under_v2": 2
  },
  "state": {
-  "total_n": 43,
+  "total_n": 45,
   "note_n": "N=43 as recorded in experiment_ledger.json (multiple_testing_rule); Family A and everything before it are inside N",
-  "further_families": [],
+  "further_families": [
+   {
+    "id": "h1_lottery_max3",
+    "configurations": 2,
+    "market_runs": 0,
+    "status": "preregistered"
+   }
+  ],
   "consecutive_rejected_under_v2": 0,
-  "note_rejected": "Family A was evaluated before protocol V2 and does not count toward the V2 stop rule"
+  "note_rejected": "Family A was evaluated before protocol V2 and does not count toward the V2 stop rule",
+  "note_families": "H1 registered by amendment A11 (owner approval 2026-11-27): one family, two configurations (7-day and 28-day horizons); N 43 -> 45; charged before any result is read."
  },
- "family_record_format": {"id": "string", "configurations": "int", "market_runs": "int", "status": "preregistered | evaluated_accepted | evaluated_rejected"}
+ "family_record_format": {
+  "id": "string",
+  "configurations": "int",
+  "market_runs": "int",
+  "status": "preregistered | evaluated_accepted | evaluated_rejected"
+ }
 }

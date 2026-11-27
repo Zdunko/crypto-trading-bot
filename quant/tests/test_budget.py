@@ -27,11 +27,12 @@ def test_real_budget_and_ledger_pass_and_baseline_is_recorded():
     assert budget.violations(B) == []
     st = B["state"]
     assert (
-        st["total_n"]
-        == 43
-        == budget.ledger_n(json.loads(budget.LEDGER.read_text(encoding="utf-8")))
-    )
-    assert st["further_families"] == [] and B["caps"]["max_total_n"] == 52
+        budget.ledger_n(json.loads(budget.LEDGER.read_text(encoding="utf-8"))) == 43
+    )  # the recorded baseline
+    assert st["total_n"] == 43 + sum(f["configurations"] for f in st["further_families"]) <= 45
+    assert [x["id"] for x in st["further_families"]] in ([], ["h1_lottery_max3"]) and B["caps"][
+        "max_total_n"
+    ] == 52
     assert budget.check() == 0
 
 

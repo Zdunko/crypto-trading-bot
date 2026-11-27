@@ -233,9 +233,13 @@ def test_a_gate_pass_never_authorises_a_run():
         is False
     )
     assert f.may_start_market_run("SYN-1", budget, {"approvals": [approval]}, None)[0] is False
-    # the real files: nothing registered, nothing approved
-    assert json.loads(f.APPROVALS.read_text(encoding="utf-8"))["approvals"] == []
-    assert BUDGET["state"]["further_families"] == []
+    # the real files: nothing but the amendment-declared H1 registration and its L1-only approval
+    from amend_chain import accepted_approvals
+
+    assert json.loads(f.APPROVALS.read_text(encoding="utf-8"))["approvals"] in accepted_approvals(
+        []
+    )
+    assert [x["id"] for x in BUDGET["state"]["further_families"]] in ([], ["h1_lottery_max3"])
 
 
 def test_template_is_machine_readable_and_not_passable():

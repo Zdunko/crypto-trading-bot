@@ -228,5 +228,25 @@
    "report": "quant/docs/phase4c/s7_report.md"
   }
  ],
- "ledger_rule": "Every diagnostic or exploratory experiment is recorded; any experiment that influenced strategy or parameter selection counts toward N and the research budget."
+ "ledger_rule": "Every diagnostic or exploratory experiment is recorded; any experiment that influenced strategy or parameter selection counts toward N and the research budget.",
+ "registered_families": [
+  {
+   "id": "h1_lottery_max3",
+   "registered": "2026-11-27",
+   "amendment": "A11",
+   "configurations": [
+    "H1-h7",
+    "H1-h28"
+   ],
+   "N_before": 43,
+   "N_after": 45,
+   "spec_sha256": "469607453ca5261c83d7903ed95ea69fdee87f05b47878d0472feb551cc48741",
+   "preregistration": "protocol/h1_l1_preregistration.json",
+   "owner_approval": "protocol/h1_owner_approval.json",
+   "counts_toward_N": true,
+   "charged_before_results_read": true,
+   "ladder_level": "L1",
+   "note": "the 43 earlier configurations are unchanged; multiple_testing_rule keeps its recorded baseline N = 43 and this family adds its two configurations"
+  }
+ ]
 }

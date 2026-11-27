@@ -1,0 +1,19 @@
+{
+ "id": "A11",
+ "date": "2026-11-27",
+ "title": "Ledger: register family H1 (lottery-demand avoidance, MAX3), N 43 -> 45, charged before any result is read",
+ "reason": "The owner approved exactly one new family with two configurations and a maximum N of 45; the registration is charged before any result is read.",
+ "owner_approval": "protocol/h1_owner_approval.json (owner message 2026-11-27)",
+ "preserves": {
+  "frozen_manifest_v4.json": "1336106a0f8086333b2c5263501de8e2a4c1f62bee5ddc9d1f87ad93b69485d3"
+ },
+ "changes": [
+  {
+   "file": "protocol/experiment_ledger.json",
+   "from": "8446d854872507be3fe54f2782d02601db721e010d4060c754e1514195023bf3",
+   "to": "8fa0349ea889b47f124b913649d9da13c90b3eecc079708385001c13c2f43c7a",
+   "summary": "adds registered_families entry; multiple_testing_rule and every earlier count unchanged"
+  }
+ ],
+ "unchanged_parameters": "every rule, parameter, threshold, date and count of earlier work, T1-T10, S2/S6 thresholds, the holdout rules; caps (3 families, 3 configurations per family, N 52, 1 market run per family)"
+}

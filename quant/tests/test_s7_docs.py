@@ -5,6 +5,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from amend_chain import accepted_approvals, accepted_budget_states, accepted_registry_ids
+
 
 Q = Path(__file__).resolve().parents[1]
 D = Q / "docs/phase4c"
@@ -53,12 +55,13 @@ def test_roadmap_covers_all_eight_stages_and_starts_nothing():
 
 def test_no_family_registered_and_budget_unchanged():
     b = json.loads((Q / "protocol/research_budget.json").read_text(encoding="utf-8"))
-    assert b["state"]["total_n"] == 43 and b["state"]["further_families"] == []
-    assert (
-        json.loads((Q / "protocol/run_approvals.json").read_text(encoding="utf-8"))["approvals"]
-        == []
-    )
-    assert (
-        json.loads((Q / "protocol/spec_registry.json").read_text(encoding="utf-8"))["registered"]
-        == []
-    )
+    base = json.loads((Q / "protocol/s7_freeze_record.json").read_text(encoding="utf-8"))[
+        "budget_state"
+    ]
+    assert b["state"] in accepted_budget_states(
+        base
+    )  # N=43, or the state declared by amendment A11
+    appr = json.loads((Q / "protocol/run_approvals.json").read_text(encoding="utf-8"))["approvals"]
+    assert appr in accepted_approvals([])
+    reg = json.loads((Q / "protocol/spec_registry.json").read_text(encoding="utf-8"))["registered"]
+    assert [r["family_id"] for r in reg] in accepted_registry_ids([])

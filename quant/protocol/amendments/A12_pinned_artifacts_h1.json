@@ -1,0 +1,94 @@
+{
+ "id": "A12",
+ "date": "2026-11-27",
+ "manifests": [],
+ "title": "Pinned artifacts changed by the H1 registration: research budget, spec registry, run approvals and the tests that verify them",
+ "reason": "The owner-approved H1 registration (A11) changes files that earlier freeze and acceptance records pin; those records are NOT edited. This amendment declares each successor hash; the tests accept a pinned file only if it equals the pinned hash or a successor declared here.",
+ "owner_approval": "protocol/h1_owner_approval.json (owner message 2026-11-27)",
+ "preserves": {},
+ "changes": [
+  {
+   "file": "protocol/research_budget.json",
+   "from": "ef211156f81bb00100e0968a06266a11629444ec95d1809812549c19a26b1df7",
+   "to": "1a390009c8c13a991a5a2bb0c175a10a20a1021fbd3286399ffcdbb63374fcae",
+   "summary": "family h1_lottery_max3 registered (preregistered, 0 runs), total_n 43 -> 45"
+  },
+  {
+   "file": "protocol/spec_registry.json",
+   "from": "27e27d5cfd4209ae0084f50c2c56fde38df9baf31676006d4da9c33c685787b8",
+   "to": "dc77fca6c5a1662892bcfa808a15f427a775f63d91fa7407221481b824ccc23e",
+   "summary": "appends the H1 specification hash and configuration hashes"
+  },
+  {
+   "file": "protocol/run_approvals.json",
+   "from": "d9631caecb365d4aea7835453851ad5e87e341d96053780fbafebad115b5bf7d",
+   "to": "431582a8a9eea461e2492f0c57f04df1e4be75167a9c921605bd63071cfc8a56",
+   "summary": "adds the owner approval for the exact H1 specification hash, scope L1 only"
+  },
+  {
+   "file": "tests/test_budget.py",
+   "from": "73b72a1c04c5aff8595c6de466c7b6b9141af11ad09950628adacd1a52da81bb",
+   "to": "b803476d124af5215db48a9480cddf70ed2006d60c177e074bbccc306a71267f",
+   "summary": "updated to follow the amendment chain for the H1 registration (pinned artifact)"
+  },
+  {
+   "file": "tests/test_feasibility.py",
+   "from": "271cae6de546087b1ee8ead537922a2e59fb3892d124b3585b5ac506fc0e0fa7",
+   "to": "c96069e5bb3edf1754f3e6b098e653fa7846ab5f1a4751768eb27cce6164e832",
+   "summary": "updated to follow the amendment chain for the H1 registration (pinned artifact)"
+  },
+  {
+   "file": "tests/test_s6_freeze.py",
+   "from": "22f71d7745eff87ebe31a0e2d857672c720a1e368a36a6ba108fb8706fa96590",
+   "to": "e1b6e434aabeed9733a14b2ea90bc127f603ee58848d746de53574859207f923",
+   "summary": "updated to follow the amendment chain for the H1 registration (pinned artifact)"
+  },
+  {
+   "file": "tests/test_s7_docs.py",
+   "from": "e9905093e5951a76bdb1d03aea09d135ac782a30f1272d6b7b51979179f8a70b",
+   "to": "aca25acbd55fe23fedf44e18b3490de1cb05aa0eefcc082caf99991e9b235cc0",
+   "summary": "updated to follow the amendment chain for the H1 registration (pinned artifact)"
+  },
+  {
+   "file": "tests/test_s8_freeze.py",
+   "from": "5f2459800c2127aac1f3bc3d1af77f65101edaebe61da1e9c6c75ab32bfcc96d",
+   "to": "8d74bf718c39a194e36e1dfa7c8f88b86a7ae96735ae0fd29387cb6243068adb",
+   "summary": "updated to follow the amendment chain for the H1 registration (pinned artifact)"
+  },
+  {
+   "file": "tests/test_s9_freeze.py",
+   "from": "3ce6fa10c6a8d8250e3e80fe9c8bb94d66a0e9c0585610caba4778aa0375beeb",
+   "to": "7cf0b6a6d9004f972eff60c303f8e8d7cf1d9655cd736dafb58e701695af33c0",
+   "summary": "updated to follow the amendment chain for the H1 registration (pinned artifact)"
+  }
+ ],
+ "budget_state_after": {
+  "total_n": 45,
+  "note_n": "N=43 as recorded in experiment_ledger.json (multiple_testing_rule); Family A and everything before it are inside N",
+  "further_families": [
+   {
+    "id": "h1_lottery_max3",
+    "configurations": 2,
+    "market_runs": 0,
+    "status": "preregistered"
+   }
+  ],
+  "consecutive_rejected_under_v2": 0,
+  "note_rejected": "Family A was evaluated before protocol V2 and does not count toward the V2 stop rule",
+  "note_families": "H1 registered by amendment A11 (owner approval 2026-11-27): one family, two configurations (7-day and 28-day horizons); N 43 -> 45; charged before any result is read."
+ },
+ "approvals_after": [
+  {
+   "family_id": "h1_lottery_max3",
+   "approved_by": "owner",
+   "spec_hash": "469607453ca5261c83d7903ed95ea69fdee87f05b47878d0472feb551cc48741",
+   "text_sha256": "2365e40c11c318cfa67b71e8097c5f30f95b10d2f9da1e7fb68ecfb77876ba11",
+   "scope": "L1 only: the two registered configurations, development-period data only, one execution; no L2/L3",
+   "source": "owner message of 2026-11-27"
+  }
+ ],
+ "registry_family_ids_after": [
+  "h1_lottery_max3"
+ ],
+ "unchanged_parameters": "every rule, parameter, threshold, date and count of earlier work; caps"
+}

@@ -6,6 +6,8 @@ import hashlib
 import json
 from pathlib import Path
 
+from amend_chain import accepted
+
 
 Q = Path(__file__).resolve().parents[1]
 REC = json.loads((Q / "protocol/s8_acceptance_record.json").read_text(encoding="utf-8"))
@@ -18,7 +20,7 @@ def sha(p: Path) -> str:
 def test_every_accepted_s8_artifact_is_unchanged():
     assert len(REC["files"]) >= 15
     for name, h in REC["files"].items():
-        assert sha(Q / name) == h, f"{name} changed after S8 acceptance"
+        assert sha(Q / name) in accepted(name, h), f"{name} changed after S8 acceptance"
 
 
 def test_outcome_does_not_count_skipped_jobs_as_passed():

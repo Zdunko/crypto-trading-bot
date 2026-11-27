@@ -1,0 +1,155 @@
+{
+ "id": "H1-L1-preregistration-v1",
+ "status": "FROZEN before any candidate-specific market statistic is read. Edits after the freeze commit invalidate the registration.",
+ "family_key": "lottery_demand_max3",
+ "family": "H1 lottery-demand avoidance (MAX3, fixed 28-day window)",
+ "authority": {
+  "owner_approval": "protocol/h1_owner_approval.json",
+  "s9_criteria": "docs/phase4c/s9_criteria.json",
+  "s9_hypothesis": "docs/phase4c/s9_signal_hypotheses.md",
+  "ladder_level": "L1 only (a pass is reported as L1 and nothing higher)"
+ },
+ "hypothesis": "Coins with recent lottery-like payoffs (large single-day gains) are overpriced and earn lower subsequent returns; the cross-sectional rank of -MAX3 predicts forward returns positively.",
+ "null_hypothesis": "mean daily cross-sectional Spearman IC <= 0",
+ "signal": {
+  "formula": "r(i,tau) = C(i,tau)/C(i,tau-1) - 1 from daily closes; MAX3(i,t) = mean of the 3 largest r(i,tau) for tau in {t-27..t}; S(i,t) = -MAX3(i,t)",
+  "direction": "higher S = less lottery-like = predicted to earn MORE; the test is one-sided (mean IC > 0)",
+  "window_days": 28,
+  "top_k": 3,
+  "availability": "S(i,t) is computed when the daily candle of day t completes (00:00 UTC of day t+1) from completed candles <= t only",
+  "validity": "S is missing unless all 28 returns exist (29 consecutive positive closes) and the whole window lies inside one identity epoch of the S4 epoch table",
+  "ties": "average ranks; a constant cross-section gives no IC for that day"
+ },
+ "returns": {
+  "definition": "R(i,t,h) = Open(i,t+1+h) / Open(i,t+1) - 1 (open to open, simple return); entry is the open of the day after the signal day, i.e. the 'next candle open' fill of the engine, assumed zero-latency for L1",
+  "missing_exit": "if the exit candle is missing (gap or delisting inside the horizon) the exit is the last observed close in [t+1, t+h]; no recovery and no total loss is invented",
+  "missing_entry": "no entry candle: the asset has no observation that day",
+  "sensitivity_not_gating": "assets with no candle from t+1+h on are assigned R = -1 (zero recovery); reported only",
+  "costs": "none at L1 (L1 makes no cost or tradability claim)"
+ },
+ "universe": {
+  "source": "PitDataset.universe_at(first day of the month of t, '5M', max_stale_days=3): S4 causal liquidity eligibility (median 90-day USDT quote volume >= 5 M, >= 60 completed daily candles in the 90 days, last candle at most 3 days old at the month start), explicit asset classification (stablecoins, fiat, leveraged and commodity tokens excluded), delisted symbols included; membership is fixed for the calendar month",
+  "threshold": "5M",
+  "max_stale_days": 3,
+  "symbols_quote": "USDT"
+ },
+ "horizons_days": [
+  7,
+  28
+ ],
+ "configurations": [
+  {
+   "id": "H1-h7",
+   "horizon_days": 7
+  },
+  {
+   "id": "H1-h28",
+   "horizon_days": 28
+  }
+ ],
+ "evaluation": {
+  "data": "Binance Vision spot monthly 1d klines, research use only, via the verified PIT loader (sha256 of every file checked against the S4 manifest)",
+  "panel_first_candle_open": "2020-11-01",
+  "first_signal_date": "2021-01-01",
+  "last_candle_open": "2025-06-29",
+  "last_candle_note": "the last daily candle the loader may serve as completed before the holdout cutoff (2025-07-01); the holdout is never read",
+  "signal_dates": "first_signal_date .. last_candle_open - (1 + h)",
+  "subperiods": {
+   "P1": [
+    "2021-01-01",
+    "2022-12-31"
+   ],
+   "P2": [
+    "2023-01-01",
+    "2025-06-29"
+   ]
+  },
+  "regime": {
+   "definition": "sign of the trailing 90-day close-to-close return of BTCUSDT at the signal date (up if > 0, down otherwise); reported only, not gating",
+   "reference_symbol": "BTCUSDT",
+   "lookback_days": 90
+  }
+ },
+ "statistics": {
+  "statistic": "mean over signal days of the daily cross-sectional Spearman IC between S(.,t) and R(.,t,h), members of the month's universe with valid S and R",
+  "min_assets_per_day": 20,
+  "min_valid_ic_days": 1000,
+  "min_mean_assets": 30,
+  "min_coverage_ratio": 0.8,
+  "hac_lag_multiplier": 2,
+  "hac_note": "Newey-West, Bartlett kernel, lag = 2h (14 for h = 7, 56 for h = 28): the h-day forward returns overlap, so the IC series is MA(h-1); 2h is a conservative margin fixed ex ante",
+  "inference": "one-sided normal approximation of t = mean / HAC standard error",
+  "bootstrap_check": "circular block bootstrap of the mean IC, block length = max(lag, 2), 999 draws; reported, not gating",
+  "bootstrap_draws": 999,
+  "bootstrap_seed": 20261129,
+  "reported": [
+   "mean and median IC",
+   "HAC standard error and t",
+   "two-sided 95 % confidence interval and one-sided 95 % lower bound",
+   "raw and Holm-corrected p",
+   "effective sample size = n * (naive se / HAC se)^2",
+   "assets per day, coverage, missing signal/return counts",
+   "sub-period and regime means",
+   "delisting zero-recovery sensitivity"
+  ],
+  "bootstrap_seed_rule": "seed + horizon_days per configuration"
+ },
+ "multiple_testing": {
+  "primary": "Holm across the 2 registered configurations (family-wise one-sided alpha 0.05)",
+  "relevant_historical_tests": "none: none of the 43 earlier configurations evaluated a lottery/MAX signal; they tested other strategy families on other claims, so they do not enter this family's correction. Interpretation recorded here before any result; the owner's phrase 'any relevant historical hypothesis tests' is read as 'tests of the same hypothesis or signal', of which there are 0.",
+  "program_wide_sensitivity_not_gating": "Bonferroni across the whole research programme (N = 45): per-test alpha 0.05/45 = 0.001111; reported next to the primary result so the effect of the stricter reading is visible"
+ },
+ "criteria": {
+  "alpha_family": 0.05,
+  "practical_threshold_per_day_ic": 0.003522504892367907,
+  "practical_threshold_rule": "mean IC_h >= 0.003522504892367907 * sqrt(h): the S9 break-even IC (H1, turnover 12, cost 0.15 %, margin 2) scaled by sqrt(h), the large-persistence relation between a per-day IC and an h-day IC; the scaling is an assumption (see the horizon power study)",
+  "stability": "mean IC > 0 in BOTH sub-periods P1 and P2",
+  "pass_rule": "L1 PASS iff at least one configuration meets ALL of: data gates (valid days >= 1000, mean assets >= 30, coverage >= 0.80), Holm-corrected p <= 0.05, practical threshold, stability; AND the disguise check passes; AND the causality and reproducibility checks pass",
+  "otherwise": "NO-GO: H1 is terminated. No window optimisation, signal change, alternative horizon or additional filter is permitted."
+ },
+ "disguise": {
+  "bound": 0.7,
+  "method": "for each reference style, the mean over signal days of the cross-sectional Spearman correlation between S and the style's value; the gating quantity is the maximum absolute mean correlation",
+  "reference_styles": {
+   "trailing_return_7d": "C(t)/C(t-7)-1 (short-term reversal)",
+   "trailing_return_28d": "C(t)/C(t-28)-1 (momentum_roc)",
+   "rsi14_cutler": "14-day simple-average RSI of daily closes (mean_reversion_rsi_bb)",
+   "donchian20_position": "C(t)/max(C(t-19..t)) (breakout_donchian)",
+   "ema12_26_gap": "EMA12(C)/EMA26(C)-1, adjust=False (trend_ema_cross)",
+   "realised_vol_28d_informational": "std of 28 daily returns; informational, not gating"
+  },
+  "termination": "max |mean correlation| over the five gating styles > 0.7 => treated as a disguised rejected style => NO-GO"
+ },
+ "causality_and_reproducibility_checks": {
+  "prefix_invariance_dates": [
+   "2022-06-30",
+   "2023-12-31",
+   "2025-03-31"
+  ],
+  "rule": "S computed on the panel truncated at each date equals S of the full panel for every day up to that date (exact equality)",
+  "reproducibility": "the full evaluation is computed twice in one process and once in a separate process; the canonical result hashes must be identical",
+  "data_integrity": "every candle file is verified against the S4 manifest sha256 by the loader; any mismatch aborts the run"
+ },
+ "budget": {
+  "family_slots": 1,
+  "configurations": 2,
+  "total_n_after": 45,
+  "market_runs": 1,
+  "accounting": "charged before the results are read; the run happens once; a re-run of the identical registered code does not add to N"
+ },
+ "known_limitations": [
+  "Binance listing dates and Binance-only prices; research-only licence",
+  "zero-latency entry at the open after the signal; L2 must use engine fills and costs",
+  "signal persistence and the IC scaling to h days are assumptions (m2_horizon_power_results.json)",
+  "survivorship is handled by including delisted symbols, but the identity-epoch table is curated-unverified for ticker semantics",
+  "H1 is a hypothesis; its literature is not verified in this environment"
+ ],
+ "run_guard": {
+  "requires": [
+   "family h1_lottery_max3 registered in protocol/research_budget.json with status preregistered and no market run consumed",
+   "an owner approval entry in protocol/run_approvals.json for this exact spec hash",
+   "the data store holds only 1d files of months < 2025-07 (the loader refuses anything else)"
+  ],
+  "single_run": "the registered evaluation is executed once; its result file is the only result; a second identical execution is a reproducibility check, not a new experiment"
+ }
+}
