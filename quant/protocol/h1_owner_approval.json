@@ -1,0 +1,14 @@
+{
+ "id": "h1-owner-approval-v1",
+ "date": "2026-11-27",
+ "source": "owner message of 2026-11-27 (S9 accepted; M0-M3 approved)",
+ "approved": {
+  "family": "H1 lottery-demand avoidance, MAX3 with the fixed 28-day observation window",
+  "configurations": ["7-day prediction horizon", "28-day prediction horizon"],
+  "budget": "N from 43 to a maximum of 45",
+  "milestones": ["M0 registration", "M1 Risk V3 integration (G1, G3, G5, synthetic fixtures, zero recovery primary)", "M2 L1 pre-registration", "M3 the two registered L1 configurations on development-period data only, without another intermediate approval, once M1 and M2 gates pass"]
+ },
+ "not_approved": ["H2", "H3", "any previously unapproved family", "L2 or L3 evaluation", "paper or live trading", "paid services", "merge or deployment", "holdout access including metadata", "unregistered market experiments", "N above 45", "commercial data use"],
+ "termination": "if neither configuration passes the registered L1 criteria H1 is terminated: no window optimisation, no signal change, no alternative horizons, no additional filters",
+ "data": "Binance Vision only within the verified research permissions; commercial licensing unresolved; Binance spot is the provisional research venue, not approval for commercial deployment or live trading"
+}

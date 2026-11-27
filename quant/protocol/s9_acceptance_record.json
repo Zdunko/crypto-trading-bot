@@ -1,0 +1,31 @@
+{
+ "accepted_by": "owner (message of 2026-11-27: S9 accepted; M0-M3 approved for H1 MAX3 under stated requirements)",
+ "ci": {
+  "56e6941": "24 success, 5 skipped (release-only jobs), 0 failed, 0 cancelled; Quant CI and zizmor success"
+ },
+ "files": {
+  "docs/phase4c/s6_criteria.json": "ee25010bc0765bd75ac4ec5f90bd75ca156fbf00a7d6dd5e70e8a9689a448236",
+  "docs/phase4c/s8_criteria.json": "6ed1e92957d8f8656710828a7ab5fb68b111d58710092a517b6dfaf137292495",
+  "docs/phase4c/s9_criteria.json": "6fd924988fef4e32eba7581afa4e2275540145ec2931eaff7b9a11816d64c62d",
+  "docs/phase4c/s9_evidence_ladder.md": "bc4f7732e20d660f55c3c9f164dd561b76cad4764a4f86988db540efbbedf956",
+  "docs/phase4c/s9_licensing_request_list.md": "50242ffb36a85c601a193f68ed79eeb313ee6fabfb054adddee763d425bd1c54",
+  "docs/phase4c/s9_report.md": "05c7385d7198f13c70bcb24e037eb52c62b2487d770a8d4776d4fc089193e88b",
+  "docs/phase4c/s9_roadmap.md": "6ec1b057cae3ce62766bc0082902dae8499acc1d3254357a918d11ff437fc7d2",
+  "docs/phase4c/s9_selection.json": "6f36d6765c4436045be6f6165abec13ed3151e6ebc92d8702c8b1415b1d07f39",
+  "docs/phase4c/s9_signal_hypotheses.md": "e2d874f3fe0395516a6adc0274e79242ee367e61f490a44121cf9011646a7627",
+  "docs/phase4c/s9_signal_power_results.json": "2bb20d092619eab2aaf4af2d5436568db716db831d25732d3bb38fbaf685db4d",
+  "docs/phase4c/s9_v3_minimum_integration_plan.md": "b834aa8bb422d5e493c1a5b99c68b0ce506ee3fa20d837b8d2eb8d2bfe683d41",
+  "docs/phase4c/s9_validation_outcome.md": "a5d37a7247b7bd8b3008a88c6bb44c97fa4fce290691a2fdfc1bc392f8b99ba0",
+  "protocol/evidence_ladder_v1.json": "50dc61c649e6e46fd99ad3c3cd098bafa581492762e84f4d8d62359030e0143a",
+  "protocol/s8_acceptance_record.json": "79230a3a063c3f68944c157cc1526c587a9160d9610179d8c758f91edfe8f684",
+  "protocol/s9_freeze_record.json": "1cb9a223757c82414879b6642d2e27fed7e82845198427be1ee7ab261aaa78af",
+  "quantlab/feasibility.py": "ea14e754ebba5616a6265961273ec890cf342ee9cbf706cc5c2247700c51ea34",
+  "quantlab/risk_v2.py": "99f337972a10315927d926368faa192448e5fe8dcdaecae607f89f86811b5e73",
+  "quantlab/risk_v3.py": "cbfe545e8727fc1012e930d62ef57f92b9920f011a0233a3cd74dd4d6a8e6cc8",
+  "quantlab/signal_power.py": "6f39da141d2f4eedf471f13ff0b5d0eda14ba79d9bb4f5ea6db2e72931179007",
+  "tests/test_s9_docs.py": "538a92694d259b08e386468aedf0f6141f51f091b55d2807db64626612f14b1f",
+  "tests/test_s9_freeze.py": "3ce6fa10c6a8d8250e3e80fe9c8bb94d66a0e9c0585610caba4778aa0375beeb",
+  "tests/test_signal_power.py": "f79ade4b1dde2ec78a725913403dd6cb3ced15d6031746e5ca37838a381717f3"
+ },
+ "scope": "design, synthetic simulation and documentation; no market data had been read"
+}

@@ -4,6 +4,13 @@ extend = "../pyproject.toml"
 [lint.isort]
 known-first-party = ["quantlab"]
 
+[lint.flake8-bugbear]
+# B008 (call in a default argument) fires in newer ruff for `cfg: FamilyAConfig = FamilyAConfig()` in the frozen
+# quantlab/family_a.py. FamilyAConfig is `@dataclass(frozen=True)`, so the shared default instance is immutable and
+# the rule's concern does not apply. Declaring only this class immutable keeps B008 fully active for every other call
+# and every other file (a per-file ignore would have disabled it for the whole module).
+extend-immutable-calls = ["quant.quantlab.family_a.FamilyAConfig"]
+
 [lint.per-file-ignores]
 "docs/phase4c/s1_scripts/*.py" = ["ALL"]  # one-off audit scripts, documented, not project code
 "docs/phase4c/s3_scripts/*.py" = ["ALL"]  # audit scripts (scratch fetch + analysis), documented, not project code
@@ -35,7 +42,7 @@ known-first-party = ["quantlab"]
 "quantlab/protocol.py" = ["E501"]
 "quantlab/charts.py" = ["E501", "E731"]
 "quantlab/family_a_eval.py" = ["E501", "C901", "PLR0912", "PLR0915", "PLR0914"]  # one linear evaluation script
-"quantlab/family_a.py" = ["E501", "B008"]  # B008: frozen module, default config instance (newer ruff only)
+"quantlab/family_a.py" = ["E501"]
 "quantlab/stats.py" = ["E501"]
 "quantlab/causality.py" = ["E501"]
 "quantlab/stage0.py" = ["E501"]
