@@ -1,0 +1,62 @@
+{
+ "id": "A16",
+ "date": "2026-11-27",
+ "manifests": [],
+ "title": "Pinned artifacts changed by the M4 registration: research budget (diagnostic replay accounting) and run approvals (L2 approval for the exact spec hash)",
+ "reason": "Earlier freeze and acceptance records are not edited; the successor hashes are declared here.",
+ "owner_approval": "protocol/m4_owner_approval.json",
+ "preserves": {},
+ "changes": [
+  {
+   "file": "protocol/research_budget.json",
+   "from": "af4b2a506c026e978f2c1a1b9d312bbd62918cdce9ed0e0ebffca9ffe60be350",
+   "to": "8abee719abdbae87990a050702a42a1452e16dcffecdebfef522bdddb27f22ac",
+   "summary": "adds caps.max_diagnostic_replays_per_family = 1 (approved protocol rule) and the family's diagnostic_replays_used = 0"
+  },
+  {
+   "file": "protocol/run_approvals.json",
+   "from": "431582a8a9eea461e2492f0c57f04df1e4be75167a9c921605bd63071cfc8a56",
+   "to": "a4679f415730375a58901f61aa4a032093e121818839123376a8b004dba61958",
+   "summary": "adds the owner approval for the exact M4 specification hash, scope L2"
+  }
+ ],
+ "budget_state_after": {
+  "total_n": 45,
+  "note_n": "N=43 as recorded in experiment_ledger.json (multiple_testing_rule); Family A and everything before it are inside N",
+  "further_families": [
+   {
+    "id": "h1_lottery_max3",
+    "configurations": 2,
+    "market_runs": 1,
+    "status": "evaluated_accepted",
+    "result_level": "L1 only (not L2, not L3)",
+    "result_file": "docs/phase4c/m3_l1_results.json",
+    "result_sha256": "53a3862df0d199efadcd7d391bbf297ea68ee67ec8b12fe0fd2534b651aba8aa",
+    "diagnostic_replays_used": 0,
+    "diagnostic_replay_approved": "M4 / L2 (owner message 2026-11-27); not yet executed"
+   }
+  ],
+  "consecutive_rejected_under_v2": 0,
+  "note_rejected": "Family A was evaluated before protocol V2 and does not count toward the V2 stop rule",
+  "note_families": "H1 registered by A11 (N 43 -> 45); its single registered L1 run was executed on 2026-11-27 (market_runs 1 of 1): both configurations passed the registered L1 criteria; this is an L1 result only. Amendment A13/A14. M4 (L2) registered as the family's one approved diagnostic replay (A15/A16); not yet executed."
+ },
+ "approvals_after": [
+  {
+   "family_id": "h1_lottery_max3",
+   "approved_by": "owner",
+   "spec_hash": "469607453ca5261c83d7903ed95ea69fdee87f05b47878d0472feb551cc48741",
+   "text_sha256": "2365e40c11c318cfa67b71e8097c5f30f95b10d2f9da1e7fb68ecfb77876ba11",
+   "scope": "L1 only: the two registered configurations, development-period data only, one execution; no L2/L3",
+   "source": "owner message of 2026-11-27"
+  },
+  {
+   "family_id": "h1_lottery_max3",
+   "approved_by": "owner",
+   "spec_hash": "8f18168550ca9af879296c2de2655be36ac8a5bc4b786da610968b749d9c7435",
+   "text_sha256": "fc00b40e0332a55ff0575fb5fa6bda65bb47ed933bb6e085984f8679d2f6e84e",
+   "scope": "L2 economic viability and realistic execution validation (M4): both registered configurations, one execution inside the approved diagnostic replay; no L3",
+   "source": "owner message of 2026-11-27"
+  }
+ ],
+ "unchanged_parameters": "N 45, every cap, every earlier count"
+}

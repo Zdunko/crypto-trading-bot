@@ -1,0 +1,19 @@
+{
+ "id": "A15",
+ "date": "2026-11-27",
+ "title": "Ledger: register M4 (L2) as the approved diagnostic replay of family H1",
+ "reason": "Owner requires every market evaluation to be recorded before it runs.",
+ "owner_approval": "protocol/m4_owner_approval.json",
+ "preserves": {
+  "frozen_manifest_v4.json": "1336106a0f8086333b2c5263501de8e2a4c1f62bee5ddc9d1f87ad93b69485d3"
+ },
+ "changes": [
+  {
+   "file": "protocol/experiment_ledger.json",
+   "from": "92f7a053556771df7fc8b7184da7bf0f655a245f9b110b4fedc9adf098df738d",
+   "to": "e41426981ec255e543b61dbe87e76b3b805110be04259d5170fe73f036a01dc0",
+   "summary": "adds the diagnostic_replay entry to the registered family; no count changes"
+  }
+ ],
+ "unchanged_parameters": "every rule, parameter, threshold, date and count"
+}

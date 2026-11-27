@@ -6,7 +6,9 @@
   "max_configurations_per_family": 3,
   "max_total_n": 52,
   "max_market_runs_per_family": 1,
-  "stop_after_consecutive_rejected_under_v2": 2
+  "stop_after_consecutive_rejected_under_v2": 2,
+  "max_diagnostic_replays_per_family": 1,
+  "note_diagnostic_replays": "encodes the approved rule of risk_and_evaluation_protocol_v2_proposal.md section 8: one approved diagnostic replay per family, no reruns"
  },
  "state": {
   "total_n": 45,
@@ -19,12 +21,14 @@
     "status": "evaluated_accepted",
     "result_level": "L1 only (not L2, not L3)",
     "result_file": "docs/phase4c/m3_l1_results.json",
-    "result_sha256": "53a3862df0d199efadcd7d391bbf297ea68ee67ec8b12fe0fd2534b651aba8aa"
+    "result_sha256": "53a3862df0d199efadcd7d391bbf297ea68ee67ec8b12fe0fd2534b651aba8aa",
+    "diagnostic_replays_used": 0,
+    "diagnostic_replay_approved": "M4 / L2 (owner message 2026-11-27); not yet executed"
    }
   ],
   "consecutive_rejected_under_v2": 0,
   "note_rejected": "Family A was evaluated before protocol V2 and does not count toward the V2 stop rule",
-  "note_families": "H1 registered by A11 (N 43 -> 45); its single registered L1 run was executed on 2026-11-27 (market_runs 1 of 1): both configurations passed the registered L1 criteria; this is an L1 result only. Amendment A13/A14."
+  "note_families": "H1 registered by A11 (N 43 -> 45); its single registered L1 run was executed on 2026-11-27 (market_runs 1 of 1): both configurations passed the registered L1 criteria; this is an L1 result only. Amendment A13/A14. M4 (L2) registered as the family's one approved diagnostic replay (A15/A16); not yet executed."
  },
  "family_record_format": {
   "id": "string",

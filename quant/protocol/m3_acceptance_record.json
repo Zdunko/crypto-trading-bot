@@ -1,0 +1,34 @@
+{
+ "accepted_by": "owner (message of 2026-11-27: M0-M3 accepted as L1 PASS for both registered configurations, all limitations preserved; M4/L2 approved)",
+ "ci": {
+  "d872b7f": "20 success, 5 skipped (release-only), 3 macos-15 cancelled/queued (infrastructure limitation, NOT passed), aggregate Build (3.13) failed only because of them; Quant CI #135 and zizmor #67 success"
+ },
+ "files": {
+  "docs/phase4c/m2_horizon_power_results.json": "a2070c6f90164080f90025b98d13450ae54ef152db97e4951b1985cfa623b068",
+  "docs/phase4c/m2_preregistration_report.md": "256439a67ee8381f8893adedf6e95e592927bb19e12ea1d88c027fe4d56b2070",
+  "docs/phase4c/m3_l1_report.md": "15fc10990d59761aba492a9625343c2a5bec34f9a87017fc3cb02384653dd13f",
+  "docs/phase4c/m3_l1_results.json": "53a3862df0d199efadcd7d391bbf297ea68ee67ec8b12fe0fd2534b651aba8aa",
+  "docs/phase4c/m3_licensing_questions.md": "b4935166bae622fcfb845ae828209cae56a1c4300c880990d17f4449d6a7a966",
+  "docs/phase4c/m3_scripts/fetch_1d_parallel.py": "2367ef082b9d1ecf14a74a8539d753ed89c1a93841ce8f4fb2d55f63875872a4",
+  "docs/phase4c/m3_validation_outcome.md": "9a7394c49f9c0644b36c2bdd8a0ee27c679e9243eb8fc2285bfa90fe97cb81f7",
+  "protocol/amendments/A11_register_h1.json": "3e1640e974c3d6b16f1c10b7b74e6f553e1c6e3a322a1115f5a16e6197bbbe81",
+  "protocol/amendments/A12_pinned_artifacts_h1.json": "dd8ee3df98bd2806b2e62e9332d52b9eecdf69b9987e3b9b323a661c63eb5e17",
+  "protocol/amendments/A13_ledger_h1_run.json": "4819a717dcf6ec25a100e81e87a3a658c6a0a640da22d9464d3d680b3761cc8d",
+  "protocol/amendments/A14_budget_h1_run.json": "58847acbb5e37f20985f45f2ebb4328c81b4cc9aad4fca70822db55c8585d74c",
+  "protocol/h1_l1_preregistration.json": "dcf05980e1603dc9618fbed24b1358b968d514cd576662064d9b87f301833e64",
+  "protocol/m2_freeze_record.json": "1c852b45c5208caae77de5cef9eb3204eed8b4fdfcf3591958279ff278bfad43",
+  "protocol/m3_freeze_record.json": "a4e4136f0e4e2d85070448dd615a57e60108e6e3774045d6d3bacd7e7cc02255",
+  "quantlab/l1_max3.py": "2e4cdf62442b3e674e908878fc4bcf5e5822dd550b5ecebd17cbbfd8ab5d0a47",
+  "quantlab/l1_run.py": "2ae508d6f8e8eaaf0fbc46228657715193714db01a831b9f692feac4e830533b",
+  "quantlab/risk_status.py": "e148aa96ead2c91e0bf55866379a70a8136d568229c7677979a48705f708bc29",
+  "tests/test_l1_horizon_power.py": "dc8c20e2c0dd0fd358912d58fb94f578e94742ef0e48257748ec0532c322ad92",
+  "tests/test_l1_max3.py": "d05a17b02439301ed8b04952f9fbf437512918b59d4dbcccd724ecf7b501ff15",
+  "tests/test_l1_run.py": "b1e41ed5117bd23faf87b90e02df6ae207fd893524114ac3f581c5b486410786",
+  "tests/test_m2_freeze.py": "d1b97264866bc0d981750168761c7aee73dd95576fde36e9892926034877d51f",
+  "tests/test_m3_freeze.py": "2efb72b0361dd7b2befa2663a370c82eb2dbb71eba69905b8f431de5f46fc7db",
+  "tests/test_m3_results.py": "a94486c028c05b9652f4acd76bf4411b55d97488851bc9e70d9c4f8d19d2db63",
+  "tests/test_risk_v3_integration.py": "aa1db5e812861d71373db0c467a9cc95420fcdaf8b25f5bc6243d59b19d58779"
+ },
+ "result_level": "L1 only",
+ "scope": "M0-M3: registration, V3 integration tests, L1 pre-registration, single L1 market run (L1 only)"
+}

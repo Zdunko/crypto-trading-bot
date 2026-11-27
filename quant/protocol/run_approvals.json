@@ -9,6 +9,14 @@
    "text_sha256": "2365e40c11c318cfa67b71e8097c5f30f95b10d2f9da1e7fb68ecfb77876ba11",
    "scope": "L1 only: the two registered configurations, development-period data only, one execution; no L2/L3",
    "source": "owner message of 2026-11-27"
+  },
+  {
+   "family_id": "h1_lottery_max3",
+   "approved_by": "owner",
+   "spec_hash": "8f18168550ca9af879296c2de2655be36ac8a5bc4b786da610968b749d9c7435",
+   "text_sha256": "fc00b40e0332a55ff0575fb5fa6bda65bb47ed933bb6e085984f8679d2f6e84e",
+   "scope": "L2 economic viability and realistic execution validation (M4): both registered configurations, one execution inside the approved diagnostic replay; no L3",
+   "source": "owner message of 2026-11-27"
   }
  ]
 }

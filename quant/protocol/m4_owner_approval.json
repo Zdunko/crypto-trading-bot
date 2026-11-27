@@ -1,0 +1,14 @@
+{
+ "id": "m4-owner-approval-v1",
+ "date": "2026-11-27",
+ "source": "owner message of 2026-11-27 (M0-M3 accepted as L1 PASS; M4 approved)",
+ "approved": {
+  "stage": "M4 - L2 Economic Viability and Realistic Execution Validation",
+  "family": "H1 lottery-demand avoidance (MAX3), the two registered configurations only (7- and 28-day horizons)",
+  "scope": ["independent verification of signal alignment, survivorship, universe construction and the large IC", "long-only spot execution with Risk Management V3: fees, spread, slippage, latency, liquidity constraints, partial fills", "normal and double transaction costs", "comparators: cash, BTC buy-and-hold, equal weight, risk-matched, low volatility", "determination of incremental value beyond volatility exposure", "pre-registration of all portfolio rules, benchmarks and acceptance criteria before any new market result", "execution of L2 without further intermediate approval if every prerequisite passes and no additional research budget is required", "preparation (not sending) of the Binance licensing inquiry"],
+  "budget": "research budget stays N = 45 of 52; if additional configurations or diagnostic experiments require budget consumption: stop and request approval"
+ },
+ "not_approved": ["L3", "paper trading", "live trading", "paid services", "merge or deployment", "holdout access", "new hypotheses or parameter optimisation", "any increase of N above 45", "commercial data use"],
+ "budget_interpretation_recorded_by_the_agent": "The approved protocol (section 8) allows one approved diagnostic replay per family in addition to the single market run; this M4 programme is that replay and is executed once. It adds no configuration, so N stays 45. If the owner reads it otherwise the run must not be executed.",
+ "ci_notes": "three macos-15 jobs unresolved (infrastructure limitation, not passed tests); no repeated reruns; full CI validation mandatory before any production deployment"
+}

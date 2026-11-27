@@ -1,0 +1,134 @@
+{
+ "id": "M4-L2-preregistration-v1",
+ "status": "FROZEN before any hourly market data of this evaluation was fetched or read and before any L2 market result existed. Edits after the freeze commit invalidate the registration.",
+ "family_key": "lottery_demand_max3",
+ "family_id": "h1_lottery_max3",
+ "authority": {
+  "owner_approval": "protocol/h1_owner_approval.json (M0-M3) and the owner message of 2026-11-27 approving M4 (L2 Economic Viability and Realistic Execution Validation)",
+  "l1_registration": "protocol/h1_l1_preregistration.json",
+  "ladder": "L2 only: a pass is reported as L2 and nothing higher; it never implies L3, paper or live trading, or a T1-T10 pass"
+ },
+ "budget_interpretation": {
+  "n_total": 45,
+  "new_configurations": 0,
+  "statement": "No new configuration, hypothesis or parameter is introduced: the two registered configurations (7- and 28-day horizons) are evaluated as portfolios. The approved protocol (risk_and_evaluation_protocol_v2_proposal.md section 8) allows one market run per family plus ONE approved diagnostic replay per family; the single L1 market run is consumed, and the owner's approval of M4 is this family's one approved diagnostic replay. The whole M4 programme below (the L2 portfolio evaluation and the registered verification diagnostics) is executed ONCE inside it; no rerun and no fix-and-rerun after results are seen is permitted (infrastructure defects are fixed BEFORE the run, on synthetic data). After the run the replay is consumed; any further market evaluation of this family needs new approval and may exceed the budget."
+ },
+ "configurations": [
+  {
+   "id": "H1-h7",
+   "horizon_days": 7
+  },
+  {
+   "id": "H1-h28",
+   "horizon_days": 28
+  }
+ ],
+ "signal": {
+  "window_days": 28,
+  "top_k": 3,
+  "definition": "unchanged from the L1 registration: S = -MAX3 over 28 daily returns; valid only inside one identity epoch"
+ },
+ "portfolio": {
+  "style": "long-only spot, no leverage, no shorting, no margin, no averaging (position_adjustment stays off)",
+  "wallet": 10000.0,
+  "wallet_note": "USDT; a small-account assumption; capacity at larger sizes is only discussed from the participation statistics",
+  "top_quantile": 0.2,
+  "min_assets": 5,
+  "universe": "the L1 universe: PitDataset.universe_at(month start, '5M', 3) members with a valid S; K = max(5, ceil(0.2 x valid members)); highest S first; ties by symbol name; fewer than 5 eligible: no position (cash)",
+  "weights": "equal notional per newly bought asset = equity x risk multiplier / K",
+  "rebalance": "every h days (h = 7, 28) starting 2021-01-02; the signal of day D-1 is used on day D (00:00 UTC); only completed candles are used",
+  "rebalance_rule": "sell held assets that left the target set; buy target assets not yet held; survivors are neither topped up nor trimmed",
+  "first_rebalance_day": "2021-01-02",
+  "last_rebalance_day": "2025-06-29",
+  "no_intra_period_trading": "apart from Risk Management V3 and the frozen engine circuit breaker"
+ },
+ "execution": {
+  "engine": "quantlab.execution (frozen Stage 0 engine), hourly candles, fills at the open of the next hourly candle",
+  "latency": "orders are placed at 01:00 UTC, one hour after the daily candle completes; they fill at the 01:00 open (the first candle whose open follows the order)",
+  "decision_hour_utc": 1,
+  "fees_and_slippage": "normal: fee 0.10 % + slippage 0.05 % per side (the frozen BASE scenario); double: fee 0.20 % + slippage 0.10 % (the frozen STRESS scenario)",
+  "spread": "quoted spreads are not observable in kline data; half-spread is inside the per-side slippage of each scenario and the double scenario doubles it (spread widening stress); no separate spread number is invented",
+  "liquidity": "orders may take at most 10 % of the median volume of the previous 24 completed hourly candles per asset (max_participation 0.10); a liquidity-limited sell continues next candle, a buy is not completed later (engine rule); missing candles defer orders up to 3 candles (max_defer 3), then they expire",
+  "min_notional": 5.0,
+  "max_participation": 0.1,
+  "max_defer": 3,
+  "partial_fills": "as above: partial fills of sells continue, partial fills of buys stay partial",
+  "engine_circuit_breaker": "frozen defaults (reduce at 15 % drawdown, halt at 20 %) for all runs with the risk layer"
+ },
+ "risk": {
+  "layer": "Risk Management V3 (risk_v3.py 3.0.0, S2 parameters unchanged), zero recovery (gate_recovery 0.0), hourly monitoring, 48-hour stale horizon, daily strategy decisions at 01:00 UTC; status source: the epoch feed of the FINAL epoch of each symbol (G3)",
+  "stale_horizon_hours": 48,
+  "drawdown_limit": 0.2,
+  "no_risk_diagnostic": "the same portfolio WITHOUT V3 and without the engine breaker is reported as a non-gating diagnostic so the economic effect of the risk layer is visible"
+ },
+ "comparators": {
+  "cash": "0 return",
+  "btc_buy_hold": "BTCUSDT bought at the open of 2021-01-02 and held; same cost scenarios; daily accounting at liquidation value; no risk layer (the passive investor alternative)",
+  "equal_weight": "point-in-time members equal weight, rebalanced on the first day of every month; same cost scenarios; daily accounting; assets without a candle keep their last observed price until the next rebalance; no risk layer",
+  "risk_matched": "ex post: w x BTC + (1 - w) x cash with w = daily volatility of the strategy / daily volatility of BTC (cap 1); non-tradable, never gates",
+  "low_volatility": "the same portfolio built from the lowest 28-day realised volatility (score = -std of the 28 daily returns, valid where MAX3 is valid) with the same K, rebalance, execution and Risk Management V3; used for the incremental-value test"
+ },
+ "evaluation": {
+  "daily_panel": "the L1 panel (2020-11-01 .. 2025-06-29)",
+  "hourly_first_candle_open": "2021-01-01 00:00",
+  "hourly_as_of": "2025-06-30 00:00",
+  "epoch_cutoff": "2025-07-01",
+  "holdout": "never read: the loader refuses any candle at or after 2025-07-01; the last hourly candle opens 2025-06-29 23:00",
+  "regime": {
+   "reference_symbol": "BTCUSDT"
+  }
+ },
+ "metrics": {
+  "frequency": "daily returns of the engine's hourly liquidation-value equity; Sharpe and Sortino annualised with sqrt(365), no risk-free rate; Sortino uses the root mean square of negative daily returns; CAGR over the evaluated years; max drawdown on the hourly equity; Calmar = CAGR / max drawdown; turnover = annual one-way (filled buy notional + closed-trade proceeds) / 2 / mean equity; cost estimate = filled notional x (fee + slippage); exposure = mean gross position value / equity; capital protection = V3 states, transitions, shutdown, write-offs, engine breaker events, last-known and conservative drawdown"
+ },
+ "statistics": {
+  "daily_hac_lag": 10,
+  "incremental_test": "paired daily net return difference (strategy minus low-volatility portfolio, normal costs, both with V3), Newey-West lag 10, one-sided; reported with the OLS alpha of the strategy on the low-volatility portfolio (and on BTC) with the same standard error"
+ },
+ "criteria": {
+  "min_net_return": 0.0,
+  "max_drawdown": 0.2,
+  "alpha_incremental": 0.05,
+  "min_fill_ratio": 0.95,
+  "rules": [
+   "A1 net return after costs > 0 under normal AND under double costs (with Risk Management V3)",
+   "A2 net Sortino under normal costs >= Sortino of BTC buy-and-hold AND of equal weight",
+   "A3 max drawdown <= 20 % (T4 limit, unchanged) and not above that of BTC buy-and-hold",
+   "A4 Risk Management V3 never reaches SHUTDOWN (a shutdown is a risk-system failure that needs manual authorisation)",
+   "A5 incremental value: the paired net daily return difference against the low-volatility portfolio is positive with one-sided HAC p <= 0.05",
+   "A6 execution realism: filled buy notional / intended buy notional >= 0.95 under normal costs"
+  ],
+  "decision": "each configuration is decided separately: L2 PASS only if A1-A6 all hold, otherwise NO-GO with the failed criteria listed. L2 criteria are NOT T1-T10 and a pass is not a T1-T10 pass."
+ },
+ "diagnostics": {
+  "purpose": "independent verification of the L1 result (signal alignment, survivorship, universe construction, unexpectedly large IC); executed once inside the same replay; never change a verdict",
+  "V1_tolerance": 1e-09,
+  "permutation_reps": 100,
+  "permutation_seed": 20261130,
+  "V1": "independent pandas re-implementation of MAX3, forward returns and the daily IC; must equal the registered IC series within 1e-9",
+  "V2": "within-day permutation placebo of the signal (100 permutations per horizon) and the IC with the entry delayed by one more day",
+  "V3": "survivorship: IC restricted to assets that still print in the last 30 days of the panel, with counts of failed assets and their member-day share",
+  "V4": "liquidity: IC within the more liquid and the less liquid half of the members (trailing 90-day median quote volume at each date)",
+  "interpretation": "flags only: implementation_matches (V1), observed_ic_beyond_placebo (V2), survivors_only_retains_half (V3), liquid_half_retains_half (V4); they inform the report, never the decision"
+ },
+ "reproducibility": {
+  "rule": "all engine run hashes are compared across a second in-process pass and a separate-process pass; a difference is reported and the result is flagged",
+  "data_integrity": "every candle file is verified against the S4 manifest sha256 by the loader"
+ },
+ "run_guard": {
+  "requires": [
+   "family h1_lottery_max3 registered with N = 45 and two configurations",
+   "the approved diagnostic replay of the family not yet used (caps.max_diagnostic_replays_per_family = 1)",
+   "an owner approval entry in protocol/run_approvals.json for this exact spec hash with scope starting 'L2'"
+  ],
+  "single_run": "executed once; the result file is the only result"
+ },
+ "known_limitations": [
+  "research-only data (Binance Vision licence)",
+  "no order book: spread and impact are inside the scenario slippage, not measured",
+  "one-hour latency model, not a measured latency",
+  "10,000 USDT account: capacity at larger sizes is not tested",
+  "L1 signal is largely a low-volatility signal (rank correlation -0.91); the L2 comparison with the low-volatility portfolio tests exactly this",
+  "no L3 robustness, no forward test, no T1-T10 claim"
+ ]
+}

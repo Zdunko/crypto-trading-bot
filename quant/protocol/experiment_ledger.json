@@ -260,6 +260,16 @@
     "holdout_accessed": false,
     "data": "Binance Vision spot 1d klines 2020-11-01..2025-06-29, 15699 files verified against the S4 manifest",
     "read_before_registration": false
+   },
+   "diagnostic_replay": {
+    "stage": "M4 / L2 economic viability",
+    "status": "registered, not yet executed",
+    "preregistration": "protocol/m4_l2_preregistration.json",
+    "spec_sha256": "8f18168550ca9af879296c2de2655be36ac8a5bc4b786da610968b749d9c7435",
+    "owner_approval": "protocol/m4_owner_approval.json",
+    "adds_configurations": 0,
+    "N_after": 45,
+    "rule": "approved diagnostic replay per family (protocol V2 section 8); executed once; no rerun"
    }
   }
  ]
