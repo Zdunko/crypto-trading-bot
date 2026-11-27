@@ -74,3 +74,5 @@ unbounded DCA, paid APIs or infrastructure without approval.
 The detailed, staged roadmap (legally permitted data, exchange integration, execution reconciliation, independent out-of-sample validation, paper trading, monitoring, security and emergency shutdown, criteria for eventual limited-capital live deployment) is in `quant/docs/phase4c/s7_production_readiness_roadmap.md`. It starts nothing: every stage needs separate written owner approval, and the current dataset is research-only (see `quant/docs/phase4c/s4_licensing_alternatives.md`).
 
 S8 (research feasibility resolution) found that no backtest-only path reaches 80 % power at IR 0.5 and recommends NO-GO under its pre-registered rule; any change of claim type is an owner decision. See `quant/docs/phase4c/s8_decision_framework.md`. It starts nothing.
+
+S9 proposes a staged Evidence Ladder (L1-L5) and a concrete path (H1) to a paper-trading bot in `quant/docs/phase4c/s9_roadmap.md`; every milestone needs separate written owner approval. It starts nothing.

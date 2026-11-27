@@ -1,0 +1,113 @@
+{
+ "criteria": "docs/phase4c/s9_criteria.json",
+ "hypotheses": {
+  "H1": {
+   "break_even_ic": 0.003522504892367907,
+   "break_even_ic_with_3x_cost_stress": 0.01056751467710372,
+   "gross_annual_active_return_at_break_even_ic": 0.036000000000000004,
+   "pessimistic_power_at_smallest_grid_ic_by_n": {
+    "10": 0.12,
+    "100": 0.53,
+    "40": 0.27
+   },
+   "powered_at_break_even_ic_n40": false
+  },
+  "H2": {
+   "break_even_ic": 0.0004403131115459884,
+   "break_even_ic_with_3x_cost_stress": 0.001320939334637965,
+   "gross_annual_active_return_at_break_even_ic": 0.0045000000000000005,
+   "pessimistic_power_at_smallest_grid_ic_by_n": {
+    "10": 0.12,
+    "100": 0.53,
+    "40": 0.27
+   },
+   "powered_at_break_even_ic_n40": false
+  },
+  "H3": {
+   "break_even_ic": 0.0008806262230919768,
+   "break_even_ic_with_3x_cost_stress": 0.00264187866927593,
+   "gross_annual_active_return_at_break_even_ic": 0.009000000000000001,
+   "pessimistic_power_at_smallest_grid_ic_by_n": {
+    "10": 0.12,
+    "100": 0.53,
+    "40": 0.27
+   },
+   "powered_at_break_even_ic_n40": false
+  }
+ },
+ "minimum_detectable_ic_at_80pct_interpolated": {
+  "baseline_student_t3_noise|N10": null,
+  "baseline_student_t3_noise|N100": 0.007827380952380954,
+  "baseline_student_t3_noise|N40": 0.014015151515151515,
+  "regime_dependent_skill|N10": null,
+  "regime_dependent_skill|N100": 0.00826530612244898,
+  "regime_dependent_skill|N40": 0.014234234234234236,
+  "volatility_clustering_noise|N10": null,
+  "volatility_clustering_noise|N100": 0.00813953488372093,
+  "volatility_clustering_noise|N40": 0.013606557377049184
+ },
+ "pessimistic_minimum_detectable_ic_by_n": {
+  "10": "not reached on the grid (> 0.02)",
+  "100": 0.00826530612244898,
+  "40": 0.014234234234234236
+ },
+ "power_by_scenario_assets_ic": {
+  "baseline_student_t3_noise|N100|ic0.0": 0.0325,
+  "baseline_student_t3_noise|N100|ic0.005": 0.5625,
+  "baseline_student_t3_noise|N100|ic0.01": 0.9825,
+  "baseline_student_t3_noise|N100|ic0.02": 1.0,
+  "baseline_student_t3_noise|N10|ic0.0": 0.055,
+  "baseline_student_t3_noise|N10|ic0.005": 0.125,
+  "baseline_student_t3_noise|N10|ic0.01": 0.24,
+  "baseline_student_t3_noise|N10|ic0.02": 0.515,
+  "baseline_student_t3_noise|N40|ic0.0": 0.05,
+  "baseline_student_t3_noise|N40|ic0.005": 0.3,
+  "baseline_student_t3_noise|N40|ic0.01": 0.6675,
+  "baseline_student_t3_noise|N40|ic0.02": 0.9975,
+  "regime_dependent_skill|N100|ic0.0": 0.055,
+  "regime_dependent_skill|N100|ic0.005": 0.56,
+  "regime_dependent_skill|N100|ic0.01": 0.9275,
+  "regime_dependent_skill|N100|ic0.02": 0.995,
+  "regime_dependent_skill|N10|ic0.0": 0.0425,
+  "regime_dependent_skill|N10|ic0.005": 0.1475,
+  "regime_dependent_skill|N10|ic0.01": 0.255,
+  "regime_dependent_skill|N10|ic0.02": 0.65,
+  "regime_dependent_skill|N40|ic0.0": 0.04,
+  "regime_dependent_skill|N40|ic0.005": 0.3425,
+  "regime_dependent_skill|N40|ic0.01": 0.6825,
+  "regime_dependent_skill|N40|ic0.02": 0.96,
+  "volatility_clustering_noise|N100|ic0.0": 0.055,
+  "volatility_clustering_noise|N100|ic0.005": 0.53,
+  "volatility_clustering_noise|N100|ic0.01": 0.96,
+  "volatility_clustering_noise|N100|ic0.02": 1.0,
+  "volatility_clustering_noise|N10|ic0.0": 0.04,
+  "volatility_clustering_noise|N10|ic0.005": 0.12,
+  "volatility_clustering_noise|N10|ic0.01": 0.21,
+  "volatility_clustering_noise|N10|ic0.02": 0.64,
+  "volatility_clustering_noise|N40|ic0.0": 0.04,
+  "volatility_clustering_noise|N40|ic0.005": 0.27,
+  "volatility_clustering_noise|N40|ic0.01": 0.69,
+  "volatility_clustering_noise|N40|ic0.02": 0.995
+ },
+ "ranking": [
+  {
+   "id": "H1",
+   "params": 1,
+   "score": 3.55,
+   "turnover": 12.0
+  },
+  {
+   "id": "H3",
+   "params": 1,
+   "score": 3.35,
+   "turnover": 3.0
+  },
+  {
+   "id": "H2",
+   "params": 1,
+   "score": 3.15,
+   "turnover": 1.5
+  }
+ ],
+ "synthetic_only": true
+}

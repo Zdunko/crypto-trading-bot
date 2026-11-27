@@ -133,6 +133,10 @@ Synthetic-data tests prove rules and causality, **not profitability**. No backte
 - CI: `c3ce81b` had one intermittent upstream Windows failure (`test_dca_order_adjust[2]`); its rerun was cancelled by the concurrency group (not a result); `bdd47cf` (S8 code, identical upstream code) passed all 24 jobs incl. all six Windows jobs (`quant/docs/phase4c/s7_validation_outcome.md`). S7 frozen (`protocol/s7_acceptance_record.json`).
 - Licensing: 12 primary URLs unreachable (host not resolvable) -> all venues except Binance Vision remain **unverified**. Risk V3: not ready for adoption (needs integration tests G1, G3, G5 and an owner decision on recovery). v2 methodology proposal still not adopted. S6 gate, thresholds, T1-T10, manifests, budget (N 43/52), holdout all unchanged. No strategy, no market evaluation.
 
+## Phase 4C S9 evidence ladder and signal discovery design (`quant/docs/phase4c/s9_report.md`)
+
+- S8 accepted and frozen (`s8_acceptance_record.json`, job-level CI of `fb4e8f9`: 24 success, 5 skipped release-only jobs). **Evidence Ladder** L1-L5 (`protocol/evidence_ladder_v1.json`): proposal that applies only to a family the owner registers; T1-T10 unchanged. Three hypotheses designed, one recommended (**H1 lottery-demand avoidance, MAX3 window 28**, rubric score 3.55 fixed before the simulation). Synthetic power (HAC, 3 dependence scenarios): at N 40 / 100 and daily IC 0.01 power is about 0.67-0.69 / 0.93-0.98; detectable IC about 0.014 / 0.008; **no hypothesis is powered at its break-even IC** (0.0004-0.0035). Budget unchanged (N 43/52); the selected family would use 1 family slot and 2 configurations (N -> 45). V3 minimum integration plan (G1, G3, G5; zero recovery primary), licensing request list and roadmap M0-M8 delivered. No strategy code, no market experiment, holdout untouched.
+
 ## GitHub CI results
 
 | Check | Commit `c6cc24a` | Commit `5c9582f` |
@@ -227,3 +231,4 @@ defaults to **OKX** for the technical bias check; this is **not** the owner's fi
 - 2026-11-25 — Phase 2 (approved): strategy specs, 5 strategies, `quant_common`, `strategy_policy`, 78 new tests,
   Phase 3 threshold proposal, `quant-research.yml` (bias stage), always-on informational network probe.
 - 2026-11-27 — S8: pre-registered design study (synthetic), methodology review, data/licensing verification attempt (unverified), V3 adoption review, decision framework: NO-GO under the pre-registered rule; no strategy, no market evaluation.
+- 2026-11-27 — S9: Evidence Ladder, three signal hypotheses with synthetic power, selection (H1), V3 minimum integration plan, licensing request list, roadmap; no strategy, no market experiment.
