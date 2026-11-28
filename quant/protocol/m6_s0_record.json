@@ -10,7 +10,7 @@
  "recommendation": "NO-GO for registration of lv_sleeve (not an authorisation)",
  "registration": false,
  "report": "docs/phase4c/m6_s0_report.md",
- "report_sha256": "82975e7eb244e472c4878b933e0dafd73bb6d5350b6cc94295e957d5fcc0b893",
+ "report_sha256": "03150609759d7b155e03441d3747a59d22c66e8d52486f85419400c418b39bb4",
  "results_sha256": "576099bac89f1510452aa3c372611f03b89dc3180d29f50230d1fd5fa44c1d92",
  "synthetic_only": true
 }
