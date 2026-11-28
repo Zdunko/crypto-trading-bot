@@ -97,6 +97,11 @@ def test_v3_is_active_and_unchanged_in_the_harness():
     assert "RiskManagedStrategyV3(inner, m, cfg, feed)" in src and "breaker=False" not in src
 
 
+def _sha(path: Path) -> str:
+    """sha256 over LF-normalised bytes (Windows checkouts convert line endings)."""
+    return hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+
+
 def _row(fid: str, cfg: str) -> dict:
     return next(r for r in RES["runs"] if r["fixture"].startswith(fid) and r["config"] == cfg)
 
@@ -154,7 +159,7 @@ def test_results_are_pinned_against_the_frozen_file_and_budget_is_unchanged():
     b = json.loads((Q / "protocol/research_budget.json").read_text(encoding="utf-8"))
     assert b["state"]["total_n"] == 45
     assert [f["id"] for f in b["state"]["further_families"]] == ["h1_lottery_max3"]
-    h_ = hashlib.sha256((Q / "protocol/m6_s0_fixtures_freeze.json").read_bytes()).hexdigest()
+    h_ = _sha(Q / "protocol/m6_s0_fixtures_freeze.json")
     rec = json.loads((Q / "protocol/m6_s0_record.json").read_text(encoding="utf-8"))
     assert rec["freeze_sha256"] == h_ and rec["freeze_commit"] == "b5907a5"
     for key, name in (
@@ -162,7 +167,7 @@ def test_results_are_pinned_against_the_frozen_file_and_budget_is_unchanged():
         ("results_sha256", "docs/phase4c/m6_s0_results.json"),
         ("defect_corrections_sha256", "protocol/m6_s0_defect_corrections.json"),
     ):
-        assert rec[key] == hashlib.sha256((Q / name).read_bytes()).hexdigest()
+        assert rec[key] == _sha(Q / name)
     assert rec["registration"] is False and rec["market_data"] is False
 
 
