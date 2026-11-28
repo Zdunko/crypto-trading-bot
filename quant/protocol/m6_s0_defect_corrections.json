@@ -1,0 +1,45 @@
+{
+ "allowed_by": "freeze rules.harness_defects: a fixture not producing its declared event may be corrected transparently; acceptance rules and predictions unchanged",
+ "first_run_row_kept": "F08_missing_candles_short_and_long remains in the results as run (declared event not exercised); it is not used as evidence for or against any claim",
+ "found": "F08 did not exercise its declared event (a HELD asset stale for > 48 h). Verified from the first run: equity was constant (1004.2) over hours 3380-3470, zero impaired ticks, no V3 transition. Cause: the fail-closed volatility rule (sigma_hat NaN when any basket asset has a missing close in the 60-day window -> exposure 0) zeroed the whole sleeve at the first Monday after the 12 h hole in pair 3, so no position was held when pair 5 went missing.",
+ "id": "m6-s0-defect-corrections-v1",
+ "no_other_change": "No other fixture, parameter, estimator, cap, claim or rule was changed; the other 12 fixtures' rows are byte-identical to the first run (checked by hash).",
+ "replacement_fixtures": [
+  {
+   "days": 200,
+   "events": [
+    {
+     "from_hour": 3080,
+     "kind": "missing",
+     "pair": 3,
+     "to_hour": 3092
+    }
+   ],
+   "id": "F08a_short_gap_12h",
+   "predicted": {
+    "shutdown": false
+   },
+   "purpose": "12 h hole in a held asset: no stale alarm; observe the fail-closed estimator effect on the sleeve",
+   "supersedes": "F08 (short gap part)"
+  },
+  {
+   "days": 200,
+   "events": [
+    {
+     "from_hour": 3080,
+     "kind": "missing",
+     "pair": 5,
+     "to_hour": 3140
+    }
+   ],
+   "id": "F08b_long_gap_60h_resuming",
+   "predicted": {
+    "cause": "integrity",
+    "shutdown": true
+   },
+   "purpose": "60 h hole starting right after a Monday resize (hour 3080 = Monday 08:00 UTC): the asset is held and stale > 48 h before the next Monday",
+   "supersedes": "F08 (long gap part)"
+  }
+ ],
+ "status": "TEST-HARNESS DEFECT CORRECTION declared after the first full run; predictions and acceptance rules of the freeze are UNCHANGED"
+}

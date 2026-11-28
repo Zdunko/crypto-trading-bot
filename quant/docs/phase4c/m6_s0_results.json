@@ -1,0 +1,1416 @@
+{
+ "claims": {
+  "C1": {
+   "claim": "No SHUTDOWN can occur with the sleeve capped at 15 % (unconditional no-shutdown guarantee)",
+   "falsified_by": [
+    "F03_repeated_partial_losses|LV-2",
+    "F05_exposure_drift_between_rebalances|LV-1",
+    "F05_exposure_drift_between_rebalances|LV-2",
+    "F08b_long_gap_60h_resuming|LV-1",
+    "F08b_long_gap_60h_resuming|LV-2",
+    "F09_delisting_one_asset|LV-1",
+    "F09_delisting_one_asset|LV-2",
+    "F10_delisting_with_status_feed|LV-1",
+    "F10_delisting_with_status_feed|LV-2"
+   ],
+   "status": "FALSIFIED"
+  },
+  "C2": {
+   "claim": "Realized exposure never exceeds the 15 % target by more than 5 % relative",
+   "falsified_by": [
+    "F01_single_total_wipeout|LV-1",
+    "F01_single_total_wipeout|LV-2",
+    "F02_repeated_wipeouts|LV-1",
+    "F02_repeated_wipeouts|LV-2",
+    "F03_repeated_partial_losses|LV-1",
+    "F03_repeated_partial_losses|LV-2",
+    "F04_gain_then_loss_from_new_peak|LV-1",
+    "F04_gain_then_loss_from_new_peak|LV-2",
+    "F05_exposure_drift_between_rebalances|LV-1",
+    "F05_exposure_drift_between_rebalances|LV-2",
+    "F06_overnight_gap_minus_50|LV-1",
+    "F06_overnight_gap_minus_50|LV-2",
+    "F08_missing_candles_short_and_long|LV-1",
+    "F08_missing_candles_short_and_long|LV-2",
+    "F08a_short_gap_12h|LV-1",
+    "F08a_short_gap_12h|LV-2",
+    "F08b_long_gap_60h_resuming|LV-1",
+    "F08b_long_gap_60h_resuming|LV-2",
+    "F09_delisting_one_asset|LV-1",
+    "F09_delisting_one_asset|LV-2",
+    "F10_delisting_with_status_feed|LV-1",
+    "F10_delisting_with_status_feed|LV-2",
+    "F11_calm_regime_cap_binds|LV-1",
+    "F11_calm_regime_cap_binds|LV-2",
+    "F12_turbulent_regime_target_binds|LV-2",
+    "F13_determinism_and_reconciliation|LV-1",
+    "F13_determinism_and_reconciliation|LV-2"
+   ],
+   "status": "FALSIFIED"
+  },
+  "C3": {
+   "claim": "A single-event loss never exceeds 15 % of equity",
+   "falsified_by": [
+    "F01_single_total_wipeout|LV-1",
+    "F01_single_total_wipeout|LV-2",
+    "F02_repeated_wipeouts|LV-1",
+    "F02_repeated_wipeouts|LV-2",
+    "F04_gain_then_loss_from_new_peak|LV-1",
+    "F04_gain_then_loss_from_new_peak|LV-2",
+    "F05_exposure_drift_between_rebalances|LV-1",
+    "F05_exposure_drift_between_rebalances|LV-2",
+    "F13_determinism_and_reconciliation|LV-1",
+    "F13_determinism_and_reconciliation|LV-2"
+   ],
+   "status": "FALSIFIED"
+  },
+  "C4": {
+   "claim": "With V3 active, drawdown from the high-water mark stays below 18 % in every fixture",
+   "falsified_by": [
+    "F03_repeated_partial_losses|LV-2",
+    "F05_exposure_drift_between_rebalances|LV-1",
+    "F05_exposure_drift_between_rebalances|LV-2"
+   ],
+   "status": "FALSIFIED"
+  },
+  "C5": {
+   "claim": "Entry is blocked and pending buys are not executed while V3 is in FLAT_COOLDOWN or SHUTDOWN",
+   "falsified_by": [],
+   "status": "not falsified by the frozen fixtures"
+  }
+ },
+ "freeze": "protocol/m6_s0_fixtures_freeze.json",
+ "runs": [
+  {
+   "buys_filled_in_flat_or_shutdown": 0,
+   "config": "LV-1",
+   "engine_breaker_events": 0,
+   "equity_series_hash": 7901325329021919867,
+   "final_equity": 850.1650297573917,
+   "fixture": "F01_single_total_wipeout",
+   "gap_days": [
+    100
+   ],
+   "max_drawdown_from_hwm": 0.16694747747139105,
+   "max_realized_exposure": 0.16710918543499279,
+   "max_single_event_loss": 0.16235350443474017,
+   "max_target_E": 0.15,
+   "mean_realized_exposure": 0.02751290371877315,
+   "mean_sigma_hat": 1.1622603365236266,
+   "mean_target_E": 0.07317975190242698,
+   "min_equity": 850.1650297573917,
+   "min_equity_over_hwm": 0.833052522528609,
+   "n_orders": 80,
+   "n_rebalances_with_exposure": 20,
+   "n_rejects": 60,
+   "order_hash": "be9608a88f59bf2dc0714714c922f12e31da226377966213805d954419040e0b",
+   "realised_portfolio_vol_last60d": 0.0,
+   "shutdown": null,
+   "suppressed_signals": 60,
+   "transitions": [
+    {
+     "cause": "tier2",
+     "from": "NORMAL",
+     "t": "2022-04-11 06:00:00+00:00",
+     "to": "FLAT_COOLDOWN"
+    },
+    {
+     "cause": "cooldown_elapsed",
+     "from": "FLAT_COOLDOWN",
+     "t": "2022-04-25 06:00:00+00:00",
+     "to": "REENTRY"
+    },
+    {
+     "cause": "step_1",
+     "from": "REENTRY",
+     "t": "2022-05-02 06:00:00+00:00",
+     "to": "REENTRY"
+    },
+    {
+     "cause": "step_2",
+     "from": "REENTRY",
+     "t": "2022-05-09 06:00:00+00:00",
+     "to": "REENTRY"
+    }
+   ],
+   "writeoffs": []
+  },
+  {
+   "buys_filled_in_flat_or_shutdown": 0,
+   "config": "LV-2",
+   "engine_breaker_events": 0,
+   "equity_series_hash": 7901325329021919867,
+   "final_equity": 850.1650297573917,
+   "fixture": "F01_single_total_wipeout",
+   "gap_days": [
+    100
+   ],
+   "max_drawdown_from_hwm": 0.16694747747139105,
+   "max_realized_exposure": 0.16710918543499279,
+   "max_single_event_loss": 0.16235350443474017,
+   "max_target_E": 0.15,
+   "mean_realized_exposure": 0.02751290371877315,
+   "mean_sigma_hat": 1.1622603365236266,
+   "mean_target_E": 0.10344827586206895,
+   "min_equity": 850.1650297573917,
+   "min_equity_over_hwm": 0.833052522528609,
+   "n_orders": 140,
+   "n_rebalances_with_exposure": 20,
+   "n_rejects": 120,
+   "order_hash": "6f081ba777fb90027f57318332df871b1bdc9ac8da240a0179f0e16dd9e17ac4",
+   "realised_portfolio_vol_last60d": 0.0,
+   "shutdown": null,
+   "suppressed_signals": 140,
+   "transitions": [
+    {
+     "cause": "tier2",
+     "from": "NORMAL",
+     "t": "2022-04-11 06:00:00+00:00",
+     "to": "FLAT_COOLDOWN"
+    },
+    {
+     "cause": "cooldown_elapsed",
+     "from": "FLAT_COOLDOWN",
+     "t": "2022-04-25 06:00:00+00:00",
+     "to": "REENTRY"
+    },
+    {
+     "cause": "step_1",
+     "from": "REENTRY",
+     "t": "2022-05-02 06:00:00+00:00",
+     "to": "REENTRY"
+    },
+    {
+     "cause": "step_2",
+     "from": "REENTRY",
+     "t": "2022-05-09 06:00:00+00:00",
+     "to": "REENTRY"
+    }
+   ],
+   "writeoffs": []
+  },
+  {
+   "buys_filled_in_flat_or_shutdown": 0,
+   "config": "LV-1",
+   "engine_breaker_events": 0,
+   "equity_series_hash": 281604527821559271,
+   "final_equity": 850.1650297573917,
+   "fixture": "F02_repeated_wipeouts",
+   "gap_days": [
+    100,
+    130,
+    165
+   ],
+   "max_drawdown_from_hwm": 0.16694747747139105,
+   "max_realized_exposure": 0.16710918543499279,
+   "max_single_event_loss": 0.16235350443474017,
+   "max_target_E": 0.15,
+   "mean_realized_exposure": 0.022927419765644292,
+   "mean_sigma_hat": 2.0452126698031194,
+   "mean_target_E": 0.053089819434846995,
+   "min_equity": 850.1650297573917,
+   "min_equity_over_hwm": 0.833052522528609,
+   "n_orders": 40,
+   "n_rebalances_with_exposure": 25,
+   "n_rejects": 20,
+   "order_hash": "676f5a703909ffc577a7e52925362e875f834362e0d88d987c4493b37e9388d3",
+   "realised_portfolio_vol_last60d": 0.0,
+   "shutdown": null,
+   "suppressed_signals": 20,
+   "transitions": [
+    {
+     "cause": "tier2",
+     "from": "NORMAL",
+     "t": "2022-04-11 06:00:00+00:00",
+     "to": "FLAT_COOLDOWN"
+    },
+    {
+     "cause": "cooldown_elapsed",
+     "from": "FLAT_COOLDOWN",
+     "t": "2022-04-25 06:00:00+00:00",
+     "to": "REENTRY"
+    },
+    {
+     "cause": "step_1",
+     "from": "REENTRY",
+     "t": "2022-05-02 06:00:00+00:00",
+     "to": "REENTRY"
+    },
+    {
+     "cause": "step_2",
+     "from": "REENTRY",
+     "t": "2022-05-09 06:00:00+00:00",
+     "to": "REENTRY"
+    }
+   ],
+   "writeoffs": []
+  },
+  {
+   "buys_filled_in_flat_or_shutdown": 0,
+   "config": "LV-2",
+   "engine_breaker_events": 0,
+   "equity_series_hash": 281604527821559271,
+   "final_equity": 850.1650297573917,
+   "fixture": "F02_repeated_wipeouts",
+   "gap_days": [
+    100,
+    130,
+    165
+   ],
+   "max_drawdown_from_hwm": 0.16694747747139105,
+   "max_realized_exposure": 0.16710918543499279,
+   "max_single_event_loss": 0.16235350443474017,
+   "max_target_E": 0.15,
+   "mean_realized_exposure": 0.022927419765644292,
+   "mean_sigma_hat": 2.0452126698031194,
+   "mean_target_E": 0.1102941176470588,
+   "min_equity": 850.1650297573917,
+   "min_equity_over_hwm": 0.833052522528609,
+   "n_orders": 190,
+   "n_rebalances_with_exposure": 25,
+   "n_rejects": 170,
+   "order_hash": "ad60d1a2c03e236a43a77fc862195dbb3d73183df9388653284a33dbc5526bc6",
+   "realised_portfolio_vol_last60d": 0.0,
+   "shutdown": null,
+   "suppressed_signals": 190,
+   "transitions": [
+    {
+     "cause": "tier2",
+     "from": "NORMAL",
+     "t": "2022-04-11 06:00:00+00:00",
+     "to": "FLAT_COOLDOWN"
+    },
+    {
+     "cause": "cooldown_elapsed",
+     "from": "FLAT_COOLDOWN",
+     "t": "2022-04-25 06:00:00+00:00",
+     "to": "REENTRY"
+    },
+    {
+     "cause": "step_1",
+     "from": "REENTRY",
+     "t": "2022-05-02 06:00:00+00:00",
+     "to": "REENTRY"
+    },
+    {
+     "cause": "step_2",
+     "from": "REENTRY",
+     "t": "2022-05-09 06:00:00+00:00",
+     "to": "REENTRY"
+    }
+   ],
+   "writeoffs": []
+  },
+  {
+   "buys_filled_in_flat_or_shutdown": 0,
+   "config": "LV-1",
+   "engine_breaker_events": 0,
+   "equity_series_hash": 8876421414754179404,
+   "final_equity": 864.6826913237983,
+   "fixture": "F03_repeated_partial_losses",
+   "gap_days": [
+    90,
+    111,
+    132,
+    153,
+    174
+   ],
+   "max_drawdown_from_hwm": 0.15769451512467325,
+   "max_realized_exposure": 0.16451093203217476,
+   "max_single_event_loss": 0.09712890460458612,
+   "max_target_E": 0.15,
+   "mean_realized_exposure": 0.03314878589517137,
+   "mean_sigma_hat": 1.6579658573824414,
+   "mean_target_E": 0.05637468506527336,
+   "min_equity": 856.9348057245908,
+   "min_equity_over_hwm": 0.8423054848753267,
+   "n_orders": 70,
+   "n_rebalances_with_exposure": 28,
+   "n_rejects": 30,
+   "order_hash": "b98b0aa823abf020d380752d7977076c531b0a0dc4a466f2d1e34844021167d6",
+   "realised_portfolio_vol_last60d": 0.01744945662764276,
+   "shutdown": null,
+   "suppressed_signals": 30,
+   "transitions": [
+    {
+     "cause": "tier1",
+     "from": "NORMAL",
+     "t": "2022-04-01 06:00:00+00:00",
+     "to": "REDUCED"
+    },
+    {
+     "cause": "tier2",
+     "from": "REDUCED",
+     "t": "2022-05-13 06:00:00+00:00",
+     "to": "FLAT_COOLDOWN"
+    },
+    {
+     "cause": "cooldown_elapsed",
+     "from": "FLAT_COOLDOWN",
+     "t": "2022-05-27 06:00:00+00:00",
+     "to": "REENTRY"
+    },
+    {
+     "cause": "step_1",
+     "from": "REENTRY",
+     "t": "2022-06-03 06:00:00+00:00",
+     "to": "REENTRY"
+    },
+    {
+     "cause": "step_2",
+     "from": "REENTRY",
+     "t": "2022-06-10 06:00:00+00:00",
+     "to": "REENTRY"
+    },
+    {
+     "cause": "reentry_complete",
+     "from": "REENTRY",
+     "t": "2022-09-12 09:00:00+00:00",
+     "to": "REDUCED"
+    },
+    {
+     "cause": "tier2",
+     "from": "REDUCED",
+     "t": "2022-09-15 23:00:00+00:00",
+     "to": "FLAT_COOLDOWN"
+    }
+   ],
+   "writeoffs": []
+  },
+  {
+   "buys_filled_in_flat_or_shutdown": 0,
+   "config": "LV-2",
+   "engine_breaker_events": 0,
+   "equity_series_hash": 4640575395272091787,
+   "final_equity": 834.1700908711631,
+   "fixture": "F03_repeated_partial_losses",
+   "gap_days": [
+    90,
+    111,
+    132,
+    153,
+    174
+   ],
+   "max_drawdown_from_hwm": 0.1800705979428423,
+   "max_realized_exposure": 0.16451093203217476,
+   "max_single_event_loss": 0.09712890460458612,
+   "max_target_E": 0.15,
+   "mean_realized_exposure": 0.026282948214787452,
+   "mean_sigma_hat": 1.6579658573824414,
+   "mean_target_E": 0.11351351351351352,
+   "min_equity": 834.170090871163,
+   "min_equity_over_hwm": 0.8199294020571577,
+   "n_orders": 30,
+   "n_rebalances_with_exposure": 28,
+   "n_rejects": 0,
+   "order_hash": "d8f851ddf169048480c46d46766c683972c661286524ff86093bc32653236900",
+   "realised_portfolio_vol_last60d": 0.0,
+   "shutdown": {
+    "cause": "tier3_floor",
+    "from": "REDUCED",
+    "t": "2022-04-22 06:00:00+00:00",
+    "to": "SHUTDOWN"
+   },
+   "suppressed_signals": 210,
+   "transitions": [
+    {
+     "cause": "tier1",
+     "from": "NORMAL",
+     "t": "2022-04-01 06:00:00+00:00",
+     "to": "REDUCED"
+    },
+    {
+     "cause": "tier3_floor",
+     "from": "REDUCED",
+     "t": "2022-04-22 06:00:00+00:00",
+     "to": "SHUTDOWN"
+    }
+   ],
+   "writeoffs": []
+  },
+  {
+   "buys_filled_in_flat_or_shutdown": 0,
+   "config": "LV-1",
+   "engine_breaker_events": 0,
+   "equity_series_hash": 1435199177957566584,
+   "final_equity": 903.537597462399,
+   "fixture": "F04_gain_then_loss_from_new_peak",
+   "gap_days": [
+    150
+   ],
+   "max_drawdown_from_hwm": 0.1644665879626973,
+   "max_realized_exposure": 0.19350632699413445,
+   "max_single_event_loss": 0.1544485899547039,
+   "max_target_E": 0.15,
+   "mean_realized_exposure": 0.07258228045605108,
+   "mean_sigma_hat": 1.0503273426340978,
+   "mean_target_E": 0.0769347800107696,
+   "min_equity": 903.537597462399,
+   "min_equity_over_hwm": 0.8355334120373027,
+   "n_orders": 29,
+   "n_rebalances_with_exposure": 20,
+   "n_rejects": 0,
+   "order_hash": "9f003e239cbc4162783d224c2da2b42280193cd4999f8092f538f94c8aa556d7",
+   "realised_portfolio_vol_last60d": 0.3821989570982278,
+   "shutdown": null,
+   "suppressed_signals": 0,
+   "transitions": [
+    {
+     "cause": "tier2",
+     "from": "NORMAL",
+     "t": "2022-05-31 06:00:00+00:00",
+     "to": "FLAT_COOLDOWN"
+    },
+    {
+     "cause": "cooldown_elapsed",
+     "from": "FLAT_COOLDOWN",
+     "t": "2022-06-14 06:00:00+00:00",
+     "to": "REENTRY"
+    },
+    {
+     "cause": "step_1",
+     "from": "REENTRY",
+     "t": "2022-06-21 06:00:00+00:00",
+     "to": "REENTRY"
+    },
+    {
+     "cause": "step_2",
+     "from": "REENTRY",
+     "t": "2022-06-28 06:00:00+00:00",
+     "to": "REENTRY"
+    }
+   ],
+   "writeoffs": []
+  },
+  {
+   "buys_filled_in_flat_or_shutdown": 0,
+   "config": "LV-2",
+   "engine_breaker_events": 0,
+   "equity_series_hash": 5420350188478104580,
+   "final_equity": 903.7182052710166,
+   "fixture": "F04_gain_then_loss_from_new_peak",
+   "gap_days": [
+    150
+   ],
+   "max_drawdown_from_hwm": 0.16817154839170578,
+   "max_realized_exposure": 0.19350632699413445,
+   "max_single_event_loss": 0.1544485899547039,
+   "max_target_E": 0.15,
+   "mean_realized_exposure": 0.08059866813091017,
+   "mean_sigma_hat": 1.0503273426340978,
+   "mean_target_E": 0.10344827586206895,
+   "min_equity": 899.531089767444,
+   "min_equity_over_hwm": 0.8318284516082942,
+   "n_orders": 459,
+   "n_rebalances_with_exposure": 20,
+   "n_rejects": 40,
+   "order_hash": "681af4cb415466047f9ac54f645109f71c1c67aeffc32d9ac7a645ae5c0bc895",
+   "realised_portfolio_vol_last60d": 0.3823475369183686,
+   "shutdown": null,
+   "suppressed_signals": 70,
+   "transitions": [
+    {
+     "cause": "tier2",
+     "from": "NORMAL",
+     "t": "2022-05-31 06:00:00+00:00",
+     "to": "FLAT_COOLDOWN"
+    },
+    {
+     "cause": "cooldown_elapsed",
+     "from": "FLAT_COOLDOWN",
+     "t": "2022-06-14 06:00:00+00:00",
+     "to": "REENTRY"
+    },
+    {
+     "cause": "step_1",
+     "from": "REENTRY",
+     "t": "2022-06-21 06:00:00+00:00",
+     "to": "REENTRY"
+    },
+    {
+     "cause": "step_2",
+     "from": "REENTRY",
+     "t": "2022-06-28 06:00:00+00:00",
+     "to": "REENTRY"
+    }
+   ],
+   "writeoffs": []
+  },
+  {
+   "buys_filled_in_flat_or_shutdown": 0,
+   "config": "LV-1",
+   "engine_breaker_events": 1,
+   "equity_series_hash": 4286035281608889036,
+   "final_equity": 850.2277691049362,
+   "fixture": "F05_exposure_drift_between_rebalances",
+   "gap_days": [
+    103
+   ],
+   "max_drawdown_from_hwm": 0.21365069138557347,
+   "max_realized_exposure": 0.21386134797043052,
+   "max_single_event_loss": 0.20997154450071986,
+   "max_target_E": 0.15,
+   "mean_realized_exposure": 0.030431804325223445,
+   "mean_sigma_hat": 1.3569029583079668,
+   "mean_target_E": 0.06851622378334964,
+   "min_equity": 850.2277691049361,
+   "min_equity_over_hwm": 0.7863493086144265,
+   "n_orders": 20,
+   "n_rebalances_with_exposure": 20,
+   "n_rejects": 10,
+   "order_hash": "50c65933b46a767f1f4f089c1b03e1340f28bf2504a5055ef072bade4a268662",
+   "realised_portfolio_vol_last60d": 0.0,
+   "shutdown": {
+    "cause": "tier3_floor",
+    "from": "NORMAL",
+    "t": "2022-04-14 06:00:00+00:00",
+    "to": "SHUTDOWN"
+   },
+   "suppressed_signals": 50,
+   "transitions": [
+    {
+     "cause": "tier3_floor",
+     "from": "NORMAL",
+     "t": "2022-04-14 06:00:00+00:00",
+     "to": "SHUTDOWN"
+    }
+   ],
+   "writeoffs": []
+  },
+  {
+   "buys_filled_in_flat_or_shutdown": 0,
+   "config": "LV-2",
+   "engine_breaker_events": 1,
+   "equity_series_hash": 4286035281608889036,
+   "final_equity": 850.2277691049362,
+   "fixture": "F05_exposure_drift_between_rebalances",
+   "gap_days": [
+    103
+   ],
+   "max_drawdown_from_hwm": 0.21365069138557347,
+   "max_realized_exposure": 0.21386134797043052,
+   "max_single_event_loss": 0.20997154450071986,
+   "max_target_E": 0.15,
+   "mean_realized_exposure": 0.030431804325223445,
+   "mean_sigma_hat": 1.3569029583079668,
+   "mean_target_E": 0.10344827586206895,
+   "min_equity": 850.2277691049361,
+   "min_equity_over_hwm": 0.7863493086144265,
+   "n_orders": 20,
+   "n_rebalances_with_exposure": 20,
+   "n_rejects": 10,
+   "order_hash": "50c65933b46a767f1f4f089c1b03e1340f28bf2504a5055ef072bade4a268662",
+   "realised_portfolio_vol_last60d": 0.0,
+   "shutdown": {
+    "cause": "tier3_floor",
+    "from": "NORMAL",
+    "t": "2022-04-14 06:00:00+00:00",
+    "to": "SHUTDOWN"
+   },
+   "suppressed_signals": 140,
+   "transitions": [
+    {
+     "cause": "tier3_floor",
+     "from": "NORMAL",
+     "t": "2022-04-14 06:00:00+00:00",
+     "to": "SHUTDOWN"
+    }
+   ],
+   "writeoffs": []
+  },
+  {
+   "buys_filled_in_flat_or_shutdown": 0,
+   "config": "LV-1",
+   "engine_breaker_events": 0,
+   "equity_series_hash": 4657112355315710563,
+   "final_equity": 935.8523497521985,
+   "fixture": "F06_overnight_gap_minus_50",
+   "gap_days": [
+    100
+   ],
+   "max_drawdown_from_hwm": 0.0964541916470365,
+   "max_realized_exposure": 0.16710918543499279,
+   "max_single_event_loss": 0.08317023669612511,
+   "max_target_E": 0.15,
+   "mean_realized_exposure": 0.08165437151177106,
+   "mean_sigma_hat": 0.6875676294885336,
+   "mean_target_E": 0.08335308064733835,
+   "min_equity": 922.1063837774806,
+   "min_equity_over_hwm": 0.9035458083529635,
+   "n_orders": 20,
+   "n_rebalances_with_exposure": 20,
+   "n_rejects": 0,
+   "order_hash": "44b1116dda272d46de7df2afcc5d2b0cfaa3e29dcff57c31479f7acf78a7e8a8",
+   "realised_portfolio_vol_last60d": 0.040591496353708324,
+   "shutdown": null,
+   "suppressed_signals": 0,
+   "transitions": [],
+   "writeoffs": []
+  },
+  {
+   "buys_filled_in_flat_or_shutdown": 0,
+   "config": "LV-2",
+   "engine_breaker_events": 0,
+   "equity_series_hash": 3905710211889831258,
+   "final_equity": 931.2433755870303,
+   "fixture": "F06_overnight_gap_minus_50",
+   "gap_days": [
+    100
+   ],
+   "max_drawdown_from_hwm": 0.1031848459568312,
+   "max_realized_exposure": 0.16710918543499279,
+   "max_single_event_loss": 0.08317023669612511,
+   "max_target_E": 0.15,
+   "mean_realized_exposure": 0.09744743130932176,
+   "mean_sigma_hat": 0.6875676294885336,
+   "mean_target_E": 0.10344827586206895,
+   "min_equity": 915.2374688329528,
+   "min_equity_over_hwm": 0.8968151540431688,
+   "n_orders": 20,
+   "n_rebalances_with_exposure": 20,
+   "n_rejects": 0,
+   "order_hash": "6c4327910639828d32b24a1346614c8a7e56c3d7802fbaaf9b52a20ec66c61a0",
+   "realised_portfolio_vol_last60d": 0.04496375307271483,
+   "shutdown": null,
+   "suppressed_signals": 0,
+   "transitions": [
+    {
+     "cause": "tier1",
+     "from": "NORMAL",
+     "t": "2022-05-01 21:00:00+00:00",
+     "to": "REDUCED"
+    }
+   ],
+   "writeoffs": []
+  },
+  {
+   "buys_filled_in_flat_or_shutdown": 0,
+   "config": "LV-1",
+   "engine_breaker_events": 0,
+   "equity_series_hash": 7183343527696058276,
+   "final_equity": 955.170065948243,
+   "fixture": "F07_partial_fills_and_double_costs",
+   "gap_days": [
+    100
+   ],
+   "max_drawdown_from_hwm": 0.06155143589830436,
+   "max_realized_exposure": 0.10637616982023265,
+   "max_single_event_loss": 0.052907767729099,
+   "max_target_E": 0.15,
+   "mean_realized_exposure": 0.038672102551553504,
+   "mean_sigma_hat": 0.6875676294885336,
+   "mean_target_E": 0.08335308064733835,
+   "min_equity": 949.2438255495522,
+   "min_equity_over_hwm": 0.9384485641016956,
+   "n_orders": 102,
+   "n_rebalances_with_exposure": 20,
+   "n_rejects": 84,
+   "order_hash": "9b26067c222ec1c43c17e896f8801347d69b02ce5446aedd5aa6ea90ca56912a",
+   "realised_portfolio_vol_last60d": 0.016372761180978086,
+   "shutdown": null,
+   "suppressed_signals": 0,
+   "transitions": [],
+   "writeoffs": []
+  },
+  {
+   "buys_filled_in_flat_or_shutdown": 0,
+   "config": "LV-2",
+   "engine_breaker_events": 0,
+   "equity_series_hash": 7183343527696058276,
+   "final_equity": 955.170065948243,
+   "fixture": "F07_partial_fills_and_double_costs",
+   "gap_days": [
+    100
+   ],
+   "max_drawdown_from_hwm": 0.06155143589830436,
+   "max_realized_exposure": 0.10637616982023265,
+   "max_single_event_loss": 0.052907767729099,
+   "max_target_E": 0.15,
+   "mean_realized_exposure": 0.038672102551553504,
+   "mean_sigma_hat": 0.6875676294885336,
+   "mean_target_E": 0.10344827586206895,
+   "min_equity": 949.2438255495522,
+   "min_equity_over_hwm": 0.9384485641016956,
+   "n_orders": 174,
+   "n_rebalances_with_exposure": 20,
+   "n_rejects": 156,
+   "order_hash": "6f81c4ff5e35b0e3d47dd2f4be1080b91bc5715fcc216bde4c52139ef83cca9c",
+   "realised_portfolio_vol_last60d": 0.016372761180978086,
+   "shutdown": null,
+   "suppressed_signals": 0,
+   "transitions": [],
+   "writeoffs": []
+  },
+  {
+   "buys_filled_in_flat_or_shutdown": 0,
+   "config": "LV-1",
+   "engine_breaker_events": 0,
+   "equity_series_hash": 6184931480679851105,
+   "final_equity": 1004.2403809576582,
+   "fixture": "F08_missing_candles_short_and_long",
+   "gap_days": [],
+   "max_drawdown_from_hwm": 0.02579919785908036,
+   "max_realized_exposure": 0.16710918543499279,
+   "max_single_event_loss": 0.0,
+   "max_target_E": 0.15,
+   "mean_realized_exposure": 0.049374649954168515,
+   "mean_sigma_hat": 0.25775503096932895,
+   "mean_target_E": 0.04655172413793104,
+   "min_equity": 994.212767554961,
+   "min_equity_over_hwm": 0.9742008021409196,
+   "n_orders": 20,
+   "n_rebalances_with_exposure": 9,
+   "n_rejects": 0,
+   "order_hash": "a97713f96d784d1c53cc938bbefb1a4ff327cc26834c2c86c15318c0fbaa50a8",
+   "realised_portfolio_vol_last60d": 0.0,
+   "shutdown": null,
+   "suppressed_signals": 0,
+   "transitions": [],
+   "writeoffs": []
+  },
+  {
+   "buys_filled_in_flat_or_shutdown": 0,
+   "config": "LV-2",
+   "engine_breaker_events": 0,
+   "equity_series_hash": 6184931480679851105,
+   "final_equity": 1004.2403809576582,
+   "fixture": "F08_missing_candles_short_and_long",
+   "gap_days": [],
+   "max_drawdown_from_hwm": 0.02579919785908036,
+   "max_realized_exposure": 0.16710918543499279,
+   "max_single_event_loss": 0.0,
+   "max_target_E": 0.15,
+   "mean_realized_exposure": 0.049374649954168515,
+   "mean_sigma_hat": 0.25775503096932895,
+   "mean_target_E": 0.04655172413793104,
+   "min_equity": 994.212767554961,
+   "min_equity_over_hwm": 0.9742008021409196,
+   "n_orders": 20,
+   "n_rebalances_with_exposure": 9,
+   "n_rejects": 0,
+   "order_hash": "a97713f96d784d1c53cc938bbefb1a4ff327cc26834c2c86c15318c0fbaa50a8",
+   "realised_portfolio_vol_last60d": 0.0,
+   "shutdown": null,
+   "suppressed_signals": 0,
+   "transitions": [],
+   "writeoffs": []
+  },
+  {
+   "buys_filled_in_flat_or_shutdown": 0,
+   "config": "LV-1",
+   "engine_breaker_events": 0,
+   "equity_series_hash": 9037035713879847131,
+   "final_equity": 1001.0991107281208,
+   "fixture": "F09_delisting_one_asset",
+   "gap_days": [],
+   "max_drawdown_from_hwm": 0.02579919785908036,
+   "max_realized_exposure": 0.16710918543499279,
+   "max_single_event_loss": 0.0,
+   "max_target_E": 0.15,
+   "mean_realized_exposure": 0.054082996066020496,
+   "mean_sigma_hat": 0.25775503096932895,
+   "mean_target_E": 0.04655172413793104,
+   "min_equity": 994.212767554961,
+   "min_equity_over_hwm": 0.9742008021409196,
+   "n_orders": 20,
+   "n_rebalances_with_exposure": 9,
+   "n_rejects": 0,
+   "order_hash": "722e98d326b1f6c691aa61426fdc632ccf45ccdcb6b927ab443a5ded80fecb84",
+   "realised_portfolio_vol_last60d": 0.0,
+   "shutdown": {
+    "cause": "integrity",
+    "from": "NORMAL",
+    "t": "2022-05-08 00:00:00+00:00",
+    "to": "SHUTDOWN"
+   },
+   "suppressed_signals": 11,
+   "transitions": [
+    {
+     "cause": "integrity",
+     "from": "NORMAL",
+     "t": "2022-05-08 00:00:00+00:00",
+     "to": "SHUTDOWN"
+    }
+   ],
+   "writeoffs": []
+  },
+  {
+   "buys_filled_in_flat_or_shutdown": 0,
+   "config": "LV-2",
+   "engine_breaker_events": 0,
+   "equity_series_hash": 9037035713879847131,
+   "final_equity": 1001.0991107281208,
+   "fixture": "F09_delisting_one_asset",
+   "gap_days": [],
+   "max_drawdown_from_hwm": 0.02579919785908036,
+   "max_realized_exposure": 0.16710918543499279,
+   "max_single_event_loss": 0.0,
+   "max_target_E": 0.15,
+   "mean_realized_exposure": 0.054082996066020496,
+   "mean_sigma_hat": 0.25775503096932895,
+   "mean_target_E": 0.04655172413793104,
+   "min_equity": 994.212767554961,
+   "min_equity_over_hwm": 0.9742008021409196,
+   "n_orders": 20,
+   "n_rebalances_with_exposure": 9,
+   "n_rejects": 0,
+   "order_hash": "722e98d326b1f6c691aa61426fdc632ccf45ccdcb6b927ab443a5ded80fecb84",
+   "realised_portfolio_vol_last60d": 0.0,
+   "shutdown": {
+    "cause": "integrity",
+    "from": "NORMAL",
+    "t": "2022-05-08 00:00:00+00:00",
+    "to": "SHUTDOWN"
+   },
+   "suppressed_signals": 11,
+   "transitions": [
+    {
+     "cause": "integrity",
+     "from": "NORMAL",
+     "t": "2022-05-08 00:00:00+00:00",
+     "to": "SHUTDOWN"
+    }
+   ],
+   "writeoffs": []
+  },
+  {
+   "buys_filled_in_flat_or_shutdown": 0,
+   "config": "LV-1",
+   "engine_breaker_events": 0,
+   "equity_series_hash": 8145364611522526532,
+   "final_equity": 995.8363037228074,
+   "fixture": "F10_delisting_with_status_feed",
+   "gap_days": [],
+   "max_drawdown_from_hwm": 0.02579919785908036,
+   "max_realized_exposure": 0.16710918543499279,
+   "max_single_event_loss": 0.0,
+   "max_target_E": 0.15,
+   "mean_realized_exposure": 0.052770792957857846,
+   "mean_sigma_hat": 0.25775503096932895,
+   "mean_target_E": 0.04655172413793104,
+   "min_equity": 994.212767554961,
+   "min_equity_over_hwm": 0.9742008021409196,
+   "n_orders": 20,
+   "n_rebalances_with_exposure": 9,
+   "n_rejects": 0,
+   "order_hash": "db3332cd100706d324e5b86e64e7b4d8e1fb1b71fe6e6f62b193f4ab9a0b56c3",
+   "realised_portfolio_vol_last60d": 0.0,
+   "shutdown": {
+    "cause": "integrity",
+    "from": "NORMAL",
+    "t": "2022-05-06 00:00:00+00:00",
+    "to": "SHUTDOWN"
+   },
+   "suppressed_signals": 11,
+   "transitions": [
+    {
+     "cause": "integrity",
+     "from": "NORMAL",
+     "t": "2022-05-06 00:00:00+00:00",
+     "to": "SHUTDOWN"
+    }
+   ],
+   "writeoffs": [
+    "L04/USDT"
+   ]
+  },
+  {
+   "buys_filled_in_flat_or_shutdown": 0,
+   "config": "LV-2",
+   "engine_breaker_events": 0,
+   "equity_series_hash": 8145364611522526532,
+   "final_equity": 995.8363037228074,
+   "fixture": "F10_delisting_with_status_feed",
+   "gap_days": [],
+   "max_drawdown_from_hwm": 0.02579919785908036,
+   "max_realized_exposure": 0.16710918543499279,
+   "max_single_event_loss": 0.0,
+   "max_target_E": 0.15,
+   "mean_realized_exposure": 0.052770792957857846,
+   "mean_sigma_hat": 0.25775503096932895,
+   "mean_target_E": 0.04655172413793104,
+   "min_equity": 994.212767554961,
+   "min_equity_over_hwm": 0.9742008021409196,
+   "n_orders": 20,
+   "n_rebalances_with_exposure": 9,
+   "n_rejects": 0,
+   "order_hash": "db3332cd100706d324e5b86e64e7b4d8e1fb1b71fe6e6f62b193f4ab9a0b56c3",
+   "realised_portfolio_vol_last60d": 0.0,
+   "shutdown": {
+    "cause": "integrity",
+    "from": "NORMAL",
+    "t": "2022-05-06 00:00:00+00:00",
+    "to": "SHUTDOWN"
+   },
+   "suppressed_signals": 11,
+   "transitions": [
+    {
+     "cause": "integrity",
+     "from": "NORMAL",
+     "t": "2022-05-06 00:00:00+00:00",
+     "to": "SHUTDOWN"
+    }
+   ],
+   "writeoffs": [
+    "L04/USDT"
+   ]
+  },
+  {
+   "buys_filled_in_flat_or_shutdown": 0,
+   "config": "LV-1",
+   "engine_breaker_events": 0,
+   "equity_series_hash": 1846934623768862386,
+   "final_equity": 1013.15835281578,
+   "fixture": "F11_calm_regime_cap_binds",
+   "gap_days": [],
+   "max_drawdown_from_hwm": 0.02579919785908036,
+   "max_realized_exposure": 0.16710918543499279,
+   "max_single_event_loss": 0.0,
+   "max_target_E": 0.15,
+   "mean_realized_exposure": 0.10514314925998022,
+   "mean_sigma_hat": 0.28591975890253646,
+   "mean_target_E": 0.10344827586206895,
+   "min_equity": 994.212767554961,
+   "min_equity_over_hwm": 0.9742008021409196,
+   "n_orders": 10,
+   "n_rebalances_with_exposure": 20,
+   "n_rejects": 0,
+   "order_hash": "0aaf1d7ab49bfbe197f023304291b542f01e3932b1b3cef97ec5eac18313d4fd",
+   "realised_portfolio_vol_last60d": 0.04848690408120259,
+   "shutdown": null,
+   "suppressed_signals": 0,
+   "transitions": [],
+   "writeoffs": []
+  },
+  {
+   "buys_filled_in_flat_or_shutdown": 0,
+   "config": "LV-2",
+   "engine_breaker_events": 0,
+   "equity_series_hash": 1846934623768862386,
+   "final_equity": 1013.15835281578,
+   "fixture": "F11_calm_regime_cap_binds",
+   "gap_days": [],
+   "max_drawdown_from_hwm": 0.02579919785908036,
+   "max_realized_exposure": 0.16710918543499279,
+   "max_single_event_loss": 0.0,
+   "max_target_E": 0.15,
+   "mean_realized_exposure": 0.10514314925998022,
+   "mean_sigma_hat": 0.28591975890253646,
+   "mean_target_E": 0.10344827586206895,
+   "min_equity": 994.212767554961,
+   "min_equity_over_hwm": 0.9742008021409196,
+   "n_orders": 10,
+   "n_rebalances_with_exposure": 20,
+   "n_rejects": 0,
+   "order_hash": "0aaf1d7ab49bfbe197f023304291b542f01e3932b1b3cef97ec5eac18313d4fd",
+   "realised_portfolio_vol_last60d": 0.04848690408120259,
+   "shutdown": null,
+   "suppressed_signals": 0,
+   "transitions": [],
+   "writeoffs": []
+  },
+  {
+   "buys_filled_in_flat_or_shutdown": 0,
+   "config": "LV-1",
+   "engine_breaker_events": 0,
+   "equity_series_hash": 5613493404137356391,
+   "final_equity": 1018.6758602072571,
+   "fixture": "F12_turbulent_regime_target_binds",
+   "gap_days": [],
+   "max_drawdown_from_hwm": 0.06509945724040656,
+   "max_realized_exposure": 0.14499728202190054,
+   "max_single_event_loss": 0.0,
+   "max_target_E": 0.10363159399379741,
+   "mean_realized_exposure": 0.0636882641101586,
+   "mean_sigma_hat": 1.1186101846414513,
+   "mean_target_E": 0.062199012227650945,
+   "min_equity": 988.265422712496,
+   "min_equity_over_hwm": 0.9349005427595934,
+   "n_orders": 16,
+   "n_rebalances_with_exposure": 20,
+   "n_rejects": 0,
+   "order_hash": "4a1102715dabeb727b316963edc785035d61491ea9ab763626c14c774f85c431",
+   "realised_portfolio_vol_last60d": 0.0983527744448513,
+   "shutdown": null,
+   "suppressed_signals": 0,
+   "transitions": [],
+   "writeoffs": []
+  },
+  {
+   "buys_filled_in_flat_or_shutdown": 0,
+   "config": "LV-2",
+   "engine_breaker_events": 0,
+   "equity_series_hash": 477129090744368296,
+   "final_equity": 1043.316669458843,
+   "fixture": "F12_turbulent_regime_target_binds",
+   "gap_days": [],
+   "max_drawdown_from_hwm": 0.08737243193113675,
+   "max_realized_exposure": 0.2060139982272673,
+   "max_single_event_loss": 0.0,
+   "max_target_E": 0.15,
+   "mean_realized_exposure": 0.10189401823990064,
+   "mean_sigma_hat": 1.1186101846414513,
+   "mean_target_E": 0.10344827586206895,
+   "min_equity": 982.5587917759865,
+   "min_equity_over_hwm": 0.9126275680688632,
+   "n_orders": 33,
+   "n_rebalances_with_exposure": 20,
+   "n_rejects": 0,
+   "order_hash": "3d2ed503d2b493bf82f34353ca55a36da3839d7d2c697c0f2bf4f6666b2fd59e",
+   "realised_portfolio_vol_last60d": 0.19169728925792023,
+   "shutdown": null,
+   "suppressed_signals": 0,
+   "transitions": [],
+   "writeoffs": []
+  },
+  {
+   "buys_filled_in_flat_or_shutdown": 0,
+   "config": "LV-1",
+   "engine_breaker_events": 0,
+   "equity_series_hash": 7901325329021919867,
+   "final_equity": 850.1650297573917,
+   "fixture": "F13_determinism_and_reconciliation",
+   "gap_days": [
+    100
+   ],
+   "max_drawdown_from_hwm": 0.16694747747139105,
+   "max_realized_exposure": 0.16710918543499279,
+   "max_single_event_loss": 0.16235350443474017,
+   "max_target_E": 0.15,
+   "mean_realized_exposure": 0.02751290371877315,
+   "mean_sigma_hat": 1.1622603365236266,
+   "mean_target_E": 0.07317975190242698,
+   "min_equity": 850.1650297573917,
+   "min_equity_over_hwm": 0.833052522528609,
+   "n_orders": 80,
+   "n_rebalances_with_exposure": 20,
+   "n_rejects": 60,
+   "order_hash": "be9608a88f59bf2dc0714714c922f12e31da226377966213805d954419040e0b",
+   "realised_portfolio_vol_last60d": 0.0,
+   "shutdown": null,
+   "suppressed_signals": 60,
+   "transitions": [
+    {
+     "cause": "tier2",
+     "from": "NORMAL",
+     "t": "2022-04-11 06:00:00+00:00",
+     "to": "FLAT_COOLDOWN"
+    },
+    {
+     "cause": "cooldown_elapsed",
+     "from": "FLAT_COOLDOWN",
+     "t": "2022-04-25 06:00:00+00:00",
+     "to": "REENTRY"
+    },
+    {
+     "cause": "step_1",
+     "from": "REENTRY",
+     "t": "2022-05-02 06:00:00+00:00",
+     "to": "REENTRY"
+    },
+    {
+     "cause": "step_2",
+     "from": "REENTRY",
+     "t": "2022-05-09 06:00:00+00:00",
+     "to": "REENTRY"
+    }
+   ],
+   "writeoffs": []
+  },
+  {
+   "buys_filled_in_flat_or_shutdown": 0,
+   "config": "LV-1",
+   "engine_breaker_events": 0,
+   "equity_series_hash": 7901325329021919867,
+   "final_equity": 850.1650297573917,
+   "fixture": "F13_determinism_and_reconciliation",
+   "gap_days": [
+    100
+   ],
+   "max_drawdown_from_hwm": 0.16694747747139105,
+   "max_realized_exposure": 0.16710918543499279,
+   "max_single_event_loss": 0.16235350443474017,
+   "max_target_E": 0.15,
+   "mean_realized_exposure": 0.02751290371877315,
+   "mean_sigma_hat": 1.1622603365236266,
+   "mean_target_E": 0.07317975190242698,
+   "min_equity": 850.1650297573917,
+   "min_equity_over_hwm": 0.833052522528609,
+   "n_orders": 80,
+   "n_rebalances_with_exposure": 20,
+   "n_rejects": 60,
+   "order_hash": "be9608a88f59bf2dc0714714c922f12e31da226377966213805d954419040e0b",
+   "realised_portfolio_vol_last60d": 0.0,
+   "shutdown": null,
+   "suppressed_signals": 60,
+   "transitions": [
+    {
+     "cause": "tier2",
+     "from": "NORMAL",
+     "t": "2022-04-11 06:00:00+00:00",
+     "to": "FLAT_COOLDOWN"
+    },
+    {
+     "cause": "cooldown_elapsed",
+     "from": "FLAT_COOLDOWN",
+     "t": "2022-04-25 06:00:00+00:00",
+     "to": "REENTRY"
+    },
+    {
+     "cause": "step_1",
+     "from": "REENTRY",
+     "t": "2022-05-02 06:00:00+00:00",
+     "to": "REENTRY"
+    },
+    {
+     "cause": "step_2",
+     "from": "REENTRY",
+     "t": "2022-05-09 06:00:00+00:00",
+     "to": "REENTRY"
+    }
+   ],
+   "writeoffs": []
+  },
+  {
+   "buys_filled_in_flat_or_shutdown": 0,
+   "config": "LV-2",
+   "engine_breaker_events": 0,
+   "equity_series_hash": 7901325329021919867,
+   "final_equity": 850.1650297573917,
+   "fixture": "F13_determinism_and_reconciliation",
+   "gap_days": [
+    100
+   ],
+   "max_drawdown_from_hwm": 0.16694747747139105,
+   "max_realized_exposure": 0.16710918543499279,
+   "max_single_event_loss": 0.16235350443474017,
+   "max_target_E": 0.15,
+   "mean_realized_exposure": 0.02751290371877315,
+   "mean_sigma_hat": 1.1622603365236266,
+   "mean_target_E": 0.10344827586206895,
+   "min_equity": 850.1650297573917,
+   "min_equity_over_hwm": 0.833052522528609,
+   "n_orders": 140,
+   "n_rebalances_with_exposure": 20,
+   "n_rejects": 120,
+   "order_hash": "6f081ba777fb90027f57318332df871b1bdc9ac8da240a0179f0e16dd9e17ac4",
+   "realised_portfolio_vol_last60d": 0.0,
+   "shutdown": null,
+   "suppressed_signals": 140,
+   "transitions": [
+    {
+     "cause": "tier2",
+     "from": "NORMAL",
+     "t": "2022-04-11 06:00:00+00:00",
+     "to": "FLAT_COOLDOWN"
+    },
+    {
+     "cause": "cooldown_elapsed",
+     "from": "FLAT_COOLDOWN",
+     "t": "2022-04-25 06:00:00+00:00",
+     "to": "REENTRY"
+    },
+    {
+     "cause": "step_1",
+     "from": "REENTRY",
+     "t": "2022-05-02 06:00:00+00:00",
+     "to": "REENTRY"
+    },
+    {
+     "cause": "step_2",
+     "from": "REENTRY",
+     "t": "2022-05-09 06:00:00+00:00",
+     "to": "REENTRY"
+    }
+   ],
+   "writeoffs": []
+  },
+  {
+   "buys_filled_in_flat_or_shutdown": 0,
+   "config": "LV-2",
+   "engine_breaker_events": 0,
+   "equity_series_hash": 7901325329021919867,
+   "final_equity": 850.1650297573917,
+   "fixture": "F13_determinism_and_reconciliation",
+   "gap_days": [
+    100
+   ],
+   "max_drawdown_from_hwm": 0.16694747747139105,
+   "max_realized_exposure": 0.16710918543499279,
+   "max_single_event_loss": 0.16235350443474017,
+   "max_target_E": 0.15,
+   "mean_realized_exposure": 0.02751290371877315,
+   "mean_sigma_hat": 1.1622603365236266,
+   "mean_target_E": 0.10344827586206895,
+   "min_equity": 850.1650297573917,
+   "min_equity_over_hwm": 0.833052522528609,
+   "n_orders": 140,
+   "n_rebalances_with_exposure": 20,
+   "n_rejects": 120,
+   "order_hash": "6f081ba777fb90027f57318332df871b1bdc9ac8da240a0179f0e16dd9e17ac4",
+   "realised_portfolio_vol_last60d": 0.0,
+   "shutdown": null,
+   "suppressed_signals": 140,
+   "transitions": [
+    {
+     "cause": "tier2",
+     "from": "NORMAL",
+     "t": "2022-04-11 06:00:00+00:00",
+     "to": "FLAT_COOLDOWN"
+    },
+    {
+     "cause": "cooldown_elapsed",
+     "from": "FLAT_COOLDOWN",
+     "t": "2022-04-25 06:00:00+00:00",
+     "to": "REENTRY"
+    },
+    {
+     "cause": "step_1",
+     "from": "REENTRY",
+     "t": "2022-05-02 06:00:00+00:00",
+     "to": "REENTRY"
+    },
+    {
+     "cause": "step_2",
+     "from": "REENTRY",
+     "t": "2022-05-09 06:00:00+00:00",
+     "to": "REENTRY"
+    }
+   ],
+   "writeoffs": []
+  },
+  {
+   "buys_filled_in_flat_or_shutdown": 0,
+   "config": "LV-1",
+   "engine_breaker_events": 0,
+   "equity_series_hash": 1691476594101316079,
+   "final_equity": 1005.5100892509172,
+   "fixture": "F08a_short_gap_12h",
+   "gap_days": [],
+   "max_drawdown_from_hwm": 0.028644667163242654,
+   "max_realized_exposure": 0.16710918543499279,
+   "max_single_event_loss": 0.0,
+   "max_target_E": 0.15,
+   "mean_realized_exposure": 0.06144196238035356,
+   "mean_sigma_hat": 0.2686538849440551,
+   "mean_target_E": 0.06206896551724137,
+   "min_equity": 991.3088468174018,
+   "min_equity_over_hwm": 0.9713553328367573,
+   "n_orders": 30,
+   "n_rebalances_with_exposure": 12,
+   "n_rejects": 0,
+   "order_hash": "d66c4c6a3d984a842ba343b7552b4a8ce2822f62d4e5b2e437a63ae99e3b8280",
+   "realised_portfolio_vol_last60d": 0.018433568830830107,
+   "shutdown": null,
+   "suppressed_signals": 0,
+   "transitions": [],
+   "writeoffs": []
+  },
+  {
+   "buys_filled_in_flat_or_shutdown": 0,
+   "config": "LV-2",
+   "engine_breaker_events": 0,
+   "equity_series_hash": 1691476594101316079,
+   "final_equity": 1005.5100892509172,
+   "fixture": "F08a_short_gap_12h",
+   "gap_days": [],
+   "max_drawdown_from_hwm": 0.028644667163242654,
+   "max_realized_exposure": 0.16710918543499279,
+   "max_single_event_loss": 0.0,
+   "max_target_E": 0.15,
+   "mean_realized_exposure": 0.06144196238035356,
+   "mean_sigma_hat": 0.2686538849440551,
+   "mean_target_E": 0.06206896551724137,
+   "min_equity": 991.3088468174018,
+   "min_equity_over_hwm": 0.9713553328367573,
+   "n_orders": 30,
+   "n_rebalances_with_exposure": 12,
+   "n_rejects": 0,
+   "order_hash": "d66c4c6a3d984a842ba343b7552b4a8ce2822f62d4e5b2e437a63ae99e3b8280",
+   "realised_portfolio_vol_last60d": 0.018433568830830107,
+   "shutdown": null,
+   "suppressed_signals": 0,
+   "transitions": [],
+   "writeoffs": []
+  },
+  {
+   "buys_filled_in_flat_or_shutdown": 0,
+   "config": "LV-1",
+   "engine_breaker_events": 0,
+   "equity_series_hash": 326877911097697957,
+   "final_equity": 1005.1672512290027,
+   "fixture": "F08b_long_gap_60h_resuming",
+   "gap_days": [],
+   "max_drawdown_from_hwm": 0.02579919785908036,
+   "max_realized_exposure": 0.16710918543499279,
+   "max_single_event_loss": 0.0,
+   "max_target_E": 0.15,
+   "mean_realized_exposure": 0.051172174370387326,
+   "mean_sigma_hat": 0.2657417997392879,
+   "mean_target_E": 0.05689655172413793,
+   "min_equity": 994.212767554961,
+   "min_equity_over_hwm": 0.9742008021409196,
+   "n_orders": 20,
+   "n_rebalances_with_exposure": 11,
+   "n_rejects": 0,
+   "order_hash": "7ab7ebfabb01a43e86219875ac991d8cca9f47f2e1637cfdf51e73ff97ff401a",
+   "realised_portfolio_vol_last60d": 0.0,
+   "shutdown": {
+    "cause": "integrity",
+    "from": "NORMAL",
+    "t": "2022-05-11 08:00:00+00:00",
+    "to": "SHUTDOWN"
+   },
+   "suppressed_signals": 10,
+   "transitions": [
+    {
+     "cause": "integrity",
+     "from": "NORMAL",
+     "t": "2022-05-11 08:00:00+00:00",
+     "to": "SHUTDOWN"
+    }
+   ],
+   "writeoffs": []
+  },
+  {
+   "buys_filled_in_flat_or_shutdown": 0,
+   "config": "LV-2",
+   "engine_breaker_events": 0,
+   "equity_series_hash": 326877911097697957,
+   "final_equity": 1005.1672512290027,
+   "fixture": "F08b_long_gap_60h_resuming",
+   "gap_days": [],
+   "max_drawdown_from_hwm": 0.02579919785908036,
+   "max_realized_exposure": 0.16710918543499279,
+   "max_single_event_loss": 0.0,
+   "max_target_E": 0.15,
+   "mean_realized_exposure": 0.051172174370387326,
+   "mean_sigma_hat": 0.2657417997392879,
+   "mean_target_E": 0.05689655172413793,
+   "min_equity": 994.212767554961,
+   "min_equity_over_hwm": 0.9742008021409196,
+   "n_orders": 20,
+   "n_rebalances_with_exposure": 11,
+   "n_rejects": 0,
+   "order_hash": "7ab7ebfabb01a43e86219875ac991d8cca9f47f2e1637cfdf51e73ff97ff401a",
+   "realised_portfolio_vol_last60d": 0.0,
+   "shutdown": {
+    "cause": "integrity",
+    "from": "NORMAL",
+    "t": "2022-05-11 08:00:00+00:00",
+    "to": "SHUTDOWN"
+   },
+   "suppressed_signals": 10,
+   "transitions": [
+    {
+     "cause": "integrity",
+     "from": "NORMAL",
+     "t": "2022-05-11 08:00:00+00:00",
+     "to": "SHUTDOWN"
+    }
+   ],
+   "writeoffs": []
+  }
+ ],
+ "synthetic_only": true
+}

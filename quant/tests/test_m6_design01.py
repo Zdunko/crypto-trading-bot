@@ -24,7 +24,10 @@ def test_nothing_was_registered_and_budget_is_unchanged():
     b = json.loads((Q / "protocol/research_budget.json").read_text(encoding="utf-8"))
     assert b["state"]["total_n"] == 45 == REC["budget_state"]["total_n"]
     assert [f["id"] for f in b["state"]["further_families"]] == ["h1_lottery_max3"]
-    assert not any(Q.glob("protocol/*lv_sleeve*")) and not any(Q.glob("quantlab/*lv_sleeve*"))
+    assert not any(Q.glob("protocol/*lv_sleeve*"))  # no registration or pre-registration file
+    # M6-S0 later added only the minimal synthetic TEST HARNESS (no strategy implementation)
+    assert [p.name for p in Q.glob("quantlab/*lv_sleeve*")] in ([], ["lv_sleeve_harness.py"])
+    assert "lv_sleeve" not in (Q / "protocol/spec_registry.json").read_text(encoding="utf-8")
 
 
 def test_proposed_exposure_cap_cannot_reach_the_tier3_floor():

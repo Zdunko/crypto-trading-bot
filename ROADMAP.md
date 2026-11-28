@@ -84,3 +84,4 @@ M4 (L2) executed: H1 (MAX3) is an L2 NO-GO under the existing risk limits (V3 sh
 M5 (proposal only): a two-stage diagnostic of whether MAX3 adds value beyond low volatility, with its budget cost (N 47/52) and decision tree, awaits the owner's decision; see `quant/docs/phase4c/m5_incremental_value_proposal.md`. Nothing is registered or executed.
 - 2026-11-28 - M5 Phase 1: synthetic calibration did not pass validation; market evaluation blocked pending owner decision (see `quant/docs/phase4c/m5_phase1_calibration_stop.md`).
 - 2026-11-28 - M6-DESIGN-01: design-only proposal for a capped, volatility-targeted low-volatility sleeve; awaiting owner decision (see Issue #2).
+- 2026-11-28 - M6-S0: synthetic validation done (claims falsified, overlap = risk overlay); recommendation NO-GO for registration; awaiting owner decision (Issue #2).

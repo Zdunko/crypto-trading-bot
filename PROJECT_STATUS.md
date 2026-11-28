@@ -255,3 +255,7 @@ defaults to **OKX** for the technical bias check; this is **not** the owner's fi
 ## M6-DESIGN-01 (2026-11-28, Issue #2): design only (`quant/docs/phase4c/m6_design_01_lowvol_sleeve_proposal.md`)
 
 - Option C finalised (H1 terminated under the current protocol; L1 PASS with volatility confound, M4 L2 NO-GO, M5 calibration failure preserved; MAX3 incremental effect unresolved). CI on `dcb7f98`: Quant CI success; Freqtrade CI 24 success / 5 skipped release jobs / 0 failure / 0 cancelled. Proposal `lv_sleeve` (two configurations, exposure cap 0.15 by construction, sigma* 10 %) with material overlap disclosed (Family A V0, S7 C2); recommendation: conditional narrow GO to synthetic validation only, else terminate. Nothing registered or run; N = 45/52.
+
+## M6-S0 (2026-11-28, Issue #2): synthetic validation of the capped sleeve (`quant/docs/phase4c/m6_s0_report.md`)
+
+- Fixtures/predictions/claims frozen before the first run (`b5907a5`); amendment A20 withdraws the "15 % exposure guarantees no shutdown" claim. 13 fixtures + 2 declared replacements, LV-1 and LV-2, frozen engine and unchanged V3: claims C1-C4 FALSIFIED, C5 not falsified; four frozen predictions wrong and reported. Overlap audit: risk overlay on Family A V0 / S7 C2 / M4 comparator. Recommendation: NO-GO for registration (not an authorisation). No market data, no registration, N = 45/52, families 1/3.
