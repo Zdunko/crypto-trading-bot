@@ -1,0 +1,33 @@
+{
+ "id": "m5-phase1-owner-approval-v1",
+ "date": "2026-11-28",
+ "source": "owner message of 2026-11-28 (M5 design conditionally accepted; Option R and Phase 1 only approved)",
+ "approved": {
+  "family": "h1_vol_control",
+  "configurations": [
+   "VC-h7",
+   "VC-h28"
+  ],
+  "budget": "N from 45 to a maximum of 47 of 52; family usage 2 of 3",
+  "scope": "Phase 1 only: incremental predictive value of MAX3 beyond volatility exposure, after a synthetic-only resolution of the statistical calibration; the original H1 L1 PASS and the M4 L2 NO-GO are preserved"
+ },
+ "conditions": [
+  "resolve the 8.3 % synthetic false-positive rate at h = 7 with synthetic data only, before any candidate-specific market statistic is accessed",
+  "predefine a limited calibration procedure and independent synthetic validation seeds; validate the final inference method across the previously specified dependence scenarios",
+  "preserve the nominal 5 % level, the economic effect thresholds 0.0093 / 0.0186 and Holm over both configurations; do not relax acceptance criteria",
+  "if no defensible method satisfies the existing calibration requirements: STOP before market evaluation",
+  "freeze the final methodology before any market result; the 200 surrogates must keep the volatility correlation and the relevant temporal and cross-sectional dependence without forward-return information; pre-register their rejection-rate threshold and report its sampling uncertainty; no change of the surrogate construction after market results",
+  "execute the two registered configurations once on development-period data only; report both regardless of outcome",
+  "distinguish: established incremental value / evidence below the meaningful threshold / inconclusive / invalid inference or integrity failure; non-rejection is not proof of absence",
+  "if neither configuration establishes meaningful incremental value: terminate further H1 research under the existing budget constraints; do not reinterpret the historical L1 PASS"
+ ],
+ "not_approved": [
+  "Phase 2 (the unprotected economic comparison)",
+  "disabling V3 for any operational strategy",
+  "H1b or any pure volatility-targeted strategy (separate approval and registration)",
+  "additional families or configurations; N above 47",
+  "holdout access including metadata",
+  "parameter optimisation, fix-and-rerun after market results, L3, paper/live trading, paid services, merge or deployment",
+  "commercial data use (licensing unresolved)"
+ ]
+}
