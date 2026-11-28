@@ -1,5 +1,8 @@
 # ROADMAP
 
+## Current direction (2026-11-28, QIE-P0) — supersedes the phase list below where they conflict
+The 2026 research cycle is **closed and frozen** (`quant/protocol/research_cycle_closeout_freeze_record.json`): no strategy validated, Family A not credible, H1 terminated, M5 stopped, M6-S0 NO-GO; N 45/52, families 1/3. The proposed next direction is a **design-only Quant Intelligence Engine roadmap P1–P5** (`quant/docs/phase4c/qie_roadmap_design.md`: lawful data and feasibility → descriptive regime/risk analytics → hypothesis research with independent validation → portfolio intelligence → execution locked), including an explicit **archive option**. **No P1 or later work is authorised**; every step needs separate written owner approval. The phase text below is kept as history; the M5 line ("awaits the owner's decision, N 47/52") is superseded by the termination of H1.
+
 Each phase ends with a draft PR, a `PROJECT_STATUS.md` update and **owner approval** before
 the next phase starts. Exit criteria are measurable; nothing is "done" on assumptions.
 

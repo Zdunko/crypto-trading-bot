@@ -1,8 +1,21 @@
 # PROJECT STATUS
 
-_Last updated: 2026-11-25 · Phase 3 evaluation complete: **no strategy validated**, holdout untouched. Awaiting owner review; Phase 4 not started._
+_Last updated: 2026-11-28 (QIE-P0 closeout). Sections below dated 2026-11-25 are **historical**; the authoritative current state is the next block._
 
-## Current state
+## Authoritative current state (2026-11-28, QIE-P0; closeout record `quant/protocol/research_cycle_closeout_freeze_record.json`)
+
+| Item | State |
+|---|---|
+| Direction | Research cycle **closed and frozen**; design-only Quant Intelligence Engine roadmap P1–P5 proposed (`quant/docs/phase4c/qie_roadmap_design.md`); **no P1+ work authorised** |
+| Outcomes | Phase 3: all four strategies rejected; R1 rejected; Family A not credible; H1: L1 PASS with volatility confound, M4 L2 NO-GO, **terminated** (incremental MAX3 effect unresolved, not disproven); M5 calibration STOP; M6-S0: claims falsified, NO-GO for registration |
+| Research budget | **N = 45 / 52, families 1 / 3** (unchanged, no reset) |
+| Holdout (2025-07-01 → 2026-11-25) | never accessed per all records; not inspected in this audit |
+| Branch / PR | `claude/freqtrade-trading-system-b82aek`, draft PR #1 (open, not merged; its description is stale, see audit §4) |
+| Trading | dry-run only, spot only, no credentials, no real orders; paper/live not authorised |
+| Data licensing | research-only; commercial/operational rights **unresolved**; inquiry draft never sent |
+| Quality gate | `bash quant/scripts/check.sh` (803+ tests at the last run); upstream CI on `8766bf4`: 24 success / 5 skipped / 0 failure / 0 cancelled |
+
+## Current state (historical, 2026-11-25 — superseded by the block above)
 
 | Item | State |
 |---|---|
