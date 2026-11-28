@@ -1,0 +1,42 @@
+{
+ "budget_state": {
+  "consecutive_rejected_under_v2": 0,
+  "further_families": [],
+  "note_n": "N=43 as recorded in experiment_ledger.json (multiple_testing_rule); Family A and everything before it are inside N",
+  "note_rejected": "Family A was evaluated before protocol V2 and does not count toward the V2 stop rule",
+  "total_n": 43
+ },
+ "ci_evidence": {
+  "ca57ccd": "suite completed, no failed suite (docs only)",
+  "f107575": "Freqtrade CI run 45890709753: 24 success, 5 skipped, 0 failed, incl. all 6 macOS jobs; Quant CI, zizmor, Pre-commit success"
+ },
+ "code_commit_with_green_ci": "f107575cfb25f995942103fa01e092a8e1dbac67",
+ "excluded_living_documents": [
+  "docs/phase4c/s4_limitations_register.md (append-only register, updated by later stages)"
+ ],
+ "files": {
+  "docs/phase4c/s5_criteria.json": "f8f317eab7fc4cb1b2bef426a8f2015b61e1005962e88716b8128950c91075ff",
+  "docs/phase4c/s5_holdout_isolation_statement.md": "c435490b4bf69ff4310405b3b936e31e65fde6cf57098fa07c484da4bb07e976",
+  "docs/phase4c/s5_identity_review.json": "df05df935f2dd0ab47523cffb0fff948d8840c32b2760408f0220c1852fb62c1",
+  "docs/phase4c/s5_investigations.md": "ca0882f906eca91ed6ca2c89ba56319ea25c21448b0c9f2afaf041c5a14def34",
+  "docs/phase4c/s5_production_data_licensing_roadmap.md": "511164c099665187c0fc510f85c58bf25bc14c4b7e33a9853155ddee7bfc175a",
+  "docs/phase4c/s5_report.md": "5f8d08f8068ccd9fc0dd42de6db8ab9ccd2b3d4d81c51b99ff1a40953b3f1bc1",
+  "docs/phase4c/s5_scope.md": "1e8dfe6b04f344de959311a036246a214acc9aea620d74318264f96fb923aa38",
+  "docs/phase4c/s5_scripts/identity_review.py": "e7b759fe934edc07e5f7ecc37576e7c868cece14f46282f03dc2916d7b0843ee",
+  "docs/phase4c/s5_scripts/x1_investigation.py": "a8e32d9ae23e0204a854f070dfe2b95c082e0dc20e3297039458f8503d462d62",
+  "docs/phase4c/s5_x1_investigation.json": "c96312b9f924a4ab38f59e5ce3b57c44c525c39ae1221b8e7d203830aa3a6d23",
+  "protocol/research_budget.json": "ef211156f81bb00100e0968a06266a11629444ec95d1809812549c19a26b1df7",
+  "protocol/s4_freeze_record.json": "a67c6ddb1ce470f3fe5bf4ea7c2d3faa098d65984ac6911c8d6e3ae2ab86d878",
+  "quantlab/budget.py": "5f3e82c1a31cd1b9058586113d537c53781ec60bba40e09f78792d404bdd73a9",
+  "quantlab/pit_loader.py": "543c8d86823f0c83491b2c15d7c1b3eef544f30b63213661be72ca77ec0c81b3",
+  "quantlab/universe_guard.py": "a4432b60bbebcad67a6888164d35b677acea246a6412435e551fd1e0ab6f6531",
+  "tests/synth_pit.py": "e5937efc84ee7c6cb1941fe6bc61cac55105ee7858adb82e861bebf62a1753a9",
+  "tests/test_budget.py": "73b72a1c04c5aff8595c6de466c7b6b9141af11ad09950628adacd1a52da81bb",
+  "tests/test_pit_loader.py": "85661faf5ed9e89cbed2a8f30d3faa70022a1f8f7e3cb7ed3db3fc5b785acd14",
+  "tests/test_universe_guard.py": "f4dee199d61615f1437b20072036ac0e4b7c0391a3d7ab792d3fd8886cd2953e"
+ },
+ "frozen_at_commit": "ca57ccdbc9e7ae816e0b4f8f1522422a44a1ab6f",
+ "id": "S5-infra-freeze-record",
+ "status": "S5-infra accepted by the owner (GO for research infrastructure and synthetic validation only); frozen. Changes need a new version and an amendment. The original S5 (market evaluation) remains unapproved.",
+ "tests": "540 local tests at f107575"
+}

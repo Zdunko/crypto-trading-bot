@@ -1,0 +1,62 @@
+{
+ "authorizes_market_evaluation": false,
+ "checks": {
+  "A1": {
+   "pass": true,
+   "reason": "ok"
+  },
+  "A10": {
+   "pass": true,
+   "reason": "ok"
+  },
+  "A11": {
+   "pass": true,
+   "reason": "ok"
+  },
+  "A2": {
+   "pass": true,
+   "reason": "ok"
+  },
+  "A3": {
+   "pass": true,
+   "reason": "ok"
+  },
+  "A4": {
+   "pass": true,
+   "reason": "ok"
+  },
+  "A5": {
+   "pass": true,
+   "reason": "ok"
+  },
+  "A6": {
+   "pass": true,
+   "reason": "ok"
+  },
+  "A7": {
+   "pass": true,
+   "reason": "ok"
+  },
+  "A8": {
+   "pass": true,
+   "reason": "ok"
+  },
+  "A9": {
+   "pass": true,
+   "reason": "ok"
+  }
+ },
+ "failed": [],
+ "note": "a gate pass only makes the specification eligible to be PROPOSED for approval",
+ "power": {
+  "effective_episodes_p05": 174.2908621852506,
+  "mde_sharpe_p95": 1.3356271608484969,
+  "raw_episodes_median": 2163.3790752729137,
+  "raw_episodes_p05": 948.1568859129669,
+  "years": 4.4955509924709105
+ },
+ "result_hash": "0fc6fe4929dd63e0803788a7fe1e0ff7ebcd58c68202500a1b751d22ca16e418",
+ "spec_hash": "5b270fcece05622d44afce25adc1856938ccba0834d0554fb411fae2a8bb37f2",
+ "thresholds_sha256": "c6faf0aaaa5ac63f728e15df24952681a7448098ef31c90049d05ae5438d237a",
+ "verdict": "GATE_PASS"
+}

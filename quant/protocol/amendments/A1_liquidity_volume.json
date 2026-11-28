@@ -1,0 +1,55 @@
+{
+ "id": "A1",
+ "date": "2026-11-25",
+ "title": "Liquidity model: completed-candle volume only",
+ "reason": "Pre-evaluation review found that the participation cap used the volume of the executing candle, which is unknown at its open (future information in an execution decision). Verified with a synthetic test (same history, different executing-candle volume -> 500.00 vs 10.02 USDT filled).",
+ "owner_approval": "Owner message 2026-11-25: liquidity-model correction approved; median volume of the previous 24 fully completed hourly candles, max_participation 10 %, never the execution candle's volume; shared budget per asset per candle; fail-closed rules; versioned amendment; one research CI run authorised if all checks pass.",
+ "preserves": {
+  "frozen_manifest_v4.json": "1336106a0f8086333b2c5263501de8e2a4c1f62bee5ddc9d1f87ad93b69485d3",
+  "frozen_manifest_v5.json": "4d0e2c9f26dc39e1b0df018a47bda8789c753aa14c27b43ad2136f8583fdd424"
+ },
+ "changes": [
+  {
+   "file": "quantlab/execution.py",
+   "from": "72f7df14cef7a483306dbc1fced2db7915f73ece0845d2ec2c008f4da130a26f",
+   "to": "10f6daf078fa1c083326a946697227f59d5c5fa05fa85832e8425c1b1c1b2c21",
+   "summary": "liquidity budget now uses the median volume of the 24 completed candles before the executing candle, shared across all orders of an asset; fail-closed on missing/invalid volume and short history; Result.exposure added (not hashed)"
+  },
+  {
+   "file": "quantlab/causality.py",
+   "from": "ce80422aca089f3a5570460dda84efbbb3d2ee58a123f9dec0e8f00137dec7a4",
+   "to": "612e0ee96ff682aee7de2eb1d58917ea5eca5116cdfc6761340343e621d84e6e",
+   "summary": "time-based mutation of prices/volumes and restart helpers for real-data causality checks (additive)"
+  },
+  {
+   "file": "protocol/protocol_v5_family_a.json",
+   "from": "aba0d5b96d5aeb1306dae485680ab0bf270f54bdab4c273c900cc2e04e84e0b6",
+   "to": "1de8b353f3e06a257c6f6eced19629bec7232366af5379bfbb08c513d63d5a82",
+   "summary": "adds liquidity_model text, benchmark_disclosure and evaluation_protocol; every parameter, threshold and date unchanged"
+  }
+ ],
+ "added_files": [
+  {
+   "file": "quantlab/family_a_eval.py",
+   "sha256": "02d47d55d7e640e20877e79696af285b1b70330429fa3a77f0e41b282d0cc4d8",
+   "manifests": [
+    "v5"
+   ],
+   "summary": "evaluation runner (new, implements protocol_v5 evaluation_protocol)"
+  }
+ ],
+ "unchanged_files_verified": [
+  "protocol/experiment_ledger.json",
+  "protocol/protocol_v4_stats.json",
+  "quantlab/costs.py",
+  "quantlab/family_a.py",
+  "quantlab/stats.py"
+ ],
+ "unchanged_parameters": "FamilyAConfig, breaker thresholds, costs, max_participation 0.10, T1-T10, statistical rules, evaluation dates, holdout",
+ "tests_added": [
+  "tests/test_liquidity.py",
+  "tests/test_preflight.py",
+  "tests/test_family_a_eval.py",
+  "volume-mutation causality in tests/test_family_a.py"
+ ]
+}

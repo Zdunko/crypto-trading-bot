@@ -1,0 +1,32 @@
+{
+ "accepted_by": "owner (message of 2026-11-28: M4 accepted as a completed L2 NO-GO evaluation for both H1 configurations; L1 PASS remains a research-only finding)",
+ "ci": {
+  "beb8814": "20 success, 5 skipped (release-only), 3 macos-26 cancelled (infrastructure limitation, NOT passed), aggregate Build (3.13) failed only because of them; Quant CI #139 and zizmor #69 success"
+ },
+ "files": {
+  "docs/phase4c/m4_binance_licensing_inquiry_DRAFT.md": "6137b033f04026fe2ac210fa735150f560fe0f7fafcb99c14685f3aeca49c232",
+  "docs/phase4c/m4_l2_report.md": "5d670b35c993e2bad8c833300839f5add117b99107d5ed2c703a64ac4c27aaba",
+  "docs/phase4c/m4_l2_results.json": "2d64e8e8591548d475d27f3039d8d5b31613f8e3f2718818d3debad92d0541a4",
+  "docs/phase4c/m4_preregistration_report.md": "d57ed7557d335130237ed3f9f4e3672c2dfe6ff09dc1f5266cd9c7d80b82c4c6",
+  "docs/phase4c/m4_scripts/fetch_1h_parallel.py": "5da24948cb0bb3ede82ce55770793ac22982dfdf4de674bbd8fb5abf528d9824",
+  "docs/phase4c/m4_validation_outcome.md": "491fff0131203fad33bd85b7bb1334e8f938f5823c6e6e1094c5ca9ce03d576e",
+  "protocol/amendments/A15_ledger_m4_registration.json": "9627759c39b4ca77b6a3aa765235fdfeb4ba93f1c4c8c102f24c01b76b725d87",
+  "protocol/amendments/A16_budget_approvals_m4.json": "3b94a60461841922c856e30e050955e537eecf70e38c0503071ee121f79fd676",
+  "protocol/amendments/A17_ledger_m4_run.json": "0fd9cf636c5344fed37fb9aeb4d6f461459d504233fe7e5e7ac40790612ac20e",
+  "protocol/amendments/A18_budget_m4_run.json": "1e55b0699a332beda3dad63109c36ae392d119cbe5b47eed2669ac9ff84193d6",
+  "protocol/m4_freeze_record.json": "0f16f3174a0280d8758d1ae902779c83f9abf390eb9c09f0dc997fc6b32d87dd",
+  "protocol/m4_l2_preregistration.json": "f328f4c7375a2df85c4d0d4a71debc9d5a10c99a4c9f37adc1dfd68a6917cea1",
+  "protocol/m4_owner_approval.json": "fc00b40e0332a55ff0575fb5fa6bda65bb47ed933bb6e085984f8679d2f6e84e",
+  "protocol/m4_results_freeze_record.json": "489bbd97ce2c7154e388ef3ea1879b3ca1134d8ebac9c796927f8f9057be1988",
+  "quantlab/l2_diagnostics.py": "a2c7e7335d9d1b70afc624319eaf4e33269e4a27ffb5ff70feab3ac35e95af56",
+  "quantlab/l2_portfolio.py": "a7ce1f6f5be6cb4d7c99fed58f053ff384ac730d3cec0f14fe214f647f01baca",
+  "quantlab/l2_run.py": "deefbf65fe2040f91323933da0a868ef369954abc291be625fb63c08cc621675",
+  "tests/l2_synth.py": "0ff8651721d9dd2cb310cb810622f90b7c1240a9ede2d9fb2f1bb975fd389ad5",
+  "tests/test_l2_portfolio.py": "ba75ace7c2d783130901e1fc334d0146d5db3367ef02fd43d745b56281aea463",
+  "tests/test_m4_freeze.py": "ee22124ed64300af180ea79bc8cc6b946aa2aba56e9decd05ac0df595b197a0d",
+  "tests/test_m4_results.py": "565e333082c6a732f7b18eed02cc3e8f94cd6dd707ce829e7075710b74c24be4",
+  "tests/test_m4_results_freeze.py": "47bcffeff6569510928cd8f7d15c8a94440eef26191e3a7851a2a1f9d508609a"
+ },
+ "result_level": "L2 NO-GO for both configurations; L1 PASS stands as a research-only signal-existence finding",
+ "scope": "M4 / L2: registration, single approved replay, verification diagnostics"
+}

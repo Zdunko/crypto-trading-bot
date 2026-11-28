@@ -1,0 +1,34 @@
+{
+ "id": "risk-layer-v3-spec",
+ "version": "3.0.0",
+ "status": "separately versioned revision; S2 (risk_v2) is untouched and remains the reproducibility reference",
+ "config_sha256": "3e71514d18c01a1dbc66214f1ee0a507d8a8ac78d61cd35e4c7baafc9aa4c365",
+ "v2_config_unchanged": true,
+ "parameters": {
+  "stale_horizon_hours": 48,
+  "monitor_interval_hours": 1,
+  "gate_recovery_fraction": 0.0,
+  "sensitivity_recoveries": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "drawdown_limit_t4": 0.2
+ },
+ "semantics": [
+  "elapsed-time stale detection (>= 48 h without a completed candle)",
+  "hourly risk monitoring independent of the strategy decision clock; coarser cadence refused",
+  "explicit statuses DELISTED/SUSPENDED/UNTRADEABLE/MISSING impaired immediately",
+  "three valuations: last-known, conservative (drives the S2 machine), realized (closed trades plus explicit write-offs)",
+  "liquidation never assumed: impaired exposure stays visible to the machine",
+  "capital_protection_report and recovery_sensitivity expose concealed drawdown"
+ ],
+ "known_limitations": [
+  "monitoring requires hourly candles; other cadences are refused",
+  "a 48-hour silence is also treated as impaired for assets that are merely quiet (conservative by design)",
+  "write-off recovery assumption is a parameter, not a measurement",
+  "S2 candle-count thresholds (liquidity_alarm_candles 24) mean hours only because the monitoring clock is hourly"
+ ]
+}

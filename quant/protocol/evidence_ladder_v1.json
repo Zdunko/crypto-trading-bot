@@ -1,0 +1,86 @@
+{
+ "id": "evidence-ladder-v1",
+ "status": "PROPOSED protocol; takes effect only for a family the owner registers; T1-T10 and all existing protocols are untouched",
+ "levels": [
+  {
+   "level": "L1",
+   "name": "Predictive signal",
+   "question": "Does a pre-registered, point-in-time signal rank next-period returns across liquid spot assets better than chance?",
+   "claim_type": "signal existence (cross-sectional), not a trading claim",
+   "data": "PIT daily klines of the eligible universe; evaluation window inside the research bounds; holdout excluded",
+   "statistic": "mean daily cross-sectional IC with Newey-West standard error (lag fixed ex ante) and a circular block bootstrap as check",
+   "null_hypothesis": "mean IC <= 0",
+   "multiplicity_correction": "Holm across all pre-registered configurations and horizons of the family",
+   "rejection_criteria": "not rejected at one-sided 5 % after Holm, OR IC sign unstable in more than half of the pre-registered sub-periods, OR signal rank-correlation with a rejected-family signal above 0.7 (disguise check), OR a lookahead/survivorship test fails",
+   "budget_accounting": "each pre-registered configuration counts once toward N; the family consumes one family slot",
+   "what_passing_does_not_mean": "nothing about profit, costs, capacity, risk limits or T1-T10; not a validated strategy"
+  },
+  {
+   "level": "L2",
+   "name": "Economic viability",
+   "question": "Does a long-only spot portfolio built from the L1 signal earn more than comparators after realistic costs?",
+   "claim_type": "net-of-cost relative return",
+   "data": "same as L1 plus engine costs (fee 0.1 %, slippage 0.05 %, 2x stress), participation cap, minimum notional",
+   "statistic": "paired active return versus cash, BTC buy-and-hold, PIT equal weight and an exposure-matched comparator, HAC/block inference",
+   "null_hypothesis": "net active return <= 0",
+   "multiplicity_correction": "Holm across comparators; comparators that are ex-post are labelled non-tradable and never gate",
+   "rejection_criteria": "net active return not positive at the pre-registered level under 2x costs, OR break-even cost below 2x the assumed cost, OR drawdown breach of the 20 % T4 limit under risk layer V3 with zero recovery",
+   "budget_accounting": "no new N if the configuration is unchanged; any change is a new configuration",
+   "what_passing_does_not_mean": "not robustness (L3), not operational reliability (L4), not T1-T10 validation"
+  },
+  {
+   "level": "L3",
+   "name": "Robustness",
+   "question": "Does the L2 result survive other assets, periods and regimes?",
+   "claim_type": "stability",
+   "data": "pre-registered disjoint sub-universes, sub-periods and bull/bear/sideways regimes defined ex ante",
+   "statistic": "sign and size of the net active return per slice, dependence-aware",
+   "null_hypothesis": "result is concentrated in one slice",
+   "multiplicity_correction": "Holm across slices; no slice may be added or removed after seeing results",
+   "rejection_criteria": "fewer than the pre-registered number of slices positive, OR any single slice drives the result",
+   "budget_accounting": "slices of an already registered configuration add no N",
+   "what_passing_does_not_mean": "not forward evidence; history is shared by all slices"
+  },
+  {
+   "level": "L4",
+   "name": "Forward paper trading and operations",
+   "question": "Does the system run reliably and match its own backtest in forward time without real money?",
+   "claim_type": "operational reliability and tracking error",
+   "data": "licence-cleared live feed (requires resolved data licensing)",
+   "statistic": "signal/order/fill reconciliation, tracking error versus the engine, incident log",
+   "null_hypothesis": "not applicable (engineering acceptance)",
+   "multiplicity_correction": "none; fixed acceptance checklist",
+   "rejection_criteria": "unreconciled orders, risk-layer breach, data gap not handled, or tracking error above the pre-registered bound",
+   "budget_accounting": "none (no new experiment), but any signal change restarts L1",
+   "what_passing_does_not_mean": "not a profitability proof: forward time accrues about one year per year"
+  },
+  {
+   "level": "L5",
+   "name": "Controlled live deployment",
+   "question": "Is limited-capital live trading acceptable?",
+   "claim_type": "deployment decision",
+   "data": "not defined",
+   "statistic": "not defined",
+   "null_hypothesis": "not defined",
+   "multiplicity_correction": "not defined",
+   "rejection_criteria": "unreachable without a separate written owner approval",
+   "budget_accounting": "not applicable",
+   "what_passing_does_not_mean": "L5 is a label only; S9 does not define or enable it"
+  }
+ ],
+ "non_implication_rules": [
+  "passing level k is reported as 'passed L{k}' only; a statement that implies a higher level is a defect",
+  "levels are entered in order after an accepted written outcome of the previous level",
+  "a signal that passes L1-L3 is not a strategy validated under T1-T10 and is never reclassified as one",
+  "no rejected strategy or family is re-tested or reclassified by the ladder",
+  "the holdout (2025-07-01 to 2026-11-25) stays untouched; whether and how it is used is a separate owner decision after L3",
+  "no profitability claim may be made from L1 or L2 alone"
+ ],
+ "researcher_degrees_of_freedom": [
+  "one universe rule, one formula and one fixed scalar per configuration, written before any market data of the candidate is read",
+  "evaluation window, sub-periods, regimes, comparators and the stop rule fixed in the pre-registration",
+  "no assets, periods or horizons dropped or added after seeing results",
+  "a market-derived summary statistic of a candidate signal computed before pre-registration counts as an experiment and is forbidden",
+  "stop rule: if L1 is not rejected for a registered configuration, the hypothesis terminates; no variant search"
+ ]
+}

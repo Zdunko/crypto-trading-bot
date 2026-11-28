@@ -1,0 +1,51 @@
+{
+ "id": "feasibility-methodology-v2-proposal",
+ "version": "2.0.0-proposal",
+ "status": "PROPOSAL, NOT ADOPTED. The S6 gate (v1) and its thresholds stay in force until the owner approves a separately versioned adoption.",
+ "based_on": "docs/phase4c/s7_gate_audit_results.json (seeded synthetic simulation)",
+ "proposed_changes": [
+  {
+   "id": "V2-1",
+   "replaces": "A7 effective episodes (Kish factor on declared cluster size and rho)",
+   "new": "overlap- and regime-aware effective sample: effective independent observations = raw episodes / DEFF where DEFF = 1 + (m-1)*rho_x + overlap term from the declared mean holding period D (D/step - 1)*rho_t, plus a minimum number of independent regime episodes (>= 4 bull/bear alternations or a documented waiver)",
+   "rationale": "q2/q3: the v1 factor understates the design effect by up to 6.7x at 20-day holds and more under regime means",
+   "calibration": "stored q2/q3 grid; adoption requires |DEFF_formula - DEFF_true| <= 25 % on the grid"
+  },
+  {
+   "id": "V2-2",
+   "replaces": "A7 MDE criterion applied to every family",
+   "new": "claim-type-specific power: (a) absolute return claim keeps v1 MDE; (b) relative/defensive claim declares a benchmark and uses paired information-ratio or timing-null power with a declared skill range; both require declared plausible effect size >= MDE at 80 % power",
+   "rationale": "q1/q5: v1 favours exposure; timing null has equal power at 20 % and 90 % invested",
+   "calibration": "size in [0.03, 0.08] under the null and power >= 0.8 at the declared effect on the stored simulation"
+  },
+  {
+   "id": "V2-3",
+   "replaces": "declared active_day_share",
+   "new": "declared invested share must come from a stored simulation of the frozen risk layer (V3 when adopted) at the family's declared portfolio volatility, using the simulated p10-p90 band",
+   "rationale": "q6/q6b: the declared 0.9-1.0 is unrealistic for crypto-like volatility",
+   "calibration": "a spec declaring 0.9-1.0 at 54 % volatility must fail; the B2 draft must fail at the simulated shares"
+  },
+  {
+   "id": "V2-4",
+   "replaces": "nothing",
+   "new": "report-only non-normality inflation of the MDE (Mertens) and an HAC-based n_eff",
+   "rationale": "q4: small effect at daily frequency",
+   "calibration": "MDE inflation reported, no gating"
+  },
+  {
+   "id": "V2-5",
+   "replaces": "nothing",
+   "new": "ex-post comparators (volatility-matched, cash-mix, exposure-matched) are labelled non-tradable and never used as gates",
+   "rationale": "q7"
+  }
+ ],
+ "adoption_criteria": [
+  "Family A as specified is still rejected",
+  "the synthetic example of S6 still passes only if it also passes V2-1..V2-3 with its declared inputs",
+  "every new check has a one-mutation failure test and a deterministic cross-process test",
+  "v1 and v2 results are reported side by side for every pre-registration",
+  "no threshold of v1 is edited; v2 is a new file and a new freeze record",
+  "owner approval in writing"
+ ],
+ "not_in_scope": "this proposal evaluates no strategy and registers no family"
+}

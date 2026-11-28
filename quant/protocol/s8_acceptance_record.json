@@ -1,0 +1,31 @@
+{
+ "accepted_by": "owner, as a completed methodological investigation; the NO-GO conclusion remains valid under the original research protocol (S9 instruction, 2026-11-27)",
+ "ci": {
+  "bdd47cf": "24 success, 5 skipped",
+  "fb4e8f9": "24 success, 5 skipped (release-only jobs), 0 failed, 0 cancelled"
+ },
+ "files": {
+  "docs/phase4c/s6_criteria.json": "ee25010bc0765bd75ac4ec5f90bd75ca156fbf00a7d6dd5e70e8a9689a448236",
+  "docs/phase4c/s7_criteria.json": "87177d18ccee0870a0b0da02a852c5990dda3cabba727c858f403dca30366909",
+  "docs/phase4c/s7_validation_outcome.md": "361cf39aa855b9e0b08a99936d449323d6946a45b435263ad0425127291d8980",
+  "docs/phase4c/s8_criteria.json": "6ed1e92957d8f8656710828a7ab5fb68b111d58710092a517b6dfaf137292495",
+  "docs/phase4c/s8_data_commercial_feasibility.md": "c024b3de4a2fe6349851627cc50c4b0929b1b3f89201bd32ff13274fad059546",
+  "docs/phase4c/s8_decision_framework.md": "1cc1cafffb14cd71beefcbaf59fb17dfe1ddac291bb9c91e3cb34ab93eb28d31",
+  "docs/phase4c/s8_design_study_results.json": "fb9dcd7fa0badb1ff2a18fb02fa451346ebb31233770cc92f5d0b28c2ee51ea3",
+  "docs/phase4c/s8_methodology_review.md": "2c61d51e52ce1043b72b7fb466c581059512cdbf631f68de9dc91afe92d6450b",
+  "docs/phase4c/s8_report.md": "5d5c5e636e55b644f0ba14df6aaecc5f5631de181b28a904bbc865f6de98ad56",
+  "docs/phase4c/s8_risk_v3_adoption_review.md": "6c5caf29297131b042271e5a0567e4e6bb4e6f17b152bffa3d625e75ae4fe2e9",
+  "docs/phase4c/s8_validation_outcome.md": "7ec79d68d61e70ea6a58b77153a817d6f0239a0d838e600e50d31302ed5a5ed3",
+  "protocol/s7_acceptance_record.json": "a52c33b6452b71a0e3de65e88788c01e8ad3ef67d8176f005c07a9e0415eda62",
+  "protocol/s7_freeze_record.json": "50e3af9eeceebe7aa7b0aa4dd1478d00f70d74bed50b82c7c4dd2b19491383b7",
+  "protocol/s8_freeze_record.json": "901dd82e7063abaa3c3d8b03735b8238f783dc0e5c7b89af5924c96345a2c1af",
+  "quantlab/design_study.py": "4ddb7bcccd24e41fc408d62f6bd635981c5e1e0e392c7b22b66f506008f7175c",
+  "quantlab/feasibility.py": "ea14e754ebba5616a6265961273ec890cf342ee9cbf706cc5c2247700c51ea34",
+  "quantlab/risk_v2.py": "99f337972a10315927d926368faa192448e5fe8dcdaecae607f89f86811b5e73",
+  "quantlab/risk_v3.py": "cbfe545e8727fc1012e930d62ef57f92b9920f011a0233a3cd74dd4d6a8e6cc8",
+  "tests/test_design_study.py": "902953ff6f941ceddbeaf63d8228437ebc2435cd8dca69e90b0520057f32d565",
+  "tests/test_s8_docs.py": "8797a65a76c8d11516ab1f92a9106866536dc95162c9c939df7645db8b41cdf8",
+  "tests/test_s8_freeze.py": "5f2459800c2127aac1f3bc3d1af77f65101edaebe61da1e9c6c75ab32bfcc96d"
+ },
+ "scope": "synthetic study and documentation; no strategy, no market evaluation"
+}

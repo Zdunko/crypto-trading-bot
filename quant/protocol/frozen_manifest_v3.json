@@ -1,0 +1,19 @@
+{
+ "files": {
+  "configs/backtest.json": "63bb5d056e64dc0ab20b249ce8462838881ab5fb240a9b811a017f71d9f460d6",
+  "configs/base.json": "4be097f1a0529daea0c21224e0cfe131ab635e8a3aabd6a54f7e561779505213",
+  "protocol/protocol.json": "6f3152505ef472aed093021c13dd11f82e7289c5c5783fb2632ca79106922d47",
+  "protocol/protocol_v3.json": "1c4d89c3ebdba94bfe04940c6332474db774a608a9b40e6c3c9c45dd02bba978",
+  "protocol/r0_reference.json": "ed6ad4649323382a5e5bf026fe7f904c0ffda918b84aed129f81d28313246ef0",
+  "strategies/breakout_donchian.py": "8a287d7751f6f85dc2e7dac6bf59237e60d4f8f594c2ad7b3fee44b3a098f0d3",
+  "strategies/buy_and_hold.py": "bdb044ed081472e84b784bfa141b47feb905d62224d1a8536fa26614a4519664",
+  "strategies/mean_reversion_rsi_bb.py": "cd70920646162429916935c336d3f8e32d17d6eaa8eaca8ebb31355db0ba1aa3",
+  "strategies/momentum_roc.py": "29ce67386c54f62a5e3c588bb21c9ec2360f50a3a884402b22882206137a34e3",
+  "strategies/quant_common.py": "45f1e8b6ca142306dd4b21c1528c4e4c46ac62715b3a8be6ea8f2e6ed7757154",
+  "strategies/trend_ema_cross.py": "f3229a77bcb399ac3b999d8d9da7ed88ff8102257c58673aa7ff052ae32a51d3",
+  "strategies_r1/momentum_roc_r1.py": "8de31c328916c977906a905c5f1de56a9d2aa4726779f5f244b2d8e905f857e7",
+  "strategies_r1/quant_risk.py": "bba3c199e83058f63bd42c80cf59ea937d3350b840e0ce9bb619018b2a277a08",
+  "strategies_r1/trend_ema_cross_r1.py": "15957eda1e3d40183218c95c88cc9090ae157c87be9f01b86d1ce038e19ce537"
+ },
+ "note": "Protocol v3 freeze (Phase 4). Regenerate only through a reviewed commit."
+}

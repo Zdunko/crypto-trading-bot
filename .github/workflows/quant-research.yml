@@ -1,0 +1,405 @@
+name: Quant research
+
+# Phase 3 research stages. Public data only, no credentials, simulated capital only.
+# A stage runs on a push to a claude/** branch whose head commit message contains its marker:
+#   [phase3-data]      download + validate OKX candles, print availability and dataset hash
+#   [phase3-bias]      lookahead/recursive analysis on 8 pairs x 6 periods (inside the evaluation period)
+#   [phase3-eval]      backtests, costs, stress, walk-forward, robustness, report (evaluation period ONLY)
+#   [phase3b-audit]    corrected (sizing-consistent) evaluation + native reconciliation + benchmark audit
+#   [phase4-research]  R1 risk overlay: smoke test, bias checks, R1 + 6 ablations x 2 strategies (research data only)
+#   [stage0-check]     Stage 0: new engine vs legacy benchmark on the frozen dataset, determinism, real gaps (no strategy)
+#   [family-a-eval]    Family A market evaluation (evaluation period only, frozen spec v5 + amendment A1)
+#   [phase3-holdout]   survivors only, exactly once (refuses to run without e_verdict.json / if already done)
+# workflow_dispatch needs this file on the default branch, so markers are the way before merging.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["claude/**"]
+
+concurrency:
+  group: "${{ github.workflow }}-${{ github.ref }}"
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  EXCHANGE: okx
+  DATA_START: "20200101"
+  DATA_END: "20261125"
+  PYTHONPATH: "quant:quant/strategies"
+
+jobs:
+  data:
+    name: "download and validate data"
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[phase3-data]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          activate-environment: true
+          enable-cache: false
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: |
+          uv pip install -r quant/requirements.txt
+          uv pip install -e .
+
+      - name: Verify the frozen protocol
+        run: python -m quantlab.protocol verify
+
+      - name: Download and validate candles (hash must match the protocol)
+        shell: bash
+        run: |
+          export EXPECT_DATA_HASH=$(python -c "import json;print(json.load(open('quant/protocol/protocol.json'))['data']['dataset_sha256'])")
+          bash quant/scripts/fetch_data.sh 2>&1 | tail -n 40
+
+      - name: Dataset report
+        shell: bash
+        run: python -m quantlab.data_validation --datadir user_data/data/okx --config quant/configs/base.json --start 2020-01-01 --end 2026-11-25 | tail -n 14
+
+      - name: Upload logs and results
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: data-${{ github.sha }}
+          path: |
+            user_data/data_report.json
+          if-no-files-found: warn
+          retention-days: 30
+
+  bias:
+    name: "bias checks (lookahead + recursive)"
+    if: contains(github.event.head_commit.message, '[phase3-bias]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          activate-environment: true
+          enable-cache: false
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: |
+          uv pip install -r quant/requirements.txt
+          uv pip install -e .
+
+      - name: Verify the frozen protocol
+        run: python -m quantlab.protocol verify
+
+      - name: Download and validate candles (hash must match the protocol)
+        shell: bash
+        run: |
+          export EXPECT_DATA_HASH=$(python -c "import json;print(json.load(open('quant/protocol/protocol.json'))['data']['dataset_sha256'])")
+          bash quant/scripts/fetch_data.sh 2>&1 | tail -n 40
+
+      - name: Bias stage
+        shell: bash
+        run: python -m quantlab.phase3 bias 2>&1 | tee user_data/phase3_bias.log
+
+      - name: Upload logs and results
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: bias-${{ github.sha }}
+          path: |
+            user_data/bias/
+            user_data/phase3_bias.log
+          if-no-files-found: warn
+          retention-days: 30
+
+  evaluate:
+    name: "evaluation period backtests"
+    if: contains(github.event.head_commit.message, '[phase3-eval]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          activate-environment: true
+          enable-cache: false
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: |
+          uv pip install -r quant/requirements.txt
+          uv pip install -e .
+
+      - name: Verify the frozen protocol
+        run: python -m quantlab.protocol verify
+
+      - name: Download and validate candles (hash must match the protocol)
+        shell: bash
+        run: |
+          export EXPECT_DATA_HASH=$(python -c "import json;print(json.load(open('quant/protocol/protocol.json'))['data']['dataset_sha256'])")
+          bash quant/scripts/fetch_data.sh 2>&1 | tail -n 40
+
+      - name: Evaluation stage
+        shell: bash
+        run: python -m quantlab.phase3 eval 2>&1 | tee user_data/phase3_eval.log
+
+      - name: Reconcile equity reconstruction with Freqtrade totals
+        shell: bash
+        run: python -m quantlab.phase3 reconcile 2>&1 | tee user_data/phase3_reconcile.log
+
+      - name: Upload logs and results
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: evaluate-${{ github.sha }}
+          path: |
+            user_data/phase3_eval.log
+            user_data/phase3_reconcile.log
+          if-no-files-found: warn
+          retention-days: 30
+
+  research:
+    name: "phase 4 risk-overlay research (research data only)"
+    if: contains(github.event.head_commit.message, '[phase4-research]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          activate-environment: true
+          enable-cache: false
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: |
+          uv pip install -r quant/requirements.txt
+          uv pip install -e .
+
+      - name: Verify the frozen protocols (v2 and v3)
+        run: python -m quantlab.protocol verify3
+
+      - name: Download and validate candles (hash must match the protocol)
+        shell: bash
+        run: |
+          export EXPECT_DATA_HASH=$(python -c "import json;print(json.load(open('quant/protocol/protocol.json'))['data']['dataset_sha256'])")
+          bash quant/scripts/fetch_data.sh 2>&1 | tail -n 40
+
+      - name: Phase 4 research stage
+        shell: bash
+        run: python -m quantlab.phase4 research 2>&1 | tee user_data/phase4_research.log
+
+      - name: Upload logs and results
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: research-${{ github.sha }}
+          path: |
+            user_data/phase4_research.log
+            user_data/phase4_result.json
+            user_data/phase4_report.md
+            user_data/risk_stats/
+            user_data/bias_r1/
+          if-no-files-found: warn
+          retention-days: 30
+
+  stage0:
+    name: "stage 0 engine check (no strategy, no holdout)"
+    if: contains(github.event.head_commit.message, '[stage0-check]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          activate-environment: true
+          enable-cache: false
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: |
+          uv pip install -r quant/requirements.txt
+          uv pip install -e .
+
+      - name: Verify the frozen protocols
+        run: python -m quantlab.protocol verify4
+
+      - name: Download and validate candles (hash must match the protocol)
+        shell: bash
+        run: |
+          export EXPECT_DATA_HASH=$(python -c "import json;print(json.load(open('quant/protocol/protocol.json'))['data']['dataset_sha256'])")
+          bash quant/scripts/fetch_data.sh 2>&1 | tail -n 40
+
+      - name: Stage 0 engine check
+        shell: bash
+        run: python -m quantlab.stage0 2>&1 | tee user_data/stage0.log
+
+      - name: Upload logs and results
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: stage0-${{ github.sha }}
+          path: user_data/stage0.log
+          if-no-files-found: warn
+          retention-days: 30
+
+  family_a:
+    name: "family A evaluation (evaluation period only, no holdout)"
+    if: contains(github.event.head_commit.message, '[family-a-eval]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          activate-environment: true
+          enable-cache: false
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: |
+          uv pip install -r quant/requirements.txt
+          uv pip install -e .
+
+      - name: Verify the frozen protocols and amendments
+        run: python -m quantlab.protocol verify5
+
+      - name: Download and validate candles (hash must match the protocol)
+        shell: bash
+        run: |
+          export EXPECT_DATA_HASH=$(python -c "import json;print(json.load(open('quant/protocol/protocol.json'))['data']['dataset_sha256'])")
+          bash quant/scripts/fetch_data.sh 2>&1 | tail -n 40
+
+      - name: Family A evaluation
+        shell: bash
+        run: python -m quantlab.family_a_eval 2>&1 | tee user_data/family_a_eval.log
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: family-a-${{ github.sha }}
+          path: user_data/family_a_eval.log
+          if-no-files-found: warn
+          retention-days: 30
+
+  holdout:
+    name: "holdout (survivors only, once)"
+    if: contains(github.event.head_commit.message, '[phase3-holdout]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          activate-environment: true
+          enable-cache: false
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: |
+          uv pip install -r quant/requirements.txt
+          uv pip install -e .
+
+      - name: Verify the frozen protocol
+        run: python -m quantlab.protocol verify
+
+      - name: Download and validate candles (hash must match the protocol)
+        shell: bash
+        run: |
+          export EXPECT_DATA_HASH=$(python -c "import json;print(json.load(open('quant/protocol/protocol.json'))['data']['dataset_sha256'])")
+          bash quant/scripts/fetch_data.sh 2>&1 | tail -n 40
+
+      - name: Holdout stage
+        shell: bash
+        run: python -m quantlab.phase3 holdout 2>&1 | tee user_data/phase3_holdout.log
+
+      - name: Upload logs and results
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: holdout-${{ github.sha }}
+          path: |
+            user_data/phase3_holdout.log
+          if-no-files-found: warn
+          retention-days: 30
+
+  audit3b:
+    name: "Phase 3B audit (corrected engine, benchmark, leakage)"
+    if: contains(github.event.head_commit.message, '[phase3b-audit]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          activate-environment: true
+          enable-cache: false
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: |
+          uv pip install -r quant/requirements.txt
+          uv pip install -e .
+
+      - name: Verify the frozen protocol
+        run: python -m quantlab.protocol verify
+
+      - name: Download and validate candles (hash must match the protocol)
+        shell: bash
+        run: |
+          export EXPECT_DATA_HASH=$(python -c "import json;print(json.load(open('quant/protocol/protocol.json'))['data']['dataset_sha256'])")
+          bash quant/scripts/fetch_data.sh 2>&1 | tail -n 5
+
+      - name: Corrected evaluation (evaluation period only)
+        shell: bash
+        run: python -m quantlab.phase3 eval_consistent 2>&1 | tee user_data/phase3b_eval.log
+
+      - name: Audit
+        shell: bash
+        run: python -m quantlab.phase3 audit 2>&1 | tee user_data/phase3b_audit.log
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: audit3b-${{ github.sha }}
+          path: |
+            user_data/phase3b_eval.log
+            user_data/phase3b_audit.log
+          if-no-files-found: warn
+          retention-days: 30

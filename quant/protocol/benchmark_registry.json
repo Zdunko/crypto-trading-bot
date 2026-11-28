@@ -1,0 +1,119 @@
+{
+ "comparison": {
+  "function": "compare_set",
+  "metrics": [
+   "net_return",
+   "cagr",
+   "max_drawdown",
+   "sharpe",
+   "sortino",
+   "calmar",
+   "turnover_per_year",
+   "estimated_cost",
+   "exposure_mean",
+   "cvar_5pct_daily",
+   "worst_day",
+   "skew",
+   "kurtosis",
+   "active_return_annual",
+   "tracking_error",
+   "information_ratio"
+  ],
+  "statistics": "paired circular block bootstrap of the Sharpe difference (2000 draws, 10-day blocks, seed 20261125), Holm over the comparison set, alpha 0.05 (protocol_v4_stats levels)"
+ },
+ "id": "benchmark-registry-v1",
+ "known_limitations": [
+  "engine values a position that stops printing candles at its last close (optimistic); stuck positions are listed by stuck_positions()",
+  "benchmarks are daily-resolution; hourly use needs a separate registration",
+  "turnover and costs are estimates from closed trades plus open positions' cost",
+  "survivorship: the point-in-time universe removes survivor bias of the symbol list, not the venue's listing selection"
+ ],
+ "legacy": {
+  "definition_sha256": "069ef1bc9d4ce2d8259ec38c2287204e011dc23d1e0cfcebb0e678acd0a3da00",
+  "ids": {
+   "B1": "equal-weight all 8 pairs, never rebalanced",
+   "B2": "equal-weight without SOL",
+   "B3": "BTC + ETH",
+   "B4": "BTC",
+   "B5": "equal-weight all 8, monthly rebalanced"
+  },
+  "implementation": "quantlab.equity.buy_and_hold / rebalanced_buy_and_hold",
+  "source": "protocol_v3.json benchmarks.set",
+  "t3_t4_rule": "unchanged (protocol v3): T3 uses the best of B1-B5, T4 the lowest drawdown among them"
+ },
+ "new": {
+  "btc_buy_hold": {
+   "class": "BuyHold",
+   "definition": "buy BTC/USDT once at the first usable candle, never rebalance",
+   "parameters": {
+    "max_stale": 3,
+    "pairs": [
+     "BTC/USDT"
+    ]
+   }
+  },
+  "cash": {
+   "class": "Cash",
+   "definition": "never trades; equity = wallet; no interest assumed",
+   "parameters": {}
+  },
+  "cash_mix_t4": {
+   "class": "ScheduledExposure",
+   "definition": "static mix of the benchmark and cash whose max drawdown equals the T4 limit 20 % (ex-post comparator, solve_cash_mix)",
+   "parameters": {
+    "target_mdd": 0.2
+   }
+  },
+  "exposure_matched": {
+   "class": "ScheduledExposure",
+   "definition": "equal-weight universe held at the strategy's own (lagged) exposure path, rest cash",
+   "parameters": {
+    "band": 0.05
+   }
+  },
+  "pit_equal_weight": {
+   "class": "PitEqualWeight",
+   "definition": "equal weight of the point-in-time universe (S4 dataset), rebalanced at the first candle of each month; members without a recent candle are not bought",
+   "parameters": {
+    "max_stale": 3,
+    "rebalance": "monthly"
+   }
+  },
+  "random_timing_null": {
+   "definition": "circular block permutation of the strategy exposure schedule (2000 draws, block 10 days, seed 20261125); one-sided p that timing adds value",
+   "function": "random_timing_null",
+   "parameters": {
+    "block": 10,
+    "n": 2000,
+    "seed": 20261125
+   }
+  },
+  "simple_trend": {
+   "class": "SimpleTrend",
+   "definition": "hold, equal weight, universe members whose last completed close is above their 100-day simple average; incomplete windows are not 'on'",
+   "parameters": {
+    "max_stale": 3,
+    "source": "fixed convention (mid Family A window), not tuned",
+    "window": 100
+   }
+  },
+  "volatility_matched": {
+   "class": "ScheduledExposure",
+   "definition": "equal-weight universe at a constant scale min(1, sigma_strategy / sigma_benchmark) (ex-post comparator)",
+   "parameters": {
+    "scale": "volatility_scale()"
+   }
+  },
+  "volatility_targeted": {
+   "class": "VolTargeted",
+   "definition": "ex-ante: exposure = min(1, sigma_target / trailing vol of the equal-weight proxy), unknown vol = no exposure",
+   "parameters": {
+    "band": 0.05,
+    "sigma_target": 0.4,
+    "source": "Family A conventions, none tuned",
+    "vol_window": 30
+   }
+  }
+ },
+ "note": "Frozen registry. Legacy benchmarks B1-B5 are NOT redefined: definitions are hashed from protocol_v3.json and implemented unchanged in quantlab.equity. New benchmarks have new ids and run through the Stage 0 engine with the same ExecConfig as a strategy."
+}

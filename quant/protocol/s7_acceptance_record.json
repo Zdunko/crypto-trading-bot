@@ -1,0 +1,27 @@
+{
+ "accepted_by": "owner, conditionally, as research infrastructure only (S8 instruction, 2026-11-27)",
+ "ci": {
+  "bdd47cf": "all 24 jobs success",
+  "c3ce81b": "1 intermittent upstream Windows failure; rerun cancelled by concurrency"
+ },
+ "files": {
+  "docs/phase4c/proposals/feasibility_methodology_v2_proposal.json": "e39f71b6cc9f6553ddc116d540e72f51e79c20ac2e0723e17514e54ce6299864",
+  "docs/phase4c/s7_criteria.json": "87177d18ccee0870a0b0da02a852c5990dda3cabba727c858f403dca30366909",
+  "docs/phase4c/s7_gate_audit_results.json": "574db7383beb178ab7dc8deb11206d6f37bf03cffade1d281d365cd0a7d53b02",
+  "docs/phase4c/s7_gate_methodology_audit.md": "3d5cd4db15689ef6632094edcd8589e992865f01ab26a0a31de19dfb503afb51",
+  "docs/phase4c/s7_production_readiness_roadmap.md": "add9678525366849ac7f3d10d249354f657d7233b983bd1a0fdfa37aa695f13d",
+  "docs/phase4c/s7_report.md": "89e4c1a51216104f971ca0adffa56c1a9b591459b985a8534bd084b373a525a9",
+  "docs/phase4c/s7_strategy_family_review.md": "eaf7c609341a4d147a57ac090e7aae296cf7973bc371c888567cb280ee043e0f",
+  "docs/phase4c/s7_validation_outcome.md": "361cf39aa855b9e0b08a99936d449323d6946a45b435263ad0425127291d8980",
+  "protocol/amendments/A10_ledger_s7.json": "f7954cb0d44b42b3eed7af5cab3dc4518c291e4d31ce9bc592cb931e27722b79",
+  "protocol/risk_v3_spec.json": "ecea9faa9c805d5a80b32ebb73c729da0b4164906b0ea5c236a8755cad365272",
+  "protocol/s6_acceptance_record.json": "c24ed97e5bf621be6c68c3c52bdb02a0ad2b49a8fe70ac5ca9cff4a65de2c733",
+  "protocol/s7_freeze_record.json": "50e3af9eeceebe7aa7b0aa4dd1478d00f70d74bed50b82c7c4dd2b19491383b7",
+  "quantlab/gate_audit.py": "0c004ec6760212454509b55e4c25e05f060bf11bfd9f38211d728c8717304fd1",
+  "quantlab/risk_v3.py": "cbfe545e8727fc1012e930d62ef57f92b9920f011a0233a3cd74dd4d6a8e6cc8",
+  "tests/test_gate_audit.py": "be4a792b17a5c2becd15410bab15c90c8a00ef53722b888c1c15d038a973e854",
+  "tests/test_risk_v3.py": "9af754363ae66500bc604370d500f644b2e3086d8855cbc1e755893912673a07",
+  "tests/test_s7_docs.py": "e9905093e5951a76bdb1d03aea09d135ac782a30f1272d6b7b51979179f8a70b"
+ },
+ "scope": "synthetic fixtures and documentation; no strategy, no market evaluation"
+}

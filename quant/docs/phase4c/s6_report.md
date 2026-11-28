@@ -1,0 +1,40 @@
+# S6 report: feasibility gate and benchmark infrastructure (original plan S3 and S4)
+
+Scope: the two outstanding infrastructure items of the Phase 4C plan, built and validated on synthetic fixtures only. Criteria pre-registered in `s6_criteria.json` (commit `f053d61`) before any S6 code; unchanged. No market backtest, no strategy implementation, no Family B, no holdout access (not even metadata), no change to T1-T10, S2 risk parameters or any frozen manifest, no paid service. The accepted S5-infra artifacts were frozen first (`protocol/s5_freeze_record.json`, `tests/test_s5_freeze.py`).
+
+## 1. Deliverables
+| Component | Files |
+|---|---|
+| Feasibility gate | `quantlab/feasibility.py`, `protocol/preregistration_template.json` (machine-readable, fails the gate by design), `protocol/spec_registry.json` (rejected families, historical configuration hashes), `protocol/run_approvals.json` (empty: no run is approved) |
+| Benchmarks | `quantlab/benchmarks.py` (Cash, BuyHold, PitEqualWeight, SimpleTrend, VolTargeted, ScheduledExposure, PitUniverse, matched comparators, random-timing null, performance/compare/Holm, stuck positions), `protocol/benchmark_registry.json` |
+| Review and proposal | `s6_stale_position_review.md`, `s6_next_family_design_proposal.md`, `proposals/b2_draft_*.json` |
+| Tests | `test_feasibility.py` (19), `test_benchmarks.py` (20), `test_benchmark_pit_integration.py` (3), `test_stale_review.py` (4), `test_s5_freeze.py` (2), `test_s6_freeze.py` (3) |
+Usage: `python -m quantlab.feasibility check PREREGISTRATION.json` (exit 0 only on GATE_PASS; result includes `authorizes_market_evaluation: false` in every case).
+
+## 2. Feasibility gate (A1-A14)
+Eleven deterministic checks, thresholds read only from `s6_criteria.json`: schema (strict, unknown fields/NaN/inf/malformed input fail), economic rationale and >= 2 failure modes, causality declaration (completed candles, warm-up, evaluation window inside 2017-09..2025-07 and >= 3 years, frozen dataset hash, universe/staleness settings), execution and costs (BASE or higher, stress, participation <= 0.10, min notional), risk compatibility (frozen S2 config hash, universe guard, spot only, no leverage/shorting/averaging/adjustment), complexity (<= 3 free parameters, <= 3 configurations, scalar fixed values only, conventions need a source), power (seeded Monte Carlo over declared ranges: 5th percentile raw episodes >= 200 and effective (Kish design effect) >= 80, 95th percentile MDE Sharpe <= 1.5), budget/ledger (caps, N <= 52, stop rule, baseline), duplicates and rejected families (spec/configuration hashes, family key), retrospective-change protection (results_seen false, prior_looks 0, thresholds equal to the frozen ones, spec hash must match a freeze record), holdout declaration (access false, the four known metadata exposures acknowledged).
+Evidence: the synthetic example passes all 11; **Family A as specified is rejected** (A7: about 14 expected episodes against 200, and A9: rejected family key; numbers from its recorded evaluation: 8 pairs, 14 closed trades, 15.6 % of days invested); every check fails under one targeted mutation (A1-A11); fail-closed on garbage, NaN/inf, unreadable thresholds; identical `result_hash` for permuted key order and across two processes; a frozen specification edited afterwards or loosened thresholds are detected; `may_start_market_run` is False without budget room, a frozen passing spec **and** an owner approval for that exact spec hash (the real approvals file is empty, the real budget has 0 further families).
+
+## 3. Benchmark infrastructure (B1-B8)
+- **Registry (B1):** legacy B1-B5 are not redefined (definition hash equals `protocol_v3.json`, implementation `quantlab.equity` unchanged); new ids are distinct; every required benchmark is registered.
+- **Same engine and costs (B2, B8):** every benchmark is a Stage 0 `Strategy`; the same `ExecConfig` (fees, slippage, liquidity cap, minimum notional, valuation) applies; results are deterministic per run, and changing the cost scenario changes every non-cash result.
+- **Closed forms (B3):** cash constant; buy-and-hold net return equals the hand calculation with costs; equal weight within 0.1 %; volatility-target exposure follows min(1, sigma*/sigma-hat) (unknown volatility = no exposure); scheduled exposure follows its path (missing = zero); volatility scale 1/3 on a 1:3 volatility ratio and capped at 1; cash-mix solves (1-0.8^(1/30))/0.01 exactly.
+- **Causality (B4):** 5 benchmark classes x 5 seeded perturbations of all candles from a random index (prices x0.2-5, volume 0-1e12): every order up to the perturbation is identical (25 cases).
+- **Point in time (B5):** membership changes followed monthly; non-members never bought; assets without history not bought; assets that stop printing are held, valued at the last close and **listed as stuck**; an empty universe or unknown pair leaves cash; insufficient liquidity yields explicit rejections; on the synthetic S4-style dataset an identity transition ends membership (the asset is sold at the next rebalance), a stale asset is reported stuck, holdout dates and loader errors give an empty universe and are recorded, quarantined data stops the run before it starts.
+- **Comparison (B6):** net return, CAGR, MDD, Sharpe, Sortino, Calmar, CVaR 5 %, worst day, skew/kurtosis, exposure, turnover and cost estimates, active return, tracking error, information ratio; paired circular block bootstrap of the Sharpe difference (deterministic, constant edge detected, identical series gives p about 0.5, a worse series p > 0.95); Holm over the benchmark set never rejects more than the raw tests.
+- **Random-timing null (B7):** deterministic; false-positive rate 0.15 or less over 80 independent null datasets at alpha 0.05; injected timing skill detected (p < 0.01).
+
+## 4. Risk review (R1)
+`s6_stale_position_review.md`: the frozen S2 layer fails safe for new risk (permanent SHUTDOWN, no new entries) but its detection is counted in candles (48 hours on hourly, **48 days on daily** data), stale positions cannot be sold, and the engine values them at the last close so equity and the floor tests do not see the loss. Nothing was changed; fixing it needs a new risk-layer version (not authorised). Recorded as L-STALEPOS.
+
+## 5. Regression and bookkeeping (R2)
+Full local suite: 588 passed before the S6 freeze test, S5/S4/S2 freeze tests green, `verify5` unchanged, research budget unchanged (N 43/52, 0/3 further families), ledger amendment A9 (S6 audit entry, no count change), T1-T10 untouched, previously rejected strategies registered as rejected family keys.
+
+## 6. Known holdout metadata exposure
+All S6 code and tests use synthetic fixtures; no network, no listing, no new archive metadata. Pre-registrations must acknowledge the four known exposures (S1 listing keys and last_month, S3 survivorship reporting, S4 post-cutoff symbol names, S4 request-log gap); the gate fails without that acknowledgement. Statement: `s5_holdout_isolation_statement.md`.
+
+## 7. Remaining risks
+L-STALEPOS (above); L-GATE: the gate verifies arithmetic on declared ranges, so an optimistic pre-registration can pass (the B2 draft passes only while the invested share stays >= about 0.75 and entries >= about 0.8 per asset-year); L-BENCH: daily resolution, estimated costs, ex-post matched comparators; benchmarks that hold a delisted asset hide its loss; parameter classification (free vs convention) is declared by the author and reviewed by a human; one market cycle; licence ceiling; macOS runner availability is intermittent; every earlier S4/S5 limitation stands.
+
+## 8. Recommendation
+**GO for S6 infrastructure** (feasibility gate and benchmark infrastructure, synthetic validation only). **NO-GO until separate explicit approval:** implementing or registering the proposed B2 family, any market evaluation, lifting the Family B hold, any paper/live use, any paid service. The design-only proposal (`s6_next_family_design_proposal.md`) recommends B2 (cross-sectional momentum on the point-in-time universe) with 3 configurations (N 43 -> 46), 6 configurations unallocated.

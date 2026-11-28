@@ -1,0 +1,96 @@
+{
+ "amendments": {
+  "A1_liquidity_volume.json": "05511b6f4b80fe7a3ff04941e5c39c309bd5b5000033ac00ce77affc6c4d85dc",
+  "A2_ledger_family_a.json": "69166142994f3d9d87b047dd5d43dde6d04e08070f92c62940733fa08068ed84",
+  "A3_ledger_s1.json": "5a669ca65b731b29f1f9a685f14dea76fe4d61c1a54914976c694e2edd608ecc",
+  "A4_causality_empty_trades.json": "63eab378178be595965bc5e747b90b840e0e736ef493c9308739d2d4280465ae",
+  "A5_active_stats_typing.json": "500417fbf239d493dc7036787c512cbe69a46820435341f1ce0f2c7c3d2e90ea"
+ },
+ "branch": "claude/freqtrade-trading-system-b82aek",
+ "ci_evidence": {
+  "earlier_infrastructure_note": "macOS jobs without runner and a Windows timing flake seen on earlier commits; none on 6d24202",
+  "freqtrade_ci_jobs": "24 success, 5 skipped, 0 failed, 0 cancelled (verified twice; check_suite completed event 2026-11-26T06:59:23Z)",
+  "freqtrade_ci_run": 45770239462,
+  "head": "6d24202",
+  "pre_commit": "success (job 'Pre-commit checks')",
+  "quant_ci_runs": [
+   45770239408,
+   45770231330
+  ],
+  "zizmor_run": 45770239542
+ },
+ "experiment_ledger_sha256_at_freeze": "1f22586d397f00c856d60d4e208cd920c1a3838d6842f953147de121e3350ab4",
+ "frozen_commit": "6d2420282430ddc3749c3fec01e54d13f7663302",
+ "frozen_files": {
+  "protocol/protocol_v6_risk_v2.json": "c209ea8edd6ca6a7b1489a39e15ee27572a74b790cc3f6304bd223cf1b1df09f",
+  "quantlab/active_stats.py": "b35260d4c72edbbedb17b7fc2a8bcbffb846be6799593aa63475122dbc006b4a",
+  "quantlab/risk_v2.py": "99f337972a10315927d926368faa192448e5fe8dcdaecae607f89f86811b5e73"
+ },
+ "holdout": "untouched",
+ "id": "S2-freeze-record",
+ "ledger_note": "Ledger hash is verified by protocol.verify_all through the amendment chain (A2, A3, A6...), so later ledger entries are amendments, not silent edits.",
+ "manifest_v6": {
+  "path": "quant/protocol/frozen_manifest_v6.json",
+  "sha256": "982e1ad55555551906e2a757ff78867c6aee84f7040ef01c7994243ecc6fff7d"
+ },
+ "preserved_manifests": {
+  "frozen_manifest.json": "eb28bcc25ef31e4f6a5116bc4fd689bf73f19e9e8652563b42814076baa4f720",
+  "frozen_manifest_v3.json": "73de0349fa04c36b4509be096ca4456f5acba5deb6b33890378227672d6cb880",
+  "frozen_manifest_v4.json": "1336106a0f8086333b2c5263501de8e2a4c1f62bee5ddc9d1f87ad93b69485d3",
+  "frozen_manifest_v5.json": "4d0e2c9f26dc39e1b0df018a47bda8789c753aa14c27b43ad2136f8583fdd424",
+  "frozen_manifest_v6.json": "982e1ad55555551906e2a757ff78867c6aee84f7040ef01c7994243ecc6fff7d"
+ },
+ "previous_s2_commit": "ee977a949a25a36e0517d0421ce4c2d29d884bd9",
+ "protocol_v6": {
+  "path": "quant/protocol/protocol_v6_risk_v2.json",
+  "sha256": "c209ea8edd6ca6a7b1489a39e15ee27572a74b790cc3f6304bd223cf1b1df09f"
+ },
+ "risk_config_defaults": {
+  "approval_max_age_hours": 168,
+  "cooldown_hours": 336,
+  "data_gap_candles": 48,
+  "entry_cost": 0.0015,
+  "epoch_loss_cap": 0.05,
+  "exit_cost": 0.0015,
+  "flat_tolerance": 1e-09,
+  "hard_dd": 0.25,
+  "liquidity_alarm_candles": 24,
+  "max_failed_reentries": 2,
+  "max_flat_cycles": 3,
+  "reentry_fail_loss": 0.03,
+  "step_hours": 168,
+  "steps": [
+   0.25,
+   0.5,
+   1.0
+  ],
+  "stress_gap": 0.3,
+  "tier1_cap": 0.5,
+  "tier1_dd": 0.1,
+  "tier1_exit_dd": 0.05,
+  "tier2_dd": 0.15,
+  "tier3_dd": 0.18
+ },
+ "risk_config_defaults_sha256": "7f9173399d3edf96e5e0c0d1f6b1599b5954252b51253e8e17d226b77eb44fdb",
+ "status": "S2 frozen after owner's conditional acceptance; risk parameters and T1-T10 unchanged. Any change needs a new manifest version and an amendment.",
+ "tests_at_freeze": {
+  "breakdown": {
+   "active_stats": 5,
+   "engine": 11,
+   "machine": 88,
+   "spec": 3,
+   "store": 15
+  },
+  "command": "bash quant/scripts/check.sh",
+  "local_total": 466,
+  "new_in_s2": 122,
+  "result": "pass (ruff, mypy, codespell, protocol verify, 466 tests)"
+ },
+ "unresolved_limitations": [
+  "All risk numbers are provisional engineering assumptions, unvalidated on market data.",
+  "Hash-chained state file is tamper evidence only; optional external anchor not enabled.",
+  "18 % tier-3 is a trigger not a guaranteed loss bound: gap-through and liquidity failure can overshoot (tested synthetically).",
+  "RiskManagedStrategy tested against a synthetic engine only; Freqtrade integration unexecuted (see S3 integration plan).",
+  "Family A stays rejected; no market evaluation of the risk layer exists."
+ ]
+}

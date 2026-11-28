@@ -1,0 +1,19 @@
+{
+ "id": "A13",
+ "date": "2026-11-27",
+ "title": "Ledger: record the single registered L1 market run of family H1",
+ "reason": "Owner requires every market run to be recorded; the run was authorised for exactly the registered specification.",
+ "owner_approval": "protocol/h1_owner_approval.json",
+ "preserves": {
+  "frozen_manifest_v4.json": "1336106a0f8086333b2c5263501de8e2a4c1f62bee5ddc9d1f87ad93b69485d3"
+ },
+ "changes": [
+  {
+   "file": "protocol/experiment_ledger.json",
+   "from": "8fa0349ea889b47f124b913649d9da13c90b3eecc079708385001c13c2f43c7a",
+   "to": "92f7a053556771df7fc8b7184da7bf0f655a245f9b110b4fedc9adf098df738d",
+   "summary": "adds the market_run record to the registered family entry; no count changes"
+  }
+ ],
+ "unchanged_parameters": "every rule, parameter, threshold, date and count"
+}

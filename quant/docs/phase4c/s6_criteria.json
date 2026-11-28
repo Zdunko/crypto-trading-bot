@@ -1,0 +1,176 @@
+{
+ "id": "S6-criteria-v1",
+ "purpose": "Pre-registered acceptance criteria of S6 (feasibility gate + benchmark infrastructure, the two outstanding items of the Phase 4C plan: original S3 and S4). Committed BEFORE any S6 implementation. Thresholds are engineering/protocol thresholds fixed here and never tuned to results; the implementation reads them from this file.",
+ "scope": "synthetic fixtures only; no market backtest, no strategy implementation, no Family B, no holdout access (not even metadata), no paid service, no change to T1-T10 or risk thresholds; a passed feasibility gate NEVER authorises a market evaluation",
+ "gate_thresholds": {
+  "min_raw_episodes_p05": 200,
+  "min_effective_episodes_p05": 80,
+  "max_mde_annualised_sharpe_p95": 1.5,
+  "max_free_parameters_per_configuration": 3,
+  "max_configurations": 3,
+  "parameters_must_be_scalar": true,
+  "monte_carlo": {
+   "draws": 4000,
+   "seed": 20261127,
+   "lower_quantile": 0.05,
+   "upper_quantile": 0.95
+  },
+  "min_evaluation_years": 3,
+  "evaluation_window_bounds": [
+   "2017-09-01",
+   "2025-07-01"
+  ],
+  "min_costs": {
+   "fee": 0.001,
+   "slippage": 0.0005,
+   "stress_multiple": 2.0
+  },
+  "max_participation": 0.1,
+  "min_notional": 5.0,
+  "universe": {
+   "thresholds": [
+    "1M",
+    "5M"
+   ],
+   "max_stale_days": 3
+  },
+  "risk_config_sha256": "7f9173399d3edf96e5e0c0d1f6b1599b5954252b51253e8e17d226b77eb44fdb",
+  "dataset_hash": "462288b14415edeb3aec73c9400fd8af977faf3105c1396f6f96d4fe3d4069be",
+  "required_benchmarks": [
+   "cash",
+   "btc_buy_hold",
+   "pit_equal_weight",
+   "B1",
+   "exposure_matched",
+   "volatility_matched",
+   "cash_mix_t4",
+   "random_timing_null"
+  ],
+  "rejected_family_keys_never_retested": [
+   "trend_ema_cross",
+   "mean_reversion_rsi_bb",
+   "breakout_donchian",
+   "momentum_roc",
+   "r1_risk_overlay",
+   "trend_vol_scaled_basket"
+  ]
+ },
+ "feasibility_gate": [
+  {
+   "id": "A1",
+   "rule": "schema completeness: every required field present with the right type; unknown fields, NaN/inf, malformed input and any internal exception make the gate FAIL (fail closed)"
+  },
+  {
+   "id": "A2",
+   "rule": "economic rationale: hypothesis, rationale, counterparty/source of the edge, >= 2 expected failure modes, a falsifiable prediction"
+  },
+  {
+   "id": "A3",
+   "rule": "causality: every indicator declares completed-candle inputs and a window; warm-up >= max window + 1; evaluation window inside the research bounds and >= 3 years; dataset hash equals the frozen S4 hash; universe settings within thresholds"
+  },
+  {
+   "id": "A4",
+   "rule": "execution/costs: engine quantlab.execution, fill at the next candle open, costs not below BASE, a stress scenario, participation cap <= 0.10, min notional >= 5"
+  },
+  {
+   "id": "A5",
+   "rule": "risk compatibility: S2 risk layer with the frozen config hash, universe guard on, spot only, no leverage/shorting/averaging/position adjustment"
+  },
+  {
+   "id": "A6",
+   "rule": "complexity: <= 3 free parameters per configuration, <= 3 configurations, scalar fixed values only (no ranges, grids or search spaces), convention parameters need a stated source"
+  },
+  {
+   "id": "A7",
+   "rule": "power: Monte Carlo over the declared ranges (seeded): 5th percentile of raw episodes >= 200 AND of effective episodes (cluster/correlation adjusted) >= 80 AND 95th percentile of the minimum detectable annualised Sharpe <= 1.5"
+  },
+  {
+   "id": "A8",
+   "rule": "budget/ledger: budget caps, N cap 52, stop rule and the registered-family count respected after adding the family; the budget baseline matches the frozen S5 record"
+  },
+  {
+   "id": "A9",
+   "rule": "duplicates: spec hash, family id, title and configuration hashes not already registered; family key not in the rejected set"
+  },
+  {
+   "id": "A10",
+   "rule": "retrospective-change protection: results_seen must be false, prior_looks 0, gate thresholds in the document absent or equal to the frozen ones; a frozen spec hash must match"
+  },
+  {
+   "id": "A11",
+   "rule": "holdout declaration: holdout_access false and the known metadata exposures (S1 listing, S3 survivorship reporting, S4 symbol names, request-log gap) acknowledged"
+  },
+  {
+   "id": "A12",
+   "rule": "determinism: identical result for identical input, for permuted key order, and across two processes"
+  },
+  {
+   "id": "A13",
+   "rule": "a gate pass never authorises a market run: the result carries authorizes_market_evaluation false, and may_start_market_run requires the budget and a separate owner approval record"
+  },
+  {
+   "id": "A14",
+   "rule": "calibration: the gate FAILS Family A as specified (about 14 expected episodes) and PASSES a synthetic example; each individual check can be made to fail by one targeted mutation"
+  }
+ ],
+ "benchmarks": [
+  {
+   "id": "B1",
+   "rule": "registry: legacy B1-B5 keep their definitions (text hash equals protocol v3), new benchmarks have new ids; frozen in benchmark_registry.json"
+  },
+  {
+   "id": "B2",
+   "rule": "every benchmark runs through the Stage 0 engine with the same ExecConfig (costs, slippage, liquidity cap, min notional, valuation) as a strategy would"
+  },
+  {
+   "id": "B3",
+   "rule": "closed-form checks on synthetic fixtures: cash constant; buy-and-hold net return equals the hand calculation with costs; equal-weight weights; volatility-target exposure formula; exposure-/volatility-matched and cash-mix definitions"
+  },
+  {
+   "id": "B4",
+   "rule": "causality: >= 20 seeded perturbations of future candles leave every benchmark order before the perturbation unchanged"
+  },
+  {
+   "id": "B5",
+   "rule": "point-in-time behaviour: members that later end are held while members, non-members never bought, stale/missing/quarantined/identity-transition/insufficient-liquidity cases fail closed and are reported (stuck positions listed)"
+  },
+  {
+   "id": "B6",
+   "rule": "comparison metrics closed-form on synthetic series: net return, CAGR, max drawdown, Sharpe, Sortino, Calmar, turnover, costs, exposure, tail risk (CVaR, worst day), active return, tracking error, information ratio; paired block bootstrap deterministic; Holm over the comparison set"
+  },
+  {
+   "id": "B7",
+   "rule": "random-timing null: deterministic with a fixed seed; false-positive rate near alpha under a true null and detection under injected timing skill on synthetic data"
+  },
+  {
+   "id": "B8",
+   "rule": "determinism across two processes for every benchmark run"
+  }
+ ],
+ "risk_review": [
+  {
+   "id": "R1",
+   "rule": "stale held position review: behaviour of RiskManagedStrategy + engine when a held asset stops printing candles is characterised by synthetic tests and documented, including valuation at the last close; no change to frozen S2 risk parameters or code"
+  }
+ ],
+ "regression": [
+  {
+   "id": "R2",
+   "rule": "full local suite and check.sh pass; S2, S4 and S5 freeze tests, protocol verification and T1-T10 unchanged; budget state unchanged (N 43, 0 families); ledger amendment for the S6 audit entry"
+  },
+  {
+   "id": "R3",
+   "rule": "CI on the final code commit: Quant CI, zizmor, pre-commit and all upstream test jobs pass; any cancelled job is recorded as an infrastructure limitation, never as a pass"
+  }
+ ],
+ "design_only": [
+  {
+   "id": "D1",
+   "rule": "a design-only proposal for the next strategy family exists (rationale, failure modes, parameter complexity, benchmark comparisons, budget allocation); nothing is implemented or evaluated; the budget state still shows 0 further families"
+  }
+ ],
+ "decision": {
+  "GO": "all gates pass (GO for S6 infrastructure only; no market evaluation, no family implementation)",
+  "NO_GO": "any gate fails; documented, thresholds not changed after the fact"
+ }
+}

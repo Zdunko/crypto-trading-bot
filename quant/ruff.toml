@@ -1,0 +1,63 @@
+# Inherit upstream Freqtrade lint rules; only add project-local adjustments.
+extend = "../pyproject.toml"
+
+[lint.isort]
+known-first-party = ["quantlab"]
+
+[lint.flake8-bugbear]
+# B008 (call in a default argument) fires in newer ruff for `cfg: FamilyAConfig = FamilyAConfig()` in the frozen
+# quantlab/family_a.py. FamilyAConfig is `@dataclass(frozen=True)`, so the shared default instance is immutable and
+# the rule's concern does not apply. Declaring only this class immutable keeps B008 fully active for every other call
+# and every other file (a per-file ignore would have disabled it for the whole module).
+extend-immutable-calls = ["quant.quantlab.family_a.FamilyAConfig"]
+
+[lint.per-file-ignores]
+"docs/phase4c/s1_scripts/*.py" = ["ALL"]  # one-off audit scripts, documented, not project code
+"docs/phase4c/s3_scripts/*.py" = ["ALL"]  # audit scripts (scratch fetch + analysis), documented, not project code
+"docs/phase4c/s4_scripts/*.py" = ["ALL"]  # one-off generator, documented
+"docs/phase4c/m3_scripts/*.py" = ["ALL"]  # one-off acquisition script, documented, not project code
+"docs/phase4c/m4_scripts/*.py" = ["ALL"]  # one-off acquisition script, documented, not project code
+"docs/phase4c/s5_scripts/*.py" = ["ALL"]  # one-off investigation scripts, documented
+"tests/*" = ["S101", "E501", "RUF059", "C408"]  # E501: fixtures are verbatim log lines
+"tests/test_pit_universe.py" = ["S311", "SIM115"]
+"tests/test_pit_loader.py" = ["S311"]  # seeded synthetic cases
+"tests/test_benchmarks.py" = ["E501"]
+"tests/test_risk_v3.py" = ["E501", "PLR0913"]
+"tests/test_feasibility.py" = ["E501"]
+"tests/prereg_fixtures.py" = ["E501"]  # seeded synthetic markets, gzip reads in tests
+"quantlab/report.py" = ["E501"]  # markdown table rows
+"quantlab/report4.py" = ["E501", "ISC004"]  # markdown table rows
+"quantlab/phase3.py" = ["E501"]
+"quantlab/phase4.py" = ["E501"]
+"reports/family_a/build_report.py" = ["E501", "S101", "PLR0914", "PLR0915", "C901", "PLR0912", "PLC0415", "E402", "PLR0124"]  # one-off report generator
+"quantlab/risk_v2.py" = ["E501", "C901", "PLR0911", "PLR0912", "PLR0913", "PLR0915", "PLR0914", "PLW2901"]  # state machine kept linear for audit
+"quantlab/budget.py" = ["E501"]
+"quantlab/gate_audit.py" = ["E501", "C901", "PLR0912", "PLR0913", "PLR0914", "PLR0915", "PLC0415", "E731"]  # seeded simulation study, one function per question
+"quantlab/design_study.py" = ["E501", "C901", "PLR0912", "PLR0913", "PLR0914", "PLR0915", "PLC0415", "E731", "PLR2004", "SLF001"]  # seeded simulation study, one function per question
+"quantlab/risk_status.py" = ["E501"]  # docstrings keep the knowability argument together
+"quantlab/signal_power.py" = ["E501", "C901", "PLR0912", "PLR0913", "PLR0914", "PLR0915", "PLR2004"]  # seeded synthetic power study
+"quantlab/l1_max3.py" = ["E501", "C901", "PLR0911", "PLR0912", "PLR0913", "PLR0914", "PLR0915", "PLR2004"]  # one registered test, rules kept inline
+"quantlab/l1_run.py" = ["E501", "C901", "PLR0911", "PLR0912", "PLR0913", "PLR0914", "PLR0915", "PLR2004", "S603"]  # guarded runner for one registered evaluation
+"quantlab/l2_diagnostics.py" = ["E501", "C901", "PLR0911", "PLR0912", "PLR0913", "PLR0914", "PLR0915", "PLR2004", "S603", "PLC0415", "SLF001", "E731"]  # registered L2 evaluation, rules kept inline
+"quantlab/l2_run.py" = ["E501", "C901", "PLR0911", "PLR0912", "PLR0913", "PLR0914", "PLR0915", "PLR2004", "S603", "PLC0415", "SLF001", "E731"]  # registered L2 evaluation, rules kept inline
+"quantlab/l2_portfolio.py" = ["E501", "C901", "PLR0911", "PLR0912", "PLR0913", "PLR0914", "PLR0915", "PLR2004", "S603", "PLC0415", "SLF001", "E731"]  # registered L2 evaluation, rules kept inline
+"quantlab/l1_horizon_power.py" = ["E501", "C901", "PLR0913", "PLR0914", "PLR0915", "PLR2004"]  # seeded synthetic power study
+"quantlab/incremental_power.py" = ["E501", "C901", "PLR0913", "PLR0914", "PLR0915", "PLR2004"]  # seeded synthetic design study
+"quantlab/vc_inference.py" = ["E501", "C901", "PLR0912", "PLR0913", "PLR0914", "PLR0915", "PLR2004"]  # seeded synthetic calibration
+"quantlab/lv_sleeve_harness.py" = ["E501", "C901", "PLR0912", "PLR0913", "PLR0914", "PLR0915", "PLR2004"]  # M6-S0 synthetic test harness
+"docs/phase4c/qie_p0_scripts/*.py" = ["E501", "INP001", "S603", "S607", "T201"]  # QIE-P0 one-off documentation script
+"quantlab/risk_v3.py" = ["E501", "C901", "PLR0912", "PLR0913", "PLR0914"]  # V3 wrapper mirrors the V2 order logic
+"quantlab/benchmarks.py" = ["E501", "C901", "PLR0913", "PLR0914"]  # engine-based benchmarks, formulas kept inline
+"quantlab/feasibility.py" = ["E501", "C901", "PLR0912", "PLR0915", "BLE001"]  # one check per rule; broad except is the fail-closed design
+"quantlab/universe_guard.py" = ["E501"]
+"quantlab/pit_*.py" = ["E501", "C901", "PLR0912", "PLR0914", "PLR0915", "S311", "SIM115", "PLR0913"]  # builder: linear pipeline, seeded sampling for validation
+"quantlab/active_stats.py" = ["E501"]
+"quantlab/protocol.py" = ["E501"]
+"quantlab/charts.py" = ["E501", "E731"]
+"quantlab/family_a_eval.py" = ["E501", "C901", "PLR0912", "PLR0915", "PLR0914"]  # one linear evaluation script
+"quantlab/family_a.py" = ["E501"]
+"quantlab/stats.py" = ["E501"]
+"quantlab/causality.py" = ["E501"]
+"quantlab/stage0.py" = ["E501"]
+"quantlab/execution.py" = ["E501", "C901", "PLR0912", "PLR0915"]  # one explicit event loop, kept linear for audit  # CLI argument lists and progress messages
+"strategies_r1/*.py" = ["E501", "C901", "PLR0913", "PLR0911"]  # overlay glue: Freqtrade callback signatures

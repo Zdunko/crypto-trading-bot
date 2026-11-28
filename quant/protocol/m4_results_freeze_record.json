@@ -1,0 +1,18 @@
+{
+ "files": {
+  "docs/phase4c/m4_binance_licensing_inquiry_DRAFT.md": "6137b033f04026fe2ac210fa735150f560fe0f7fafcb99c14685f3aeca49c232",
+  "docs/phase4c/m4_l2_report.md": "5d670b35c993e2bad8c833300839f5add117b99107d5ed2c703a64ac4c27aaba",
+  "docs/phase4c/m4_l2_results.json": "2d64e8e8591548d475d27f3039d8d5b31613f8e3f2718818d3debad92d0541a4",
+  "docs/phase4c/m4_scripts/fetch_1h_parallel.py": "5da24948cb0bb3ede82ce55770793ac22982dfdf4de674bbd8fb5abf528d9824",
+  "protocol/amendments/A17_ledger_m4_run.json": "0fd9cf636c5344fed37fb9aeb4d6f461459d504233fe7e5e7ac40790612ac20e",
+  "protocol/amendments/A18_budget_m4_run.json": "1e55b0699a332beda3dad63109c36ae392d119cbe5b47eed2669ac9ff84193d6",
+  "protocol/m4_freeze_record.json": "0f16f3174a0280d8758d1ae902779c83f9abf390eb9c09f0dc997fc6b32d87dd",
+  "protocol/m4_l2_preregistration.json": "f328f4c7375a2df85c4d0d4a71debc9d5a10c99a4c9f37adc1dfd68a6917cea1",
+  "quantlab/l2_diagnostics.py": "a2c7e7335d9d1b70afc624319eaf4e33269e4a27ffb5ff70feab3ac35e95af56",
+  "quantlab/l2_portfolio.py": "a7ce1f6f5be6cb4d7c99fed58f053ff384ac730d3cec0f14fe214f647f01baca",
+  "quantlab/l2_run.py": "deefbf65fe2040f91323933da0a868ef369954abc291be625fb63c08cc621675",
+  "tests/test_m4_results.py": "565e333082c6a732f7b18eed02cc3e8f94cd6dd707ce829e7075710b74c24be4"
+ },
+ "id": "M4-results-freeze-v1",
+ "result_level": "L2 NO-GO for both configurations (L1 PASS stands as signal existence only)"
+}

@@ -1,0 +1,95 @@
+{
+ "version": 6,
+ "status": "FROZEN once frozen_manifest_v6.json is committed. S2 implementation only; no market evaluation. All numbers are PROVISIONAL engineering assumptions, not validated optima.",
+ "extends": "protocol.json (T1-T10 unchanged), protocol_v4_stats.json, protocol_v5_family_a.json (Family A stays rejected)",
+ "parameters": {
+  "tier1_dd": 0.1,
+  "tier1_exit_dd": 0.05,
+  "tier1_cap": 0.5,
+  "tier2_dd": 0.15,
+  "tier3_dd": 0.18,
+  "hard_dd": 0.25,
+  "cooldown_hours": 336,
+  "step_hours": 168,
+  "steps": [
+   0.25,
+   0.5,
+   1.0
+  ],
+  "reentry_fail_loss": 0.03,
+  "max_failed_reentries": 2,
+  "max_flat_cycles": 3,
+  "stress_gap": 0.3,
+  "entry_cost": 0.0015,
+  "exit_cost": 0.0015,
+  "liquidity_alarm_candles": 24,
+  "data_gap_candles": 48,
+  "approval_max_age_hours": 168,
+  "epoch_loss_cap": 0.05,
+  "flat_tolerance": 1e-09
+ },
+ "provisional": true,
+ "definitions": {
+  "E": "mark-to-market liquidation equity at the previous close",
+  "H": "all-time high-water mark: running maximum of E, never reset (not by recovery, restart or authorisation)",
+  "P": "epoch-local peak (P=H in epoch 0; E at an authorised restart, then running maximum)",
+  "d_G": "1 - E/H",
+  "d_L": "1 - E/P",
+  "floor_epoch0": "H*(1 - tier3_dd)",
+  "floor_epoch_k": "max(E_auth*(1 - epoch_loss_limit), H*(1 - hard_dd))",
+  "R": "max(0, E - floor)",
+  "phi": "stress_gap + exit_cost",
+  "allowed_exposure": "X_open + (R - phi*X_open)/(phi + entry_cost) if phi*X_open <= R else R/phi",
+  "note": "tier thresholds are boundaries of a control rule, NOT guaranteed maximum losses: gaps and missing liquidity can breach every floor and are reported as overshoot"
+ },
+ "states": [
+  "NORMAL",
+  "REDUCED",
+  "FLAT_COOLDOWN",
+  "REENTRY",
+  "SHUTDOWN"
+ ],
+ "precedence": [
+  "SHUTDOWN absorbing (exit only through manual authorisation)",
+  "integrity alarm",
+  "floor breach",
+  "liquidation unavailable",
+  "state-specific tier rules (tier2 > tier1 > recovery)"
+ ],
+ "one_transition_per_candle": true,
+ "caps": {
+  "NORMAL": "1.0",
+  "REDUCED": "tier1_cap",
+  "FLAT_COOLDOWN": "0",
+  "REENTRY": "min(steps[k], approved_cap, budget cap)",
+  "SHUTDOWN": "0",
+  "budget_cap_applies": "REENTRY and every authorised epoch (epoch >= 1)"
+ },
+ "tier3_guard": "epoch 0: floor = H*(1-tier3_dd). After an authorisation the tier-3 drawdown rule is replaced by the epoch floor (E_auth*(1-loss_limit), never below H*(1-hard_dd)) so authorised re-entry cannot be re-triggered immediately, while the hard limit and the never-reset HWM keep the cumulative protection",
+ "authorisation": {
+  "fields": [
+   "shutdown_id",
+   "approver",
+   "exposure_cap",
+   "epoch_loss_limit",
+   "approval_id",
+   "issued_at"
+  ],
+  "checks": "id match; approver non-empty; cap in (0,1]; loss limit in (0, epoch_loss_cap]; timezone-aware issued_at between the shutdown time and now, not older than approval_max_age_hours; approval_id not consumed; positions flat; equity above H*(1-hard_dd); state_integrity shutdowns cannot be authorised",
+  "on_success": "new epoch, REENTRY, HWM unchanged, SAFETY_DISQUALIFIED unchanged"
+ },
+ "safety_disqualified": "set on every entry into SHUTDOWN, never cleared, independent of T4 (T4 is computed from equity only, exactly as in protocol.json)",
+ "persistence": "atomic single file (write, fsync, os.replace): hash-chained transition records plus the latest state under one head hash; missing/unreadable/modified file on resume = SHUTDOWN(state_integrity); optional external anchor detects rollback or a recomputed-hash edit; the hash chain alone is tamper EVIDENCE, not prevention",
+ "statistics": {
+  "trading_window": "start to the last day with a position, trade or non-zero return",
+  "invested_days": "days with a position held, a trade or a non-zero return",
+  "rule": "report both; power on the window and, as the conservative bound, on invested days; effective n never above raw n"
+ },
+ "not_in_scope": [
+  "market backtests",
+  "Family B",
+  "Binance dataset builder",
+  "parameter optimisation",
+  "holdout"
+ ]
+}

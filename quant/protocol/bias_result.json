@@ -1,0 +1,78 @@
+{
+ "strategies": {
+  "TrendEmaCross": {
+   "lookahead": {
+    "2021-03-01..2021-09-01": "clean",
+    "2021-10-01..2022-04-01": "clean",
+    "2022-05-01..2022-11-01": "clean",
+    "2023-01-01..2023-07-01": "clean",
+    "2024-01-01..2024-07-01": "clean",
+    "2025-01-01..2025-07-01": "clean"
+   },
+   "lookahead_evaluated": 6,
+   "lookahead_biased": 0,
+   "recursive_checks": 18,
+   "recursive_failed": {},
+   "recursive_worst_variance": 0.00026,
+   "clean": true
+  },
+  "MeanReversionRsiBb": {
+   "lookahead": {
+    "2021-03-01..2021-09-01": "clean",
+    "2021-10-01..2022-04-01": "clean",
+    "2022-05-01..2022-11-01": "clean",
+    "2023-01-01..2023-07-01": "clean",
+    "2024-01-01..2024-07-01": "clean",
+    "2025-01-01..2025-07-01": "clean"
+   },
+   "lookahead_evaluated": 6,
+   "lookahead_biased": 0,
+   "recursive_checks": 18,
+   "recursive_failed": {},
+   "recursive_worst_variance": 0.0,
+   "clean": true
+  },
+  "BreakoutDonchian": {
+   "lookahead": {
+    "2021-03-01..2021-09-01": "clean",
+    "2021-10-01..2022-04-01": "clean",
+    "2022-05-01..2022-11-01": "clean",
+    "2023-01-01..2023-07-01": "clean",
+    "2024-01-01..2024-07-01": "clean",
+    "2025-01-01..2025-07-01": "clean"
+   },
+   "lookahead_evaluated": 6,
+   "lookahead_biased": 0,
+   "recursive_checks": 18,
+   "recursive_failed": {},
+   "recursive_worst_variance": 0.0,
+   "clean": true
+  },
+  "MomentumRoc": {
+   "lookahead": {
+    "2021-03-01..2021-09-01": "clean",
+    "2021-10-01..2022-04-01": "clean",
+    "2022-05-01..2022-11-01": "clean",
+    "2023-01-01..2023-07-01": "clean",
+    "2024-01-01..2024-07-01": "clean",
+    "2025-01-01..2025-07-01": "clean"
+   },
+   "lookahead_evaluated": 6,
+   "lookahead_biased": 0,
+   "recursive_checks": 18,
+   "recursive_failed": {},
+   "recursive_worst_variance": 0.00034,
+   "clean": true
+  }
+ },
+ "min_evaluated_periods": 3,
+ "protocol_version": 2,
+ "provenance": {
+  "workflow": "Quant research / bias",
+  "run_id": 45560148402,
+  "job_id": 139021641896,
+  "commit": "6a805198eed71d771d12a1606f9371f9c06ffdde",
+  "data_sha256": "fd94dcb657341422cb7109377585418d70cc25b5ed2f538454034b3e7bb58085",
+  "note": "Values transcribed from the PHASE3_BIAS_JSON block of the job log (artifact bias-6a805198..., id 14997259362). Pairs: lookahead on all 8, recursive on BTC/SOL/DOGE."
+ }
+}

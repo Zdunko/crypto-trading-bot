@@ -1,0 +1,27 @@
+{
+ "files": {
+  "docs/phase4c/m3_l1_results.json": "53a3862df0d199efadcd7d391bbf297ea68ee67ec8b12fe0fd2534b651aba8aa",
+  "docs/phase4c/m4_preregistration_report.md": "d57ed7557d335130237ed3f9f4e3672c2dfe6ff09dc1f5266cd9c7d80b82c4c6",
+  "protocol/amendments/A15_ledger_m4_registration.json": "9627759c39b4ca77b6a3aa765235fdfeb4ba93f1c4c8c102f24c01b76b725d87",
+  "protocol/amendments/A16_budget_approvals_m4.json": "3b94a60461841922c856e30e050955e537eecf70e38c0503071ee121f79fd676",
+  "protocol/h1_l1_preregistration.json": "dcf05980e1603dc9618fbed24b1358b968d514cd576662064d9b87f301833e64",
+  "protocol/m3_acceptance_record.json": "9c932423e37d1b53ee944ccbc4acfbed3aa8fe6bf5f5d6fbfff81cea0c4ef604",
+  "protocol/m4_l2_preregistration.json": "f328f4c7375a2df85c4d0d4a71debc9d5a10c99a4c9f37adc1dfd68a6917cea1",
+  "protocol/m4_owner_approval.json": "fc00b40e0332a55ff0575fb5fa6bda65bb47ed933bb6e085984f8679d2f6e84e",
+  "quantlab/costs.py": "65251c871747ed5bc43bc20ccc59eb717d462233f29ed94871502299e930496a",
+  "quantlab/execution.py": "10f6daf078fa1c083326a946697227f59d5c5fa05fa85832e8425c1b1c1b2c21",
+  "quantlab/l1_max3.py": "2e4cdf62442b3e674e908878fc4bcf5e5822dd550b5ecebd17cbbfd8ab5d0a47",
+  "quantlab/l1_run.py": "2ae508d6f8e8eaaf0fbc46228657715193714db01a831b9f692feac4e830533b",
+  "quantlab/l2_diagnostics.py": "a2c7e7335d9d1b70afc624319eaf4e33269e4a27ffb5ff70feab3ac35e95af56",
+  "quantlab/l2_portfolio.py": "a7ce1f6f5be6cb4d7c99fed58f053ff384ac730d3cec0f14fe214f647f01baca",
+  "quantlab/l2_run.py": "deefbf65fe2040f91323933da0a868ef369954abc291be625fb63c08cc621675",
+  "quantlab/risk_v2.py": "99f337972a10315927d926368faa192448e5fe8dcdaecae607f89f86811b5e73",
+  "quantlab/risk_v3.py": "cbfe545e8727fc1012e930d62ef57f92b9920f011a0233a3cd74dd4d6a8e6cc8",
+  "tests/l2_synth.py": "0ff8651721d9dd2cb310cb810622f90b7c1240a9ede2d9fb2f1bb975fd389ad5",
+  "tests/test_l2_portfolio.py": "ba75ace7c2d783130901e1fc334d0146d5db3367ef02fd43d745b56281aea463"
+ },
+ "id": "M4-freeze-v1",
+ "l2_market_results_existed_at_freeze": false,
+ "purpose": "L2 (M4) registration, frozen BEFORE any hourly data was fetched or any L2 result existed",
+ "spec_sha256": "8f18168550ca9af879296c2de2655be36ac8a5bc4b786da610968b749d9c7435"
+}

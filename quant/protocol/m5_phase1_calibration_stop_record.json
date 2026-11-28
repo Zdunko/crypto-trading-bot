@@ -1,0 +1,14 @@
+{
+ "budget_total_n": 45,
+ "family_registered": false,
+ "files": {
+  "docs/phase4c/m5_calibration_results.json": "2fc73f368b7f894934a04f02ba2bf5bce1ce50f9ca6d7549fe0e8edadce8c17e",
+  "docs/phase4c/m5_calibration_round2_results.json": "380245b58f7306055b059dda09e083c797cd0ff45a35c2d1b1f7ded66e49021b",
+  "docs/phase4c/m5_phase1_calibration_stop.md": "e419547d771562974bda8e42716893f22b2b1fda066d32dc1137c51cc1f5b49d",
+  "protocol/m5_calibration_protocol.json": "3816caab94ab1c8dd86d782aa6f98682bf376038a57267f411127ef75b55bba6",
+  "protocol/m5_calibration_protocol_round2.json": "849c0f673ef3371e6aa096eaca8f00e6da6b80a1a6047cdc34189a78daac2411"
+ },
+ "id": "m5-phase1-calibration-stop-v1",
+ "market_evaluation_executed": false,
+ "outcome": "STOP before market evaluation (round-2 validation failed pre-registered rule)"
+}

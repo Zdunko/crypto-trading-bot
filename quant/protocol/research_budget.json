@@ -1,0 +1,41 @@
+{
+ "id": "research-budget-v1",
+ "source": "risk_and_evaluation_protocol_v2_proposal.md section 8 (approved with Phase 4C)",
+ "caps": {
+  "max_further_families": 3,
+  "max_configurations_per_family": 3,
+  "max_total_n": 52,
+  "max_market_runs_per_family": 1,
+  "stop_after_consecutive_rejected_under_v2": 2,
+  "max_diagnostic_replays_per_family": 1,
+  "note_diagnostic_replays": "encodes the approved rule of risk_and_evaluation_protocol_v2_proposal.md section 8: one approved diagnostic replay per family, no reruns"
+ },
+ "state": {
+  "total_n": 45,
+  "note_n": "N=43 as recorded in experiment_ledger.json (multiple_testing_rule); Family A and everything before it are inside N",
+  "further_families": [
+   {
+    "id": "h1_lottery_max3",
+    "configurations": 2,
+    "market_runs": 1,
+    "status": "evaluated_accepted",
+    "result_level": "L1 only (not L2, not L3)",
+    "result_file": "docs/phase4c/m3_l1_results.json",
+    "result_sha256": "53a3862df0d199efadcd7d391bbf297ea68ee67ec8b12fe0fd2534b651aba8aa",
+    "diagnostic_replays_used": 1,
+    "diagnostic_replay_approved": "M4 / L2 (owner message 2026-11-27); EXECUTED once on 2026-11-27: both configurations NO-GO",
+    "l2_result_file": "docs/phase4c/m4_l2_results.json",
+    "l2_result_sha256": "2d64e8e8591548d475d27f3039d8d5b31613f8e3f2718818d3debad92d0541a4"
+   }
+  ],
+  "consecutive_rejected_under_v2": 0,
+  "note_rejected": "Family A was evaluated before protocol V2 and does not count toward the V2 stop rule",
+  "note_families": "H1 registered by A11 (N 43 -> 45); its single registered L1 run was executed on 2026-11-27 (market_runs 1 of 1): both configurations passed the registered L1 criteria; this is an L1 result only. Amendment A13/A14. M4 (L2) registered as the family's one approved diagnostic replay (A15/A16); executed once: L2 NO-GO for both configurations; the replay is consumed (diagnostic_replays_used 1 of 1). Amendments A17/A18."
+ },
+ "family_record_format": {
+  "id": "string",
+  "configurations": "int",
+  "market_runs": "int",
+  "status": "preregistered | evaluated_accepted | evaluated_rejected"
+ }
+}

@@ -1,0 +1,19 @@
+{
+ "id": "A2",
+ "date": "2026-11-25",
+ "title": "Experiment ledger updated with the Family A evaluation (records only)",
+ "reason": "Ledger must count A1, A0, V0 as evaluated configurations (N = 43) after the single approved evaluation run.",
+ "owner_approval": "Owner message 2026-11-25 approving exactly one Family A research run; the ledger is bookkeeping and changes no rule.",
+ "preserves": {
+  "frozen_manifest_v4.json": "1336106a0f8086333b2c5263501de8e2a4c1f62bee5ddc9d1f87ad93b69485d3"
+ },
+ "changes": [
+  {
+   "file": "protocol/experiment_ledger.json",
+   "from": "2cdb0ae55ca59e3d3be5219b07f984df7e20fe60c7e06e90c2d0becbcfc9433a",
+   "to": "ecef5585ed6575066136bc615eec99c14616e597a54276094cabb58ecf001f32",
+   "summary": "adds run 45679466940, 3 configurations, total 43"
+  }
+ ],
+ "unchanged_parameters": "every rule, parameter, threshold and date"
+}

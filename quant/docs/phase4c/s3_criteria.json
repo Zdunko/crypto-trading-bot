@@ -1,0 +1,30 @@
+{
+  "id": "S3-criteria-v1",
+  "purpose": "Pre-registered, measurable GO/NO-GO criteria of the S3 Data Feasibility Gate. Written and committed BEFORE the S3 audit was run on any data; thresholds are feasibility thresholds, not tuned to results.",
+  "scope": "Binance Vision spot USDT pairs, development period only (months < 2025-07). The holdout period (>= 2025-07-01) is never requested, downloaded, parsed or inspected; survivorship uses only the S1 coverage table (existence metadata, accepted in S1).",
+  "dev_end_exclusive": "2025-07-01",
+  "universe_rule": "S1 rule: USDT pair, base not stablecoin/fiat/leveraged token; eligible at date T if >= 60 daily candles in the 90 days before T and median daily quote volume over those days >= threshold; only data strictly before T.",
+  "regime_rule": "Descriptive labels for coverage only, from BTCUSDT daily closes, evaluated at each month start using the trailing 180 days: return >= +30 % bull, <= -20 % bear, otherwise sideways. Not used for selection of anything.",
+  "sampling": {"seed": 20261126, "hourly_sample_size": 400, "stratification": "uniform random over (symbol, month) pairs with >= 1 USDT-pair 1h file, stratified by calendar year, dev period only"},
+  "criteria": [
+    {"id": "L1", "name": "licence read from primary source and intended use permitted", "rule": "primary text read AND historical backtesting for personal non-production research explicitly permitted", "kind": "gate"},
+    {"id": "L2", "name": "paper/live trading with derived signals", "rule": "reported as NOT permitted or NOT covered; any such use requires a separate licence decision", "kind": "constraint"},
+    {"id": "I1", "name": "file integrity", "rule": "share of downloaded dev-period files whose sha256 equals the published .CHECKSUM >= 0.999", "kind": "gate", "threshold": 0.999},
+    {"id": "Q1", "name": "daily data quality", "rule": "share of dev-period symbol-month daily files quarantined (fatal defect) <= 0.02", "kind": "gate", "threshold": 0.02},
+    {"id": "Q2", "name": "hourly data quality sample", "rule": "upper 95 % Wilson bound of the fatal-defect rate in the stratified hourly sample <= 0.10; all defect classes detected by synthetic tests", "kind": "gate", "threshold": 0.10},
+    {"id": "U1", "name": "universe depth at 1 M USDT", "rule": ">= 30 PIT-eligible assets at 100 % of month starts 2021-01..2025-06", "kind": "gate", "threshold": 30},
+    {"id": "U2", "name": "universe depth at 5 M USDT", "rule": ">= 30 PIT-eligible assets at >= 80 % of month starts 2021-01..2025-06", "kind": "gate", "threshold": 0.8},
+    {"id": "U3", "name": "depth after identity exclusions", "rule": "U1 still holds after removing every symbol flagged by an identity rule (coverage break >= 2 months, or close-to-open daily jump >= 10x or <= 0.1x, or a month with ticker-reuse flag)", "kind": "gate"},
+    {"id": "S1", "name": "survivorship", "rule": "delisted symbols retained: every symbol with last_month < 2026-10 has dev-period files that were downloaded and checked (share = 1.0 of those with dev data)", "kind": "gate", "threshold": 1.0},
+    {"id": "S2", "name": "survivorship measured", "rule": "share of PIT-eligible assets (1 M) that are delisted by 2026-10 reported per cohort date; informational, must be reported", "kind": "report"},
+    {"id": "R1", "name": "regime coverage", "rule": "each regime label has >= 6 month starts with >= 30 eligible assets at 1 M", "kind": "gate", "threshold": 6},
+    {"id": "P1", "name": "reproducibility", "rule": "two independent analysis runs on the pinned manifest give identical output hash; every file pinned by sha256", "kind": "gate"},
+    {"id": "C1", "name": "resources", "rule": "estimated storage for 1h klines of the 1 M eligible universe <= 2 GB zipped and one-off download <= 3 h at measured throughput; analysis single core", "kind": "gate"},
+    {"id": "T1", "name": "time dimension", "rule": "reported: calendar years with >= 30 eligible assets, number of distinct regime episodes; informational limitation, not a gate", "kind": "report"}
+  ],
+  "decision": {
+    "GO": "all gates pass without exclusion beyond what the criteria define",
+    "CONDITIONAL_GO": "all gates pass but only after documented exclusions/quarantine (identity flags, defective files); a later dataset builder must implement them",
+    "NO_GO": "any gate fails"
+  }
+}

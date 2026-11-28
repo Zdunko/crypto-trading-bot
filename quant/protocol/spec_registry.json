@@ -1,0 +1,37 @@
+{
+ "historical": [
+  {
+   "config_hashes": [
+    "85dcd8c3b6fdcfee0bb9aca2117a3c0afda9c8e02c0bb44861620e34e9f9edec",
+    "f070856ce9654ff6c27c048211b6a2727dc2fda317a1bb05ad3bae56477b0686",
+    "de4ac062712b2ecad276d9f257d13403c96887263b1258f4950d490364df3c9e"
+   ],
+   "family_key": "trend_vol_scaled_basket",
+   "source": "protocol_v5_family_a.json (rejected as specified)"
+  }
+ ],
+ "id": "spec-registry-v1",
+ "note": "Frozen history of rejected families and evaluated configurations (never re-tested). New families are appended by amendment only.",
+ "registered": [
+  {
+   "config_hashes": [
+    "6e04973776fe1f02f4a332544b9fe3ae592d605088ef19f2def2e6aa3a343876",
+    "b6599d3cafd03490b3073b31281bcba04eaa3e34a7ec3fe2c578f57f1a7c9464"
+   ],
+   "family_id": "h1_lottery_max3",
+   "family_key": "lottery_demand_max3",
+   "source": "protocol/h1_l1_preregistration.json (amendment A11)",
+   "spec_hash": "469607453ca5261c83d7903ed95ea69fdee87f05b47878d0472feb551cc48741",
+   "status": "preregistered",
+   "title": "H1 lottery-demand avoidance (MAX3, 28-day window), L1 signal test"
+  }
+ ],
+ "rejected_family_keys": [
+  "trend_ema_cross",
+  "mean_reversion_rsi_bb",
+  "breakout_donchian",
+  "momentum_roc",
+  "r1_risk_overlay",
+  "trend_vol_scaled_basket"
+ ]
+}

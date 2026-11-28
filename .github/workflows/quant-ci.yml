@@ -1,0 +1,77 @@
+name: Quant CI
+
+# Quality gate for the project code in quant/. Runs on Ubuntu only to keep CI fast.
+# Never deploys, never trades, never uses secrets. The reachability probe is informational only.
+
+on:
+  push:
+    branches: ["claude/**"]
+    paths:
+      - "quant/**"
+      - ".github/workflows/quant-ci.yml"
+      - "requirements.txt"
+      - "pyproject.toml"
+      - "freqtrade/**"
+  pull_request:
+    paths:
+      - "quant/**"
+      - ".github/workflows/quant-ci.yml"
+      - "requirements.txt"
+      - "pyproject.toml"
+      - "freqtrade/**"
+  workflow_dispatch:
+
+concurrency:
+  group: "${{ github.workflow }}-${{ github.ref }}"
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    name: "Lint, tests, safety policy"
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          activate-environment: true
+          enable-cache: true # zizmor: ignore[cache-poisoning] - test-only job, no release artifacts
+          python-version: "3.13"
+          cache-dependency-glob: "**/requirements*.txt"
+
+      - name: Install dependencies
+        run: |
+          uv pip install -r quant/requirements.txt
+          uv pip install -e .
+
+      - name: Quality gate
+        run: bash quant/scripts/check.sh
+
+  network-probe:
+    name: "Exchange data reachability probe (informational)"
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    continue-on-error: true # never blocks the quality gate
+    steps:
+      - name: Probe public market-data endpoints (no credentials)
+        run: |
+          for url in \
+            https://api.binance.com/api/v3/ping \
+            https://data-api.binance.vision/api/v3/ping \
+            https://data.binance.vision/ \
+            https://api.kraken.com/0/public/Time \
+            https://www.okx.com/api/v5/public/time \
+            https://api.bybit.com/v5/market/time \
+            https://api.exchange.coinbase.com/time \
+            https://api.kucoin.com/api/v1/timestamp \
+            https://api.gateio.ws/api/v4/spot/time; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 15 "$url" || true)
+            echo "$code  $url" | tee -a "$GITHUB_STEP_SUMMARY"
+          done

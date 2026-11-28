@@ -1,0 +1,18 @@
+{
+ "id": "A19",
+ "date": "2026-11-28",
+ "manifests": [],
+ "title": "Pinned test changed: m5 results-file guard now also admits synthetic calibration results",
+ "reason": "The M5 Phase 1 synthetic calibration results (m5_calibration*_results.json) are synthetic-only; the guard that no M5 market results exist is unchanged otherwise. Earlier records are not edited.",
+ "owner_approval": "protocol/m5_phase1_owner_approval.json",
+ "preserves": {},
+ "changes": [
+  {
+   "file": "tests/test_m5_proposal.py",
+   "from": "b9c099ebdd65abc529752f06b5d5b79bd5a058bc22d44754f9474d7eb0e10a47",
+   "to": "ba8d1708d9b9eababdd99b52132c45767e1151da1caa5502876c7d8de295ad01",
+   "summary": "guard admits files with 'calibration' in the name (synthetic only)"
+  }
+ ],
+ "unchanged_parameters": "N 45, every cap"
+}

@@ -1,0 +1,17 @@
+# M5 Phase 1 — synthetic calibration outcome: STOP before market evaluation
+
+Status: **Phase 1 market evaluation was NOT executed.** Everything below is synthetic (no market data, no holdout). Source: `m5_calibration_results.json` (round 1), `m5_calibration_round2_results.json` (round 2), protocols `protocol/m5_calibration_protocol.json` and `protocol/m5_calibration_protocol_round2.json` (both pre-registered before their runs). Code: `quantlab/vc_inference.py`.
+
+## What was done
+1. **Round 1** (pre-registered menu M0–M4, ten cells = 5 dependence scenarios x horizons 7/28): no method met the size rule (size <= 0.07 in all cells). The binding cell was S4 (volatility clustering) at h = 28 for every method. The originally flagged cell (S1, h = 7) measured 0.052–0.055 with the calibrated lag, i.e. the earlier 8.3 % came from the short lag (2h) and was not the binding problem. Outcome per protocol: STOP; disclosed.
+2. **Round 2** (final, bounded, pre-registered before its run: fresh seeds, 1500 replications, methods M0, M1, M5–M8): calibration seeds gave valid methods M5, M6, M8; M5 (Newey-West lag max(2h, 60) with Student-t critical value, df = max(5, floor(n/lag) − 1)) was selected by the pre-registered rule (highest mean power).
+3. **Independent validation** (two fresh seeds, 20261221 / 20261222, 1500 replications per cell): rule "all ten cells <= 0.07 in both runs" **failed**: maximum 0.0727 (S4 h = 28 in run 1; S2 h = 28 in run 2); all other cells 0.047–0.066. Per the protocol: STOP, no re-selection, no rule relaxation.
+
+## Informational statistics (computed after the stop; not used for any decision)
+- Pooled size of M5 over all 20 validation cells: 0.0602 (95 % CI 0.0575–0.0629, Monte-Carlo only). No single cell has a lower 95 % bound above 0.07. The Monte-Carlo SE at 0.05 with 1500 reps is 0.0056, so a point-estimate cap of 0.07 is only 3.6 SE above nominal for each of 20 cells; the rule therefore has a substantial false-stop probability even for a method of size ≈ 0.06. This is a property of the pre-registered rule, stated here as a limitation, **not** as grounds to treat the method as validated.
+- Power of M5 (S1, S3; partial IC per day): MDE at 80 % power S1 h7 0.0162, S1 h28 0.0243, S3 h7 0.0143, S3 h28 0.0226 (thresholds 0.0093 / 0.0186). Interpolated power at 2x threshold 0.90 / 0.91 / 0.94 / 0.97 (stop level 0.8 not triggered). Note the MDE exceeds the economic threshold: an effect exactly at threshold would be detected with well below 80 % power.
+- Surrogate check (200-type construction, 8 combinations): rejection 0.047–0.071 (Clopper-Pearson 95 % intervals contained 0.05–0.088 upper bounds; pass rule <= 0.10 met); the naive M0 IC test rejected 100 % on the same surrogates (confirms that the naive test cannot be used).
+
+## Consequences
+- Family `h1_vol_control` is **not registered**; research budget unchanged **N = 45 / 52**; no VC-h7 / VC-h28 market statistic exists. The H1 L1 PASS and M4 L2 NO-GO are untouched and unchanged. No holdout access. Phase 2 and H1b remain unauthorised.
+- Open owner decision (options in the stage report): (A) approve an amended validation criterion based on exact binomial / pooled-size logic (changes a pre-registered acceptance rule: requires explicit owner approval; no new market access involved); (B) one further separately approved calibration round with a more conservative method on fresh seeds; (C) stop H1 with the L1 PASS recorded as unresolved / volatility-confounded.

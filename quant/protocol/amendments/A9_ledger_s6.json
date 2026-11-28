@@ -1,0 +1,19 @@
+{
+ "id": "A9",
+ "date": "2026-11-26",
+ "title": "Ledger: S6 audit entry (feasibility gate, benchmark infrastructure)",
+ "reason": "Owner requires all diagnostic work to be recorded.",
+ "owner_approval": "Owner message 2026-11-26 (S5-infra accepted, S6 authorised).",
+ "preserves": {
+  "frozen_manifest_v4.json": "1336106a0f8086333b2c5263501de8e2a4c1f62bee5ddc9d1f87ad93b69485d3"
+ },
+ "changes": [
+  {
+   "file": "protocol/experiment_ledger.json",
+   "from": "90385b107b221e4639b0e5efe18a923f17ac5294b28064a5b41a13db15298935",
+   "to": "db6022acf8a2078bb43d250a368c607960449e407358ead7298abfd6615a0f10",
+   "summary": "adds data_audits entry S6; no count changes"
+  }
+ ],
+ "unchanged_parameters": "every rule, parameter, threshold, date and count"
+}

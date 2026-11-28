@@ -1,0 +1,95 @@
+{
+ "id": "M5-calibration-protocol-v1",
+ "status": "PRE-REGISTERED BEFORE ANY CALIBRATION RUN. Synthetic data only; no market data is read; the result of this protocol decides whether Phase 1 may proceed to market evaluation.",
+ "problem": "the registered Newey-West test (lag 2h, normal critical value) of the partial rank IC had a synthetic false-positive rate of 0.083 at h = 7 (0.065 at h = 28) at nominal 0.05; the existing size tolerance is 0.07",
+ "diagnosis_hypothesis": "the partial-IC series is more persistent than the overlap of h-day returns (persistent volatility and MAX3 characteristics, about 20-50 days), so a lag of 2h = 14 truncates the autocovariance at h = 7 and underestimates the variance; the lag should reflect the signal persistence, not only the return overlap",
+ "preserved": {
+  "nominal_one_sided_level": 0.05,
+  "statistic": "mean daily cross-sectional partial rank correlation of S with the h-day forward return controlling for the volatility rank",
+  "min_effect_thresholds": {
+   "h7": 0.0093,
+   "h28": 0.0186
+  },
+  "multiple_testing": "Holm over the two configurations",
+  "size_tolerance": 0.07,
+  "horizons": [
+   7,
+   28
+  ]
+ },
+ "scenarios": {
+  "S1_baseline": {
+   "dgp": "incremental_power DGP: t(3) shocks, volatility characteristic AR(1) phi 0.98, MAX3-specific characteristic AR(1) phi 0.95, rho(S,v) 0.913, constant volatility premium A_V 0.025, 115 assets, 1642 days, 5 sector factors"
+  },
+  "S2_high_persistence": {
+   "change": "phi_v 0.99, phi_eta 0.99"
+  },
+  "S3_low_persistence": {
+   "change": "phi_v 0.95, phi_eta 0.90"
+  },
+  "S4_volatility_clustering": {
+   "change": "shocks scaled by asset-specific log-volatility AR(1) (phi 0.98, sd 0.5, mean-corrected)"
+  },
+  "S5_regime_dependent_premium": {
+   "change": "volatility premium A_V * 2 * state_t with a two-state Markov chain (daily stay probability 0.99)"
+  }
+ },
+ "cells": "5 scenarios x 2 horizons = 10 cells; size measured at a_m = 0; power at the reference incremental effect a_m = 0.01 (per-day-equivalent partial IC about 0.01)",
+ "methods_menu_final": {
+  "M0": "Newey-West (Bartlett) lag 2h, normal critical value (the registered design)",
+  "M1": "Newey-West lag max(2h, 60), normal critical value",
+  "M2": "Newey-West lag max(4h, 90), normal critical value",
+  "M3": "Newey-West lag max(2h, 60), Student-t critical value with df = max(5, floor(n_eff) - 1), n_eff = n * (naive se / HAC se)^2",
+  "M4": "centred circular block bootstrap of the mean, block max(2h, 60), 999 draws, one-sided percentile p-value"
+ },
+ "no_other_method_may_be_tried": true,
+ "procedure": {
+  "step1_calibration": {
+   "seed": 20261210,
+   "reps_per_cell": 600,
+   "rule": "a method is VALID iff its size is <= 0.07 in ALL 10 calibration cells; among valid methods select the one with the highest mean power (a_m = 0.01) over the 10 cells; ties within 0.005 -> the lower method index; if no method is valid: STOP, no market evaluation"
+  },
+  "step2_validation": {
+   "seeds": [
+    20261211,
+    20261212
+   ],
+   "reps_per_cell": 1000,
+   "rule": "the selected method must have size <= 0.07 in ALL 10 cells in BOTH independent validation runs (point estimates; Monte-Carlo standard error about 0.007 reported); otherwise STOP, no market evaluation, no re-selection"
+  },
+  "step3_power_report": {
+   "seed": 20261213,
+   "reps_per_cell": 1000,
+   "cells": "S1 and S3, both horizons, a_m in {0.005, 0.01, 0.02}",
+   "report": "rejection rates, mean partial IC_h, interpolated 80 % minimum detectable partial IC, ratio to the thresholds; STOP if the power at 2 x threshold is below 0.80 in S1 for either horizon (the test could not establish even twice the meaningful effect)"
+  },
+  "step4_surrogate_validation": {
+   "seed": 20261214,
+   "panels": 50,
+   "surrogates_per_panel": 20,
+   "scenarios": [
+    "S1_baseline",
+    "S3_low_persistence"
+   ],
+   "a_m": [
+    0.0,
+    0.02
+   ],
+   "horizons": [
+    7,
+    28
+   ],
+   "rule": "the surrogate rejection rate under the selected method must be <= 0.10 in every one of the 8 combinations, including a_m = 0.02 (proving no forward-return information leaks into the surrogates); Clopper-Pearson 95 % interval reported"
+  }
+ },
+ "surrogate_construction_final": {
+  "definition": "S*(i,t) = beta_t * V(i,t) + e(i, t + Delta mod T), where e is the MAX3-specific component of the signal (the residual of the daily cross-sectional regression of the signal rank on the volatility rank) and Delta is drawn uniformly from [180, T - 180] days (circular shift in time, same asset)",
+  "properties": "keeps the volatility component and its correlation with the signal exactly; keeps each asset's temporal dependence of the MAX3-specific component and its cross-sectional dependence on the shifted day; breaks the date alignment with forward returns, so no forward-return information enters; the partial IC is invariant to the volatility component, which is retained for the naive-IC demonstration (the naive IC test is expected to reject most surrogates)",
+  "gate": "fraction of the 200 surrogates rejected by the final method at one-sided 5 % must be <= 0.10; the Clopper-Pearson 95 % interval is reported (surrogates share the real return series, so the interval is optimistic and is labelled as such); above 0.10 the horizon is INVALID (inference not calibrated on the real data)",
+  "frozen": "construction, shift range, 200 surrogates, seed 20261215 and the 0.10 threshold are fixed here; no change after any market result"
+ },
+ "no_market_access": "no market data, no market-derived statistic and no holdout metadata is read by this protocol",
+ "outputs": [
+  "docs/phase4c/m5_calibration_results.json"
+ ]
+}

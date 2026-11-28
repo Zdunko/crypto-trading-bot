@@ -1,0 +1,1501 @@
+{
+ "code_sha256": {
+  "quantlab/l1_max3.py": "2e4cdf62442b3e674e908878fc4bcf5e5822dd550b5ecebd17cbbfd8ab5d0a47",
+  "quantlab/l2_diagnostics.py": "a2c7e7335d9d1b70afc624319eaf4e33269e4a27ffb5ff70feab3ac35e95af56",
+  "quantlab/l2_portfolio.py": "a7ce1f6f5be6cb4d7c99fed58f053ff384ac730d3cec0f14fe214f647f01baca",
+  "quantlab/l2_run.py": "deefbf65fe2040f91323933da0a868ef369954abc291be625fb63c08cc621675"
+ },
+ "configurations": {
+  "H1-h28": {
+   "alpha_vs_btc": {
+    "alpha_annualised": 0.12410792805178997,
+    "alpha_daily": 0.00034002172068983553,
+    "beta": 0.08649215454409541,
+    "p_alpha_one_sided": 0.12208774889244722,
+    "t_alpha_hac": 1.164613448030935
+   },
+   "alpha_vs_low_volatility": {
+    "alpha_annualised": 0.06231007448142645,
+    "alpha_daily": 0.0001707125328258259,
+    "beta": 0.5215295327474414,
+    "p_alpha_one_sided": 0.23944253087435197,
+    "t_alpha_hac": 0.7080969367890445
+   },
+   "benchmarks": {
+    "btc_buy_hold": {
+     "cagr": 0.3364137018267994,
+     "calmar": 0.43901471419452465,
+     "final_equity": 36831.25972441801,
+     "max_drawdown": 0.7662925431645934,
+     "net_return": 2.683125972441801,
+     "sharpe": 0.7810735794746178,
+     "sortino": 1.1628891024688408,
+     "years": 4.495890410958904
+    },
+    "cash": {
+     "cagr": 0.0,
+     "max_drawdown": 0.0,
+     "net_return": 0.0,
+     "sharpe": 0.0,
+     "sortino": 0.0
+    },
+    "equal_weight": {
+     "cagr": -0.06165005186956607,
+     "calmar": -0.06720678760067877,
+     "final_equity": 7511.9955786253,
+     "max_drawdown": 0.9173188314827805,
+     "net_return": -0.24880044213747,
+     "sharpe": 0.3856326655265189,
+     "sortino": 0.5227371816057617,
+     "years": 4.495890410958904
+    }
+   },
+   "benchmarks_double_costs": {
+    "btc_buy_hold": {
+     "cagr": 0.3355222377482936,
+     "calmar": 0.43785136726330653,
+     "final_equity": 36720.93094193896,
+     "max_drawdown": 0.7662925431645935,
+     "net_return": 2.672093094193896,
+     "sharpe": 0.7800116095794875,
+     "sortino": 1.1610984942520706,
+     "years": 4.495890410958904
+    },
+    "equal_weight": {
+     "cagr": -0.06755345620430453,
+     "calmar": -0.07354319501640676,
+     "final_equity": 7301.844483920672,
+     "max_drawdown": 0.9185548192356074,
+     "net_return": -0.2698155516079328,
+     "sharpe": 0.3771018831677544,
+     "sortino": 0.5110236565395995,
+     "years": 4.495890410958904
+    }
+   },
+   "double": {
+    "capital_protection": {
+     "drawdown_limit": 0.2,
+     "engine_breaker_events": [
+      {
+       "drawdown": 0.22754712246209086,
+       "equity": 19151.180853380087,
+       "id": "halt-20210519T1300",
+       "time": "2021-05-19 13:00:00+00:00",
+       "type": "halt"
+      }
+     ],
+     "final_state": "SHUTDOWN",
+     "first_shutdown_time": "2021-05-19 13:00:00+00:00",
+     "hours_in_state": {
+      "FLAT_COOLDOWN": 336,
+      "NORMAL": 1634,
+      "REDUCED": 851,
+      "REENTRY": 504,
+      "SHUTDOWN": 36059
+     },
+     "max_drawdown_conservative": 0.22845669673939553,
+     "max_drawdown_last_known": 0.22845669673939553,
+     "shutdown": true,
+     "transitions": [
+      {
+       "cause": "tier1",
+       "from": "NORMAL",
+       "t": "2021-01-08 03:00:00+00:00",
+       "to": "REDUCED"
+      },
+      {
+       "cause": "recovered",
+       "from": "REDUCED",
+       "t": "2021-01-09 21:00:00+00:00",
+       "to": "NORMAL"
+      },
+      {
+       "cause": "tier1",
+       "from": "NORMAL",
+       "t": "2021-01-11 07:00:00+00:00",
+       "to": "REDUCED"
+      },
+      {
+       "cause": "recovered",
+       "from": "REDUCED",
+       "t": "2021-01-11 10:00:00+00:00",
+       "to": "NORMAL"
+      },
+      {
+       "cause": "tier1",
+       "from": "NORMAL",
+       "t": "2021-01-11 16:00:00+00:00",
+       "to": "REDUCED"
+      },
+      {
+       "cause": "recovered",
+       "from": "REDUCED",
+       "t": "2021-01-14 15:00:00+00:00",
+       "to": "NORMAL"
+      },
+      {
+       "cause": "tier1",
+       "from": "NORMAL",
+       "t": "2021-01-22 00:00:00+00:00",
+       "to": "REDUCED"
+      },
+      {
+       "cause": "recovered",
+       "from": "REDUCED",
+       "t": "2021-01-23 08:00:00+00:00",
+       "to": "NORMAL"
+      },
+      {
+       "cause": "tier1",
+       "from": "NORMAL",
+       "t": "2021-02-22 13:00:00+00:00",
+       "to": "REDUCED"
+      },
+      {
+       "cause": "tier2",
+       "from": "REDUCED",
+       "t": "2021-02-23 07:00:00+00:00",
+       "to": "FLAT_COOLDOWN"
+      },
+      {
+       "cause": "cooldown_elapsed",
+       "from": "FLAT_COOLDOWN",
+       "t": "2021-03-09 07:00:00+00:00",
+       "to": "REENTRY"
+      },
+      {
+       "cause": "step_1",
+       "from": "REENTRY",
+       "t": "2021-03-16 07:00:00+00:00",
+       "to": "REENTRY"
+      },
+      {
+       "cause": "step_2",
+       "from": "REENTRY",
+       "t": "2021-03-23 07:00:00+00:00",
+       "to": "REENTRY"
+      },
+      {
+       "cause": "reentry_complete",
+       "from": "REENTRY",
+       "t": "2021-03-30 07:00:00+00:00",
+       "to": "REDUCED"
+      },
+      {
+       "cause": "recovered",
+       "from": "REDUCED",
+       "t": "2021-04-27 12:00:00+00:00",
+       "to": "NORMAL"
+      },
+      {
+       "cause": "tier1",
+       "from": "NORMAL",
+       "t": "2021-05-19 05:00:00+00:00",
+       "to": "REDUCED"
+      },
+      {
+       "cause": "tier3_floor",
+       "from": "REDUCED",
+       "t": "2021-05-19 13:00:00+00:00",
+       "to": "SHUTDOWN"
+      }
+     ],
+     "write_offs": {}
+    },
+    "execution": {
+     "annual_one_way_turnover": 0.35979308914094554,
+     "closed_trades": 326,
+     "estimated_cost_drag_per_year": 0.002158758534845673,
+     "estimated_cost_usd": 185.50640123736272,
+     "fill_ratio": 1.0,
+     "filled_buy_notional": 26353.4185071312,
+     "intended_buy_notional": 26353.4185071312,
+     "mean_exposure": 0.029228278671463152,
+     "orders_issued": 376,
+     "rejects": {
+      "no_position": 25
+     },
+     "sell_proceeds_closed_trades": 35482.048571989704,
+     "traded_notional": 61835.46707912091
+    },
+    "fill_ratio": 1.0,
+    "low_volatility": {
+     "capital_protection": {
+      "drawdown_limit": 0.2,
+      "engine_breaker_events": [],
+      "final_state": "SHUTDOWN",
+      "first_shutdown_time": "2021-11-10 22:00:00+00:00",
+      "hours_in_state": {
+       "FLAT_COOLDOWN": 1008,
+       "NORMAL": 1319,
+       "REDUCED": 430,
+       "REENTRY": 4777,
+       "SHUTDOWN": 31850
+      },
+      "max_drawdown_conservative": 0.17650875414116451,
+      "max_drawdown_last_known": 0.17650875414116451,
+      "shutdown": true,
+      "transitions": [
+       {
+        "cause": "tier1",
+        "from": "NORMAL",
+        "t": "2021-01-11 03:00:00+00:00",
+        "to": "REDUCED"
+       },
+       {
+        "cause": "tier2",
+        "from": "REDUCED",
+        "t": "2021-01-11 16:00:00+00:00",
+        "to": "FLAT_COOLDOWN"
+       },
+       {
+        "cause": "cooldown_elapsed",
+        "from": "FLAT_COOLDOWN",
+        "t": "2021-01-25 16:00:00+00:00",
+        "to": "REENTRY"
+       },
+       {
+        "cause": "step_1",
+        "from": "REENTRY",
+        "t": "2021-02-01 16:00:00+00:00",
+        "to": "REENTRY"
+       },
+       {
+        "cause": "step_2",
+        "from": "REENTRY",
+        "t": "2021-02-08 16:00:00+00:00",
+        "to": "REENTRY"
+       },
+       {
+        "cause": "reentry_complete",
+        "from": "REENTRY",
+        "t": "2021-02-15 16:00:00+00:00",
+        "to": "NORMAL"
+       },
+       {
+        "cause": "tier1",
+        "from": "NORMAL",
+        "t": "2021-02-16 17:00:00+00:00",
+        "to": "REDUCED"
+       },
+       {
+        "cause": "recovered",
+        "from": "REDUCED",
+        "t": "2021-02-19 22:00:00+00:00",
+        "to": "NORMAL"
+       },
+       {
+        "cause": "tier1",
+        "from": "NORMAL",
+        "t": "2021-02-23 09:00:00+00:00",
+        "to": "REDUCED"
+       },
+       {
+        "cause": "recovered",
+        "from": "REDUCED",
+        "t": "2021-03-08 20:00:00+00:00",
+        "to": "NORMAL"
+       },
+       {
+        "cause": "tier1",
+        "from": "NORMAL",
+        "t": "2021-04-18 04:00:00+00:00",
+        "to": "REDUCED"
+       },
+       {
+        "cause": "tier2",
+        "from": "REDUCED",
+        "t": "2021-04-18 05:00:00+00:00",
+        "to": "FLAT_COOLDOWN"
+       },
+       {
+        "cause": "cooldown_elapsed",
+        "from": "FLAT_COOLDOWN",
+        "t": "2021-05-02 05:00:00+00:00",
+        "to": "REENTRY"
+       },
+       {
+        "cause": "step_1",
+        "from": "REENTRY",
+        "t": "2021-05-09 05:00:00+00:00",
+        "to": "REENTRY"
+       },
+       {
+        "cause": "step_2",
+        "from": "REENTRY",
+        "t": "2021-05-16 05:00:00+00:00",
+        "to": "REENTRY"
+       },
+       {
+        "cause": "reentry_complete",
+        "from": "REENTRY",
+        "t": "2021-10-06 06:00:00+00:00",
+        "to": "REDUCED"
+       },
+       {
+        "cause": "tier2",
+        "from": "REDUCED",
+        "t": "2021-10-06 09:00:00+00:00",
+        "to": "FLAT_COOLDOWN"
+       },
+       {
+        "cause": "cooldown_elapsed",
+        "from": "FLAT_COOLDOWN",
+        "t": "2021-10-20 09:00:00+00:00",
+        "to": "REENTRY"
+       },
+       {
+        "cause": "step_1",
+        "from": "REENTRY",
+        "t": "2021-10-27 09:00:00+00:00",
+        "to": "REENTRY"
+       },
+       {
+        "cause": "step_2",
+        "from": "REENTRY",
+        "t": "2021-11-03 09:00:00+00:00",
+        "to": "REENTRY"
+       },
+       {
+        "cause": "reentry_complete",
+        "from": "REENTRY",
+        "t": "2021-11-10 09:00:00+00:00",
+        "to": "REDUCED"
+       },
+       {
+        "cause": "flat_cycles",
+        "from": "REDUCED",
+        "t": "2021-11-10 22:00:00+00:00",
+        "to": "SHUTDOWN"
+       }
+      ],
+      "write_offs": {}
+     },
+     "execution": {
+      "annual_one_way_turnover": 0.35894190592342434,
+      "closed_trades": 961,
+      "estimated_cost_drag_per_year": 0.0021536514355405463,
+      "estimated_cost_usd": 214.5815067652726,
+      "fill_ratio": 1.0,
+      "filled_buy_notional": 29395.40455643795,
+      "intended_buy_notional": 29395.40455643795,
+      "mean_exposure": 0.028506266525762717,
+      "orders_issued": 1139,
+      "rejects": {},
+      "sell_proceeds_closed_trades": 42131.764365319585,
+      "traded_notional": 71527.16892175753
+     },
+     "fill_ratio": 1.0,
+     "metrics": {
+      "cagr": 0.20044917813722862,
+      "calmar": 1.1356330688103862,
+      "daily_volatility": 0.008078158892348902,
+      "final_equity": 22736.359808881607,
+      "max_drawdown": 0.17650875414116451,
+      "net_return": 1.2736359808881605,
+      "sharpe": 1.2617384546783106,
+      "sortino": 2.0331185565991694,
+      "years": 4.495890410958904
+     }
+    },
+    "metrics": {
+     "cagr": 0.15519056487861982,
+     "calmar": 0.6792996970259462,
+     "daily_volatility": 0.010270436406453988,
+     "final_equity": 19128.630064858506,
+     "max_drawdown": 0.2284566967393955,
+     "net_return": 0.9128630064858505,
+     "sharpe": 0.8339090607743583,
+     "sortino": 1.2924026172074248,
+     "years": 4.495890410958904
+    },
+    "no_risk_diagnostic": {
+     "execution": {
+      "annual_one_way_turnover": 7.788320411116294,
+      "closed_trades": 786,
+      "estimated_cost_drag_per_year": 0.046729922466697764,
+      "estimated_cost_usd": 5649.572828893416,
+      "fill_ratio": 0.8948960682623823,
+      "filled_buy_notional": 946595.4714822359,
+      "intended_buy_notional": 1057771.4050305733,
+      "mean_exposure": 0.9862693763612634,
+      "orders_issued": 1810,
+      "rejects": {
+       "expired": 108,
+       "insufficient_funds": 107
+      },
+      "sell_proceeds_closed_trades": 936595.4714822359,
+      "traded_notional": 1883190.9429644719
+     },
+     "fill_ratio": 0.8948960682623823,
+     "metrics": {
+      "cagr": 0.17829478871344362,
+      "calmar": 0.21214698266888724,
+      "daily_volatility": 0.0392700148251185,
+      "final_equity": 20909.804948665413,
+      "max_drawdown": 0.8404304716966957,
+      "net_return": 1.0909804948665411,
+      "sharpe": 0.602352917521652,
+      "sortino": 0.8301608625227049,
+      "years": 4.495890410958904
+     }
+    }
+   },
+   "incremental_vs_low_volatility": {
+    "annualised_diff": -0.03194080457247453,
+    "hac_lag": 10,
+    "mean_daily_diff": -8.750905362321789e-05,
+    "n_days": 1641,
+    "p_one_sided": 0.6140190481630833,
+    "t_hac": -0.2898095993432485
+   },
+   "normal": {
+    "capital_protection": {
+     "drawdown_limit": 0.2,
+     "engine_breaker_events": [
+      {
+       "drawdown": 0.22804967966101108,
+       "equity": 19268.46649747821,
+       "id": "halt-20210519T1300",
+       "time": "2021-05-19 13:00:00+00:00",
+       "type": "halt"
+      }
+     ],
+     "final_state": "SHUTDOWN",
+     "first_shutdown_time": "2021-05-19 13:00:00+00:00",
+     "hours_in_state": {
+      "FLAT_COOLDOWN": 336,
+      "NORMAL": 1634,
+      "REDUCED": 851,
+      "REENTRY": 504,
+      "SHUTDOWN": 36059
+     },
+     "max_drawdown_conservative": 0.2289605925886743,
+     "max_drawdown_last_known": 0.2289605925886743,
+     "shutdown": true,
+     "transitions": [
+      {
+       "cause": "tier1",
+       "from": "NORMAL",
+       "t": "2021-01-08 03:00:00+00:00",
+       "to": "REDUCED"
+      },
+      {
+       "cause": "recovered",
+       "from": "REDUCED",
+       "t": "2021-01-09 21:00:00+00:00",
+       "to": "NORMAL"
+      },
+      {
+       "cause": "tier1",
+       "from": "NORMAL",
+       "t": "2021-01-11 07:00:00+00:00",
+       "to": "REDUCED"
+      },
+      {
+       "cause": "recovered",
+       "from": "REDUCED",
+       "t": "2021-01-11 10:00:00+00:00",
+       "to": "NORMAL"
+      },
+      {
+       "cause": "tier1",
+       "from": "NORMAL",
+       "t": "2021-01-11 16:00:00+00:00",
+       "to": "REDUCED"
+      },
+      {
+       "cause": "recovered",
+       "from": "REDUCED",
+       "t": "2021-01-14 15:00:00+00:00",
+       "to": "NORMAL"
+      },
+      {
+       "cause": "tier1",
+       "from": "NORMAL",
+       "t": "2021-01-22 00:00:00+00:00",
+       "to": "REDUCED"
+      },
+      {
+       "cause": "recovered",
+       "from": "REDUCED",
+       "t": "2021-01-23 08:00:00+00:00",
+       "to": "NORMAL"
+      },
+      {
+       "cause": "tier1",
+       "from": "NORMAL",
+       "t": "2021-02-22 13:00:00+00:00",
+       "to": "REDUCED"
+      },
+      {
+       "cause": "tier2",
+       "from": "REDUCED",
+       "t": "2021-02-23 07:00:00+00:00",
+       "to": "FLAT_COOLDOWN"
+      },
+      {
+       "cause": "cooldown_elapsed",
+       "from": "FLAT_COOLDOWN",
+       "t": "2021-03-09 07:00:00+00:00",
+       "to": "REENTRY"
+      },
+      {
+       "cause": "step_1",
+       "from": "REENTRY",
+       "t": "2021-03-16 07:00:00+00:00",
+       "to": "REENTRY"
+      },
+      {
+       "cause": "step_2",
+       "from": "REENTRY",
+       "t": "2021-03-23 07:00:00+00:00",
+       "to": "REENTRY"
+      },
+      {
+       "cause": "reentry_complete",
+       "from": "REENTRY",
+       "t": "2021-03-30 07:00:00+00:00",
+       "to": "REDUCED"
+      },
+      {
+       "cause": "recovered",
+       "from": "REDUCED",
+       "t": "2021-04-27 12:00:00+00:00",
+       "to": "NORMAL"
+      },
+      {
+       "cause": "tier1",
+       "from": "NORMAL",
+       "t": "2021-05-19 05:00:00+00:00",
+       "to": "REDUCED"
+      },
+      {
+       "cause": "tier3_floor",
+       "from": "REDUCED",
+       "t": "2021-05-19 13:00:00+00:00",
+       "to": "SHUTDOWN"
+      }
+     ],
+     "write_offs": {}
+    },
+    "execution": {
+     "annual_one_way_turnover": 0.3591251720533597,
+     "closed_trades": 326,
+     "estimated_cost_drag_per_year": 0.001077375516160079,
+     "estimated_cost_usd": 93.13873034285731,
+     "fill_ratio": 0.9999999999999999,
+     "filled_buy_notional": 26423.378738257692,
+     "intended_buy_notional": 26423.378738257696,
+     "mean_exposure": 0.029274209989330842,
+     "orders_issued": 376,
+     "rejects": {
+      "no_position": 25
+     },
+     "sell_proceeds_closed_trades": 35669.10815698052,
+     "traded_notional": 62092.48689523821
+    },
+    "fill_ratio": 0.9999999999999999,
+    "low_volatility": {
+     "capital_protection": {
+      "drawdown_limit": 0.2,
+      "engine_breaker_events": [],
+      "final_state": "SHUTDOWN",
+      "first_shutdown_time": "2021-10-14 10:00:00+00:00",
+      "hours_in_state": {
+       "FLAT_COOLDOWN": 1008,
+       "NORMAL": 1460,
+       "REDUCED": 277,
+       "REENTRY": 4129,
+       "SHUTDOWN": 32510
+      },
+      "max_drawdown_conservative": 0.17645794756364586,
+      "max_drawdown_last_known": 0.17645794756364586,
+      "shutdown": true,
+      "transitions": [
+       {
+        "cause": "tier1",
+        "from": "NORMAL",
+        "t": "2021-01-11 03:00:00+00:00",
+        "to": "REDUCED"
+       },
+       {
+        "cause": "tier2",
+        "from": "REDUCED",
+        "t": "2021-01-11 16:00:00+00:00",
+        "to": "FLAT_COOLDOWN"
+       },
+       {
+        "cause": "cooldown_elapsed",
+        "from": "FLAT_COOLDOWN",
+        "t": "2021-01-25 16:00:00+00:00",
+        "to": "REENTRY"
+       },
+       {
+        "cause": "step_1",
+        "from": "REENTRY",
+        "t": "2021-02-01 16:00:00+00:00",
+        "to": "REENTRY"
+       },
+       {
+        "cause": "step_2",
+        "from": "REENTRY",
+        "t": "2021-02-08 16:00:00+00:00",
+        "to": "REENTRY"
+       },
+       {
+        "cause": "reentry_complete",
+        "from": "REENTRY",
+        "t": "2021-02-15 16:00:00+00:00",
+        "to": "NORMAL"
+       },
+       {
+        "cause": "tier1",
+        "from": "NORMAL",
+        "t": "2021-02-17 05:00:00+00:00",
+        "to": "REDUCED"
+       },
+       {
+        "cause": "recovered",
+        "from": "REDUCED",
+        "t": "2021-02-19 20:00:00+00:00",
+        "to": "NORMAL"
+       },
+       {
+        "cause": "tier1",
+        "from": "NORMAL",
+        "t": "2021-02-23 09:00:00+00:00",
+        "to": "REDUCED"
+       },
+       {
+        "cause": "recovered",
+        "from": "REDUCED",
+        "t": "2021-03-03 13:00:00+00:00",
+        "to": "NORMAL"
+       },
+       {
+        "cause": "tier1",
+        "from": "NORMAL",
+        "t": "2021-04-18 04:00:00+00:00",
+        "to": "REDUCED"
+       },
+       {
+        "cause": "tier2",
+        "from": "REDUCED",
+        "t": "2021-04-18 05:00:00+00:00",
+        "to": "FLAT_COOLDOWN"
+       },
+       {
+        "cause": "cooldown_elapsed",
+        "from": "FLAT_COOLDOWN",
+        "t": "2021-05-02 05:00:00+00:00",
+        "to": "REENTRY"
+       },
+       {
+        "cause": "step_1",
+        "from": "REENTRY",
+        "t": "2021-05-09 05:00:00+00:00",
+        "to": "REENTRY"
+       },
+       {
+        "cause": "step_2",
+        "from": "REENTRY",
+        "t": "2021-05-16 05:00:00+00:00",
+        "to": "REENTRY"
+       },
+       {
+        "cause": "reentry_complete",
+        "from": "REENTRY",
+        "t": "2021-09-06 09:00:00+00:00",
+        "to": "REDUCED"
+       },
+       {
+        "cause": "tier2",
+        "from": "REDUCED",
+        "t": "2021-09-06 12:00:00+00:00",
+        "to": "FLAT_COOLDOWN"
+       },
+       {
+        "cause": "cooldown_elapsed",
+        "from": "FLAT_COOLDOWN",
+        "t": "2021-09-20 12:00:00+00:00",
+        "to": "REENTRY"
+       },
+       {
+        "cause": "step_1",
+        "from": "REENTRY",
+        "t": "2021-09-27 12:00:00+00:00",
+        "to": "REENTRY"
+       },
+       {
+        "cause": "step_2",
+        "from": "REENTRY",
+        "t": "2021-10-04 12:00:00+00:00",
+        "to": "REENTRY"
+       },
+       {
+        "cause": "reentry_complete",
+        "from": "REENTRY",
+        "t": "2021-10-14 09:00:00+00:00",
+        "to": "REDUCED"
+       },
+       {
+        "cause": "flat_cycles",
+        "from": "REDUCED",
+        "t": "2021-10-14 10:00:00+00:00",
+        "to": "SHUTDOWN"
+       }
+      ],
+      "write_offs": {}
+     },
+     "execution": {
+      "annual_one_way_turnover": 0.34805751605790003,
+      "closed_trades": 1013,
+      "estimated_cost_drag_per_year": 0.0010441725481737001,
+      "estimated_cost_usd": 105.0421840490392,
+      "fill_ratio": 1.0,
+      "filled_buy_notional": 28530.262924344934,
+      "intended_buy_notional": 28530.262924344934,
+      "mean_exposure": 0.027592417964560117,
+      "orders_issued": 1171,
+      "rejects": {},
+      "sell_proceeds_closed_trades": 41497.85977501453,
+      "traded_notional": 70028.12269935946
+     },
+     "fill_ratio": 1.0,
+     "metrics": {
+      "cagr": 0.20315409672598017,
+      "calmar": 1.151289015490251,
+      "daily_volatility": 0.008080031139603698,
+      "final_equity": 22967.596850669517,
+      "max_drawdown": 0.17645794756364586,
+      "net_return": 1.2967596850669518,
+      "sharpe": 1.2760591495724691,
+      "sortino": 2.0615580975615164,
+      "years": 4.495890410958904
+     }
+    },
+    "metrics": {
+     "cagr": 0.15675976171041905,
+     "calmar": 0.6846582634070859,
+     "daily_volatility": 0.010285273618026428,
+     "final_equity": 19245.729418722818,
+     "max_drawdown": 0.2289605925886743,
+     "net_return": 0.9245729418722819,
+     "sharpe": 0.83991343967553,
+     "sortino": 1.3020608377836045,
+     "years": 4.495890410958904
+    },
+    "no_risk_diagnostic": {
+     "execution": {
+      "annual_one_way_turnover": 7.769072360737167,
+      "closed_trades": 790,
+      "estimated_cost_drag_per_year": 0.023307217082211503,
+      "estimated_cost_usd": 2955.7095833240974,
+      "fill_ratio": 0.8944363855305887,
+      "filled_buy_notional": 990236.527774699,
+      "intended_buy_notional": 1107106.7141206255,
+      "mean_exposure": 0.9861702205133385,
+      "orders_issued": 1814,
+      "rejects": {
+       "expired": 108,
+       "insufficient_funds": 103
+      },
+      "sell_proceeds_closed_trades": 980236.527774699,
+      "traded_notional": 1970473.055549398
+     },
+     "fill_ratio": 0.8944363855305887,
+     "metrics": {
+      "cagr": 0.20373189644060896,
+      "calmar": 0.24431704526714393,
+      "daily_volatility": 0.03933740209487671,
+      "final_equity": 23017.227721309406,
+      "max_drawdown": 0.8338832692489471,
+      "net_return": 1.3017227721309408,
+      "sharpe": 0.6310636678405601,
+      "sortino": 0.8702705481068114,
+      "years": 4.495890410958904
+     }
+    }
+   },
+   "risk_matched_btc_cash_ex_post": {
+    "btc_weight": 0.32429226023354024,
+    "max_drawdown": 0.34332067736509564,
+    "net_return": 0.8281028412036837,
+    "non_tradable_label": "ex post, never gates",
+    "sharpe": 0.7810735794746179,
+    "sortino": 1.1628891024688413
+   },
+   "schedule_facts": {
+    "empty_rebalances": 0,
+    "mean_target_size": 23.033898305084747,
+    "rebalances": 59
+   }
+  },
+  "H1-h7": {
+   "alpha_vs_btc": {
+    "alpha_annualised": 0.11297528313662461,
+    "alpha_daily": 0.00030952132366198523,
+    "beta": 0.038564800812347685,
+    "p_alpha_one_sided": 0.11551054058858012,
+    "t_alpha_hac": 1.1977327348541442
+   },
+   "alpha_vs_low_volatility": {
+    "alpha_annualised": 0.0038617755079433103,
+    "alpha_daily": 1.0580206871077562e-05,
+    "beta": 0.7665653101302548,
+    "p_alpha_one_sided": 0.4293636656241603,
+    "t_alpha_hac": 0.17799445401562322
+   },
+   "benchmarks": {
+    "btc_buy_hold": {
+     "cagr": 0.3364137018267994,
+     "calmar": 0.43901471419452465,
+     "final_equity": 36831.25972441801,
+     "max_drawdown": 0.7662925431645934,
+     "net_return": 2.683125972441801,
+     "sharpe": 0.7810735794746178,
+     "sortino": 1.1628891024688408,
+     "years": 4.495890410958904
+    },
+    "cash": {
+     "cagr": 0.0,
+     "max_drawdown": 0.0,
+     "net_return": 0.0,
+     "sharpe": 0.0,
+     "sortino": 0.0
+    },
+    "equal_weight": {
+     "cagr": -0.06165005186956607,
+     "calmar": -0.06720678760067877,
+     "final_equity": 7511.9955786253,
+     "max_drawdown": 0.9173188314827805,
+     "net_return": -0.24880044213747,
+     "sharpe": 0.3856326655265189,
+     "sortino": 0.5227371816057617,
+     "years": 4.495890410958904
+    }
+   },
+   "benchmarks_double_costs": {
+    "btc_buy_hold": {
+     "cagr": 0.3355222377482936,
+     "calmar": 0.43785136726330653,
+     "final_equity": 36720.93094193896,
+     "max_drawdown": 0.7662925431645935,
+     "net_return": 2.672093094193896,
+     "sharpe": 0.7800116095794875,
+     "sortino": 1.1610984942520706,
+     "years": 4.495890410958904
+    },
+    "equal_weight": {
+     "cagr": -0.06755345620430453,
+     "calmar": -0.07354319501640676,
+     "final_equity": 7301.844483920672,
+     "max_drawdown": 0.9185548192356074,
+     "net_return": -0.2698155516079328,
+     "sharpe": 0.3771018831677544,
+     "sortino": 0.5110236565395995,
+     "years": 4.495890410958904
+    }
+   },
+   "double": {
+    "capital_protection": {
+     "drawdown_limit": 0.2,
+     "engine_breaker_events": [],
+     "final_state": "SHUTDOWN",
+     "first_shutdown_time": "2021-02-23 09:00:00+00:00",
+     "hours_in_state": {
+      "NORMAL": 923,
+      "REDUCED": 358,
+      "SHUTDOWN": 38103
+     },
+     "max_drawdown_conservative": 0.18274875750213676,
+     "max_drawdown_last_known": 0.18274875750213676,
+     "shutdown": true,
+     "transitions": [
+      {
+       "cause": "tier1",
+       "from": "NORMAL",
+       "t": "2021-01-08 03:00:00+00:00",
+       "to": "REDUCED"
+      },
+      {
+       "cause": "recovered",
+       "from": "REDUCED",
+       "t": "2021-01-18 08:00:00+00:00",
+       "to": "NORMAL"
+      },
+      {
+       "cause": "tier1",
+       "from": "NORMAL",
+       "t": "2021-01-22 01:00:00+00:00",
+       "to": "REDUCED"
+      },
+      {
+       "cause": "recovered",
+       "from": "REDUCED",
+       "t": "2021-01-25 09:00:00+00:00",
+       "to": "NORMAL"
+      },
+      {
+       "cause": "tier1",
+       "from": "NORMAL",
+       "t": "2021-02-15 03:00:00+00:00",
+       "to": "REDUCED"
+      },
+      {
+       "cause": "recovered",
+       "from": "REDUCED",
+       "t": "2021-02-15 17:00:00+00:00",
+       "to": "NORMAL"
+      },
+      {
+       "cause": "tier1",
+       "from": "NORMAL",
+       "t": "2021-02-22 14:00:00+00:00",
+       "to": "REDUCED"
+      },
+      {
+       "cause": "tier3_floor",
+       "from": "REDUCED",
+       "t": "2021-02-23 09:00:00+00:00",
+       "to": "SHUTDOWN"
+      }
+     ],
+     "write_offs": {}
+    },
+    "execution": {
+     "annual_one_way_turnover": 0.47730352352994343,
+     "closed_trades": 274,
+     "estimated_cost_drag_per_year": 0.0028638211411796603,
+     "estimated_cost_usd": 219.07427549661716,
+     "fill_ratio": 1.0,
+     "filled_buy_notional": 32960.34165663576,
+     "intended_buy_notional": 32960.34165663576,
+     "mean_exposure": 0.015610438620522565,
+     "orders_issued": 310,
+     "rejects": {},
+     "sell_proceeds_closed_trades": 40064.41684223662,
+     "traded_notional": 73024.75849887238
+    },
+    "fill_ratio": 1.0,
+    "low_volatility": {
+     "capital_protection": {
+      "drawdown_limit": 0.2,
+      "engine_breaker_events": [],
+      "final_state": "SHUTDOWN",
+      "first_shutdown_time": "2021-02-23 09:00:00+00:00",
+      "hours_in_state": {
+       "NORMAL": 787,
+       "REDUCED": 494,
+       "SHUTDOWN": 38103
+      },
+      "max_drawdown_conservative": 0.19829796486208423,
+      "max_drawdown_last_known": 0.19829796486208423,
+      "shutdown": true,
+      "transitions": [
+       {
+        "cause": "tier1",
+        "from": "NORMAL",
+        "t": "2021-01-11 04:00:00+00:00",
+        "to": "REDUCED"
+       },
+       {
+        "cause": "recovered",
+        "from": "REDUCED",
+        "t": "2021-01-29 14:00:00+00:00",
+        "to": "NORMAL"
+       },
+       {
+        "cause": "tier1",
+        "from": "NORMAL",
+        "t": "2021-02-10 16:00:00+00:00",
+        "to": "REDUCED"
+       },
+       {
+        "cause": "recovered",
+        "from": "REDUCED",
+        "t": "2021-02-12 01:00:00+00:00",
+        "to": "NORMAL"
+       },
+       {
+        "cause": "tier1",
+        "from": "NORMAL",
+        "t": "2021-02-22 14:00:00+00:00",
+        "to": "REDUCED"
+       },
+       {
+        "cause": "tier3_floor",
+        "from": "REDUCED",
+        "t": "2021-02-23 09:00:00+00:00",
+        "to": "SHUTDOWN"
+       }
+      ],
+      "write_offs": {}
+     },
+     "execution": {
+      "annual_one_way_turnover": 0.4550132955041528,
+      "closed_trades": 309,
+      "estimated_cost_drag_per_year": 0.002730079773024917,
+      "estimated_cost_usd": 240.60277291338036,
+      "fill_ratio": 0.9999999999999998,
+      "filled_buy_notional": 35225.85595656848,
+      "intended_buy_notional": 35225.855956568485,
+      "mean_exposure": 0.019889653306466335,
+      "orders_issued": 341,
+      "rejects": {},
+      "sell_proceeds_closed_trades": 44975.06834789163,
+      "traded_notional": 80200.92430446012
+     },
+     "fill_ratio": 0.9999999999999998,
+     "metrics": {
+      "cagr": 0.16342331676834232,
+      "calmar": 0.8241300755759289,
+      "daily_volatility": 0.008566913983491532,
+      "final_equity": 19749.212391323137,
+      "max_drawdown": 0.19829796486208418,
+      "net_return": 0.9749212391323137,
+      "sharpe": 1.0045772932750725,
+      "sortino": 1.9455244974960724,
+      "years": 4.495890410958904
+     }
+    },
+    "metrics": {
+     "cagr": 0.12680109285261554,
+     "calmar": 0.6938547467340946,
+     "daily_volatility": 0.007503540087522192,
+     "final_equity": 17104.075185600857,
+     "max_drawdown": 0.1827487575021367,
+     "net_return": 0.7104075185600858,
+     "sharpe": 0.9031678025615277,
+     "sortino": 1.6751060663340496,
+     "years": 4.495890410958904
+    },
+    "no_risk_diagnostic": {
+     "execution": {
+      "annual_one_way_turnover": 15.945687079302505,
+      "closed_trades": 1619,
+      "estimated_cost_drag_per_year": 0.09567412247581504,
+      "estimated_cost_usd": 7344.345394567771,
+      "fill_ratio": 0.9059963223075009,
+      "filled_buy_notional": 1229057.5657612951,
+      "intended_buy_notional": 1356581.186368376,
+      "mean_exposure": 0.9780714311163622,
+      "orders_issued": 3697,
+      "rejects": {
+       "expired": 234,
+       "insufficient_funds": 202
+      },
+      "sell_proceeds_closed_trades": 1219057.5657612951,
+      "traded_notional": 2448115.1315225903
+     },
+     "fill_ratio": 0.9059963223075009,
+     "metrics": {
+      "cagr": -0.06904236790056406,
+      "calmar": -0.07693961055887566,
+      "daily_volatility": 0.038401347124498726,
+      "final_equity": 7249.571046375224,
+      "max_drawdown": 0.8973579070527206,
+      "net_return": -0.2750428953624776,
+      "sharpe": 0.2787373893055456,
+      "sortino": 0.37544056121288333,
+      "years": 4.495890410958904
+     }
+    }
+   },
+   "incremental_vs_low_volatility": {
+    "annualised_diff": -0.034923583665591666,
+    "hac_lag": 10,
+    "mean_daily_diff": -9.568105113860731e-05,
+    "n_days": 1641,
+    "p_one_sided": 0.8626208736662117,
+    "t_hac": -1.0921703035738959
+   },
+   "normal": {
+    "capital_protection": {
+     "drawdown_limit": 0.2,
+     "engine_breaker_events": [],
+     "final_state": "SHUTDOWN",
+     "first_shutdown_time": "2021-02-23 09:00:00+00:00",
+     "hours_in_state": {
+      "NORMAL": 923,
+      "REDUCED": 358,
+      "SHUTDOWN": 38103
+     },
+     "max_drawdown_conservative": 0.1828258823636559,
+     "max_drawdown_last_known": 0.1828258823636559,
+     "shutdown": true,
+     "transitions": [
+      {
+       "cause": "tier1",
+       "from": "NORMAL",
+       "t": "2021-01-08 03:00:00+00:00",
+       "to": "REDUCED"
+      },
+      {
+       "cause": "recovered",
+       "from": "REDUCED",
+       "t": "2021-01-18 08:00:00+00:00",
+       "to": "NORMAL"
+      },
+      {
+       "cause": "tier1",
+       "from": "NORMAL",
+       "t": "2021-01-22 01:00:00+00:00",
+       "to": "REDUCED"
+      },
+      {
+       "cause": "recovered",
+       "from": "REDUCED",
+       "t": "2021-01-25 09:00:00+00:00",
+       "to": "NORMAL"
+      },
+      {
+       "cause": "tier1",
+       "from": "NORMAL",
+       "t": "2021-02-15 03:00:00+00:00",
+       "to": "REDUCED"
+      },
+      {
+       "cause": "recovered",
+       "from": "REDUCED",
+       "t": "2021-02-15 17:00:00+00:00",
+       "to": "NORMAL"
+      },
+      {
+       "cause": "tier1",
+       "from": "NORMAL",
+       "t": "2021-02-22 14:00:00+00:00",
+       "to": "REDUCED"
+      },
+      {
+       "cause": "tier3_floor",
+       "from": "REDUCED",
+       "t": "2021-02-23 09:00:00+00:00",
+       "to": "SHUTDOWN"
+      }
+     ],
+     "write_offs": {}
+    },
+    "execution": {
+     "annual_one_way_turnover": 0.4758827022911411,
+     "closed_trades": 274,
+     "estimated_cost_drag_per_year": 0.0014276481068734234,
+     "estimated_cost_usd": 110.05177551558913,
+     "fill_ratio": 1.0000000000000002,
+     "filled_buy_notional": 33065.3683742844,
+     "intended_buy_notional": 33065.36837428439,
+     "mean_exposure": 0.015620604634573166,
+     "orders_issued": 310,
+     "rejects": {},
+     "sell_proceeds_closed_trades": 40302.48196944168,
+     "traded_notional": 73367.85034372608
+    },
+    "fill_ratio": 1.0000000000000002,
+    "low_volatility": {
+     "capital_protection": {
+      "drawdown_limit": 0.2,
+      "engine_breaker_events": [],
+      "final_state": "SHUTDOWN",
+      "first_shutdown_time": "2021-02-23 09:00:00+00:00",
+      "hours_in_state": {
+       "NORMAL": 787,
+       "REDUCED": 494,
+       "SHUTDOWN": 38103
+      },
+      "max_drawdown_conservative": 0.19834907928873474,
+      "max_drawdown_last_known": 0.19834907928873474,
+      "shutdown": true,
+      "transitions": [
+       {
+        "cause": "tier1",
+        "from": "NORMAL",
+        "t": "2021-01-11 04:00:00+00:00",
+        "to": "REDUCED"
+       },
+       {
+        "cause": "recovered",
+        "from": "REDUCED",
+        "t": "2021-01-29 14:00:00+00:00",
+        "to": "NORMAL"
+       },
+       {
+        "cause": "tier1",
+        "from": "NORMAL",
+        "t": "2021-02-10 16:00:00+00:00",
+        "to": "REDUCED"
+       },
+       {
+        "cause": "recovered",
+        "from": "REDUCED",
+        "t": "2021-02-12 01:00:00+00:00",
+        "to": "NORMAL"
+       },
+       {
+        "cause": "tier1",
+        "from": "NORMAL",
+        "t": "2021-02-22 14:00:00+00:00",
+        "to": "REDUCED"
+       },
+       {
+        "cause": "tier3_floor",
+        "from": "REDUCED",
+        "t": "2021-02-23 09:00:00+00:00",
+        "to": "SHUTDOWN"
+       }
+      ],
+      "write_offs": {}
+     },
+     "execution": {
+      "annual_one_way_turnover": 0.45383142077386307,
+      "closed_trades": 309,
+      "estimated_cost_drag_per_year": 0.0013614942623215891,
+      "estimated_cost_usd": 120.88207543752455,
+      "fill_ratio": 1.0,
+      "filled_buy_notional": 35345.181432491256,
+      "intended_buy_notional": 35345.181432491256,
+      "mean_exposure": 0.019896025397361145,
+      "orders_issued": 341,
+      "rejects": {},
+      "sell_proceeds_closed_trades": 45242.86885919177,
+      "traded_notional": 80588.05029168303
+     },
+     "fill_ratio": 1.0,
+     "metrics": {
+      "cagr": 0.16536313073664188,
+      "calmar": 0.8336974959985799,
+      "daily_volatility": 0.008589332536126381,
+      "final_equity": 19897.687426700522,
+      "max_drawdown": 0.1983490792887347,
+      "net_return": 0.9897687426700523,
+      "sharpe": 1.0125035933300874,
+      "sortino": 1.9680881799184389,
+      "years": 4.495890410958904
+     }
+    },
+    "metrics": {
+     "cagr": 0.1287446607144791,
+     "calmar": 0.7041927491338191,
+     "daily_volatility": 0.007515336054047437,
+     "final_equity": 17237.11359515728,
+     "max_drawdown": 0.18282588236365593,
+     "net_return": 0.7237113595157281,
+     "sharpe": 0.9139639388608088,
+     "sortino": 1.701311130208669,
+     "years": 4.495890410958904
+    },
+    "no_risk_diagnostic": {
+     "execution": {
+      "annual_one_way_turnover": 15.889031119077762,
+      "closed_trades": 1621,
+      "estimated_cost_drag_per_year": 0.047667093357233285,
+      "estimated_cost_usd": 3961.99339089938,
+      "fill_ratio": 0.9047007088152854,
+      "filled_buy_notional": 1325664.4636331266,
+      "intended_buy_notional": 1465307.2012832812,
+      "mean_exposure": 0.9772841531984142,
+      "orders_issued": 3701,
+      "rejects": {
+       "expired": 234,
+       "insufficient_funds": 202
+      },
+      "sell_proceeds_closed_trades": 1315664.4636331266,
+      "traded_notional": 2641328.927266253
+     },
+     "fill_ratio": 0.9047007088152854,
+     "metrics": {
+      "cagr": -0.02678272708416185,
+      "calmar": -0.030325282475259178,
+      "daily_volatility": 0.03856632185998199,
+      "final_equity": 8851.005083696444,
+      "max_drawdown": 0.8831814544848011,
+      "net_return": -0.11489949163035562,
+      "sharpe": 0.3409416954500007,
+      "sortino": 0.4601659060851014,
+      "years": 4.495890410958904
+     }
+    }
+   },
+   "risk_matched_btc_cash_ex_post": {
+    "btc_weight": 0.2369567797506305,
+    "max_drawdown": 0.2610780951950271,
+    "net_return": 0.5806947366421635,
+    "non_tradable_label": "ex post, never gates",
+    "sharpe": 0.7810735794746178,
+    "sortino": 1.1628891024688413
+   },
+   "schedule_facts": {
+    "empty_rebalances": 0,
+    "mean_target_size": 23.425531914893618,
+    "rebalances": 235
+   }
+  }
+ },
+ "dataset_hash": "462288b14415edeb3aec73c9400fd8af977faf3105c1396f6f96d4fe3d4069be",
+ "decision": {
+  "H1-h28": {
+   "criteria": {
+    "A1_net_return_positive_double_costs": true,
+    "A1_net_return_positive_normal_costs": true,
+    "A2_sortino_at_least_btc_buy_hold": true,
+    "A2_sortino_at_least_equal_weight": true,
+    "A3_max_drawdown_not_above_btc": true,
+    "A3_max_drawdown_within_limit": false,
+    "A4_no_v3_shutdown": false,
+    "A5_incremental_value_vs_low_volatility": false,
+    "A6_fill_ratio": true
+   },
+   "decision": "NO-GO",
+   "failed": [
+    "A3_max_drawdown_within_limit",
+    "A4_no_v3_shutdown",
+    "A5_incremental_value_vs_low_volatility"
+   ],
+   "passes": false
+  },
+  "H1-h7": {
+   "criteria": {
+    "A1_net_return_positive_double_costs": true,
+    "A1_net_return_positive_normal_costs": true,
+    "A2_sortino_at_least_btc_buy_hold": true,
+    "A2_sortino_at_least_equal_weight": true,
+    "A3_max_drawdown_not_above_btc": true,
+    "A3_max_drawdown_within_limit": true,
+    "A4_no_v3_shutdown": false,
+    "A5_incremental_value_vs_low_volatility": false,
+    "A6_fill_ratio": true
+   },
+   "decision": "NO-GO",
+   "failed": [
+    "A4_no_v3_shutdown",
+    "A5_incremental_value_vs_low_volatility"
+   ],
+   "passes": false
+  }
+ },
+ "engine_hashes": {
+  "h28|double|low_volatility": "e0811d595b92872967fb694bccb6dfbba87241ad60af24d8d627ddaa9faddd8c",
+  "h28|double|strategy": "cf8300bb09b775f8b7155849d0c1809c87648dd5189a40ec9faf52fa7b9eed1f",
+  "h28|double|strategy_no_risk": "418739334413674112fe962721e983410479c12174c1ef040c4c3f6e6fade559",
+  "h28|normal|low_volatility": "886ee8205654c32a193057d955b74f80498e821f0acef3d9cd609e4126672508",
+  "h28|normal|strategy": "b313a6f59be12d8345fcd9acfb01103faecd44b0137484287c08e813ccfd77bf",
+  "h28|normal|strategy_no_risk": "e37e293fb6bcfc507cafbb2a4237b04548bcf7b652c0c3379d7fd0d3c0ecad0d",
+  "h7|double|low_volatility": "ec4523d0549b602eeeed1bdbafcbc3ed599649c99339e2bbd9d2e25e53e54a49",
+  "h7|double|strategy": "88ddebdf031539f8f0aa080b2534beaa5b5393d62c6254ff88d9559d343da534",
+  "h7|double|strategy_no_risk": "601cc48e79190120b694795c960e97460b0ee1e53c81559c9b246437bc90ce9d",
+  "h7|normal|low_volatility": "ca3e8477c40bba604ae27a63a49716516dbda2d159e4fe0c3b6cc9b2b7496c30",
+  "h7|normal|strategy": "26b6dd5ded2e41dff5337210f986fcaae95b1f739b83d8f9a1a65352eee4777c",
+  "h7|normal|strategy_no_risk": "7e7ae329ec196295591c53dcaec1eb6bcf40515261f072fe1ed56ed60cf5befe"
+ },
+ "reproducibility": {
+  "engine_hashes_second_run_identical": true,
+  "engine_hashes_sha256": "5074205f46be8702358d52034e09676ecf4c19c89bbe54fe9d0d7fada9e9910e",
+  "separate_process_engine_hashes_sha256": "5074205f46be8702358d52034e09676ecf4c19c89bbe54fe9d0d7fada9e9910e",
+  "separate_process_identical": true
+ },
+ "spec_sha256": "8f18168550ca9af879296c2de2655be36ac8a5bc4b786da610968b749d9c7435",
+ "verification": {
+  "H1-h28": {
+   "V1_independent_reimplementation": {
+    "days_compared": 1612,
+    "days_finite_only_in_independent": 0,
+    "days_finite_only_in_registered": 0,
+    "max_abs_daily_ic_difference": 3.3306690738754696e-16,
+    "mean_ic_independent": 0.11656332179241927,
+    "tolerance": 1e-09
+   },
+   "V2_entry_delayed_one_day": {
+    "mean_ic": 0.11405518058549376,
+    "n_days": 1611,
+    "t_hac": 5.575318728514457
+   },
+   "V2_permutation_placebo": {
+    "days": 1612,
+    "max_abs_mean": 0.005823378524661228,
+    "mean_of_means": -0.0004242491407811044,
+    "reps": 100,
+    "sd_of_means": 0.0024609806814101945
+   },
+   "V3_survivors_only": {
+    "assets_failed": 83,
+    "assets_surviving": 328,
+    "mean_ic": 0.12444813483947438,
+    "n_days": 1612,
+    "share_member_days_failed_assets": 0.13624323020001072,
+    "t_hac": 6.120762890734431
+   },
+   "V4_illiquid_half": {
+    "mean_ic": 0.10596538051099817,
+    "n_days": 1612,
+    "t_hac": 5.46113665500401
+   },
+   "V4_liquid_half": {
+    "mean_ic": 0.12405443025602787,
+    "n_days": 1612,
+    "t_hac": 4.853523280489622
+   },
+   "flags": {
+    "implementation_matches": true,
+    "liquid_half_retains_half": true,
+    "observed_ic_beyond_placebo": true,
+    "survivors_only_retains_half": true
+   },
+   "registered": {
+    "mean_ic": 0.1165633217924193,
+    "n_days": 1612,
+    "t_hac": 5.644383760533864
+   }
+  },
+  "H1-h7": {
+   "V1_independent_reimplementation": {
+    "days_compared": 1633,
+    "days_finite_only_in_independent": 0,
+    "days_finite_only_in_registered": 0,
+    "max_abs_daily_ic_difference": 3.3306690738754696e-16,
+    "mean_ic_independent": 0.09190941882037687,
+    "tolerance": 1e-09
+   },
+   "V2_entry_delayed_one_day": {
+    "mean_ic": 0.08770547965285944,
+    "n_days": 1632,
+    "t_hac": 8.297117719938198
+   },
+   "V2_permutation_placebo": {
+    "days": 1633,
+    "max_abs_mean": 0.004834124358062556,
+    "mean_of_means": 0.0001928441001887367,
+    "reps": 100,
+    "sd_of_means": 0.002335174855738004
+   },
+   "V3_survivors_only": {
+    "assets_failed": 83,
+    "assets_surviving": 328,
+    "mean_ic": 0.09455091711206719,
+    "n_days": 1633,
+    "share_member_days_failed_assets": 0.13460621536570636,
+    "t_hac": 8.528569628673031
+   },
+   "V4_illiquid_half": {
+    "mean_ic": 0.08479732081244787,
+    "n_days": 1633,
+    "t_hac": 8.385767559923982
+   },
+   "V4_liquid_half": {
+    "mean_ic": 0.09477223340983772,
+    "n_days": 1633,
+    "t_hac": 6.928715996491015
+   },
+   "flags": {
+    "implementation_matches": true,
+    "liquid_half_retains_half": true,
+    "observed_ic_beyond_placebo": true,
+    "survivors_only_retains_half": true
+   },
+   "registered": {
+    "mean_ic": 0.09190941882037687,
+    "n_days": 1633,
+    "t_hac": 8.600528557904745
+   }
+  }
+ }
+}

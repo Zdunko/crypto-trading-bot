@@ -1,0 +1,120 @@
+{
+ "failed": [],
+ "gates": {
+  "B1": {
+   "pass": true,
+   "value": {
+    "holdout_urls": 0,
+    "logged_requests": 77368,
+    "max_store_month": "2025-06",
+    "store_files_audited": 43036
+   }
+  },
+  "B2": {
+   "pass": true,
+   "value": {
+    "all_before_cutoff": true,
+    "max_candle_open_ms": 1751241600000
+   }
+  },
+  "F1": {
+   "pass": true,
+   "value": {
+    "failures": 0,
+    "ok_files": 43025,
+    "quarantined": 11
+   }
+  },
+  "F2": {
+   "pass": true,
+   "value": "synthetic interrupted/resumed builds identical (tests); real fetch interrupted and resumed several times; every file verified against its published checksum"
+  },
+  "F3": {
+   "pass": true,
+   "value": {
+    "configured_rate": 30.0,
+    "final_run_peak": 30,
+    "jobs": 43036,
+    "peak_in_any_1s_window": 32,
+    "requests_logged": 77368
+   }
+  },
+  "I1": {
+   "pass": true,
+   "value": 8
+  },
+  "I2": {
+   "pass": true,
+   "value": 12
+  },
+  "I3": {
+   "pass": true,
+   "value": {
+    "symbols": 593,
+    "unreviewed": 0
+   }
+  },
+  "M1": {
+   "pass": true,
+   "value": "462288b14415edeb3aec73c9400fd8af977faf3105c1396f6f96d4fe3d4069be"
+  },
+  "Q1": {
+   "pass": true,
+   "value": {
+    "classified": {
+     "1d:ok": 21515,
+     "1d:quarantined": 3,
+     "1h:ok": 21510,
+     "1h:quarantined": 8
+    },
+    "expected_per_interval": 21518
+   }
+  },
+  "Q2": {
+   "pass": true,
+   "value": {
+    "unreasoned": 0
+   }
+  },
+  "Q3": {
+   "pass": true,
+   "value": "25 synthetic tests pass, incl. every reason code"
+  },
+  "R1": {
+   "pass": true,
+   "value": {
+    "hash": "462288b14415edeb3aec73c9400fd8af977faf3105c1396f6f96d4fe3d4069be",
+    "second_build_hash": "462288b14415edeb3aec73c9400fd8af977faf3105c1396f6f96d4fe3d4069be",
+    "stability": {
+     "identical_sha": 21518,
+     "missing_now": 0,
+     "s3_pinned": 21518,
+     "share": 1.0
+    }
+   }
+  },
+  "U1": {
+   "pass": true,
+   "value": {
+    "dates": 20,
+    "modes": 6
+   }
+  },
+  "U2": {
+   "pass": true,
+   "value": {
+    "ended_members_ever_1M": 126,
+    "epochs_ended_before_2025_06": 229,
+    "members_ever_1M": 498
+   }
+  },
+  "U3": {
+   "pass": true,
+   "value": {
+    "at": "2021-01",
+    "min": 84
+   }
+  }
+ },
+ "verdict": "GO"
+}

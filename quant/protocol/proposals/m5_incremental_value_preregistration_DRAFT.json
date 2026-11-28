@@ -1,0 +1,150 @@
+{
+ "id": "M5-incremental-value-preregistration-DRAFT-v1",
+ "status": "DRAFT PROPOSAL, NOT REGISTERED, NOT APPROVED. No approval entry exists, the research budget is unchanged (N 45/52), no market evaluation is authorised. It becomes a registration only by a separate owner approval and a freeze commit made before any stage-1 market statistic is read.",
+ "question": "Does MAX3 (S = -MAX3, 28-day window) carry predictive and economic value beyond simple low-volatility selection? (L1 found IC 0.092 / 0.117 but S has a mean daily rank correlation of -0.913 with trailing volatility; L2 was confounded by terminal V3 shutdown.)",
+ "ladder": "research diagnostic on top of L1/L2 results; never produces an operational L2/L3 pass",
+ "design": "two stages, fixed sequence (gatekeeping): stage 1 signal level (high power, cheap); stage 2 research-only economic comparison, executed only for the horizons that pass stage 1",
+ "family": {
+  "proposed_id": "h1_vol_control",
+  "slot": "second of three further-family slots",
+  "configurations": [
+   {
+    "id": "VC-h7",
+    "horizon_days": 7
+   },
+   {
+    "id": "VC-h28",
+    "horizon_days": 28
+   }
+  ],
+  "definition": "the registered H1 signal (S = -MAX3, 28 days) tested for incremental value after controlling for volatility; horizons as in H1",
+  "new_parameters": 0,
+  "free_parameters_note": "none: the volatility measure is the standard deviation of the 28 daily returns (the window of MAX3), fixed; no other window or measure is tried"
+ },
+ "stage1_signal_level": {
+  "universe_and_returns": "identical to the L1 registration (PIT 5M universe, valid-S members, open-to-open returns over h days, last-observed-close exit rule, panel 2020-11-01..2025-06-29, signal dates 2021-01-01..last-(1+h), holdout never read)",
+  "statistic": "mean over signal days of the daily cross-sectional PARTIAL rank correlation of S with the h-day forward return controlling for the volatility rank V: rho(S,R|V) = (r_SR - r_SV*r_VR) / sqrt((1-r_SV^2)(1-r_VR^2)), all Spearman; V = -std of the 28 daily returns converted to cross-sectional ranks; minimum 20 assets per day",
+  "inference": "one-sided normal approximation of mean/HAC standard error, Newey-West lag 2h (14, 56); circular block-bootstrap check (block max(lag,2), 999 draws, seed 20261201 + h); two-sided 95 % CI and one-sided 95 % bounds reported",
+  "multiple_testing": "Holm across the 2 horizons (family-wise one-sided alpha 0.05); programme-wide Bonferroni over the post-registration N reported, non-gating",
+  "min_effect": {
+   "rule": "partial IC_h >= 0.003522504892367907 * sqrt(h) (0.0093 for h = 7, 0.0186 for h = 28): the S9 break-even IC scaled as in the L1 registration",
+   "origin": "S9 break-even daily IC 0.0035 (turnover 12, cost 0.15 %, margin 2) = about 3.6 % per year gross active return"
+  },
+  "stability": "partial IC > 0 in both sub-periods 2021-01..2022-12 and 2023-01..2025-06-29",
+  "negative_control_surrogates": {
+   "purpose": "size of the procedure on the real data when the signal is a pure volatility proxy",
+   "construction": "200 surrogate signals per horizon: S* = 0.913 * z(-volatility rank) + sqrt(1-0.913^2) * AR(1) noise (persistence 0.95), independent of returns; seed 20261202",
+   "rule": "the fraction of surrogates rejected at one-sided 5 % must be <= 0.10, otherwise stage 1 is INCONCLUSIVE (mis-sized test)"
+  },
+  "integrity": "independent pandas re-implementation of the partial IC series must match within 1e-9 (as V1 in M4); data gates as in L1 (>= 1000 valid days, mean assets >= 30, coverage >= 0.80)",
+  "outcomes_per_horizon": {
+   "ESTABLISHED": "Holm p <= 0.05 AND partial IC >= min effect AND stable AND surrogate size <= 0.10 AND integrity ok",
+   "REFUTED": "one-sided 95 % upper bound of the partial IC < min effect (conclusive that any incremental effect is below the economic threshold)",
+   "NOT_ESTABLISHED": "otherwise",
+   "INCONCLUSIVE": "surrogate size > 0.10 or an integrity gate fails"
+  },
+  "descriptive_not_gating": [
+   "double sort: volatility terciles x MAX3 terciles, mean next-period return spread of the least-lottery-like tercile minus the most lottery-like, averaged over volatility terciles (HAC CI)",
+   "partial IC by sub-period and by BTC regime"
+  ]
+ },
+ "stage2_economic_research_only": {
+  "executed_only_if": "stage 1 outcome is ESTABLISHED for at least one horizon; only those horizons are evaluated; the owner approves the stage-2 run by a separate written instruction unless the owner pre-authorises it in the approval of this proposal",
+  "label": "RESEARCH-ONLY UNPROTECTED EVALUATION. It never qualifies as an operational L2 pass, never implies L3, paper or live trading, and never changes the M4 L2 NO-GO.",
+  "arms": {
+   "max3": "the M4 MAX3 portfolio (top quintile of S, K = max(5, ceil(0.2 n)), equal notional, rebalance every h days from 2021-01-02, signal of day D-1 at 01:00 UTC on day D)",
+   "low_volatility": "the pure low-volatility baseline: the same eligible set, K, tie-breaking, schedule, execution and costs, ranked by the lowest 28-day realised volatility (the M4 volatility score)"
+  },
+  "execution_identical_for_all_arms": "frozen Stage 0 engine, hourly candles, fees 0.10 % + slippage 0.05 % (normal) and 0.20 % + 0.10 % (double), 1 h latency, 10 % participation cap with partial fills, min notional 5, wallet 10,000 USDT",
+  "protection": "engine circuit breaker OFF and Risk Management V3 NOT acting in the unprotected arms, so a terminal shutdown cannot confound the comparison; Risk Management V3 (zero recovery) is run as a SHADOW (state machine stepped on each arm's hourly equity, reporting only: states, transitions, would-be shutdown time) and is never fed back into orders",
+  "comparators": {
+   "cash": "0",
+   "btc_buy_hold": "passive, same costs",
+   "equal_weight": "point-in-time members, monthly, same costs",
+   "exposure_matched": "CAUSAL: BTC/cash with the invested fraction of the MAX3 arm over the previous 28 days (known at the rebalance day), updated at each rebalance; no ex-post calibration",
+   "causally_risk_matched": "CAUSAL: at each rebalance day t the weight of BTC (rest cash) is w_t = min(1, sigma_arm,t / sigma_btc,t) with both volatilities estimated from the previous 28 daily returns strictly before t; scaling costs charged on the weight change",
+   "volatility_matched_low_volatility": "CAUSAL (the primary comparator): the low-volatility arm scaled at each rebalance day by w_t = min(1, sigma_max3,t / sigma_lowvol,t) with trailing 28-day volatilities known at t, remainder in cash; scaling costs charged on the weight change"
+  },
+  "primary_test": "paired daily net return difference MAX3 arm minus the volatility-matched low-volatility arm, normal costs, one-sided HAC (lag 10); Holm across the horizons that reach stage 2",
+  "min_economic_effect": "net annualised difference >= 3.6 % per year (the S9 break-even gross active return at margin 2), with a positive one-sided 95 % lower bound under normal costs and a non-negative point estimate under double costs",
+  "uncertainty": "HAC standard error, 95 % CI, stationary block bootstrap (block 20 days, 999 draws, seed 20261203) of the annualised difference",
+  "also_reported": "net returns, CAGR, Sharpe, Sortino, max drawdown, Calmar, turnover, cost drag, exposure; alpha of the MAX3 arm on the low-volatility arm and on BTC (HAC); shadow-V3 states",
+  "outcomes": {
+   "ESTABLISHED": "primary test p <= 0.05 AND effect >= 3.6 %/yr (normal) AND >= 0 (double)",
+   "REFUTED": "one-sided 95 % upper bound of the annualised difference < 3.6 %/yr",
+   "INCONCLUSIVE": "otherwise (expected to be common: the paired test can detect only an annualised information ratio of about 1.17 on 4.5 years)"
+  }
+ },
+ "decision_tree": {
+  "D1": "stage 1 NOT_ESTABLISHED or REFUTED at both horizons -> ABANDON H1: MAX3 shows no incremental predictive value beyond volatility; stage 2 is not run; the L1 PASS is recorded as 'volatility proxy'",
+  "D2": "stage 1 ESTABLISHED at >= 1 horizon -> run stage 2 for those horizons",
+  "D3": "stage 2 ESTABLISHED -> the owner may be offered a SEPARATE hypothesis H1b (volatility-neutral MAX3 selection inside a causally volatility-targeted portfolio), with its own registration and budget; nothing is implied",
+  "D4": "stage 2 REFUTED -> abandon H1 (incremental effect real at most below the economic threshold)",
+  "D5": "stage 2 INCONCLUSIVE -> H1 is NOT carried forward on economics; record 'incremental signal present, economic value unproven'; only if the point estimate is >= the minimum effect may H1b be proposed, labelled underpowered",
+  "D6": "independently of H1: a separate volatility-targeted low-volatility hypothesis (plain low-volatility selection with causal exposure scaling) is a NEW family needing its own pre-registration, parameters fixed a priori from the 20 % drawdown limit, and budget; it is not part of this proposal",
+  "D7": "any integrity failure, guard failure or budget exceedance -> stop and report; no rerun"
+ },
+ "stopping_rules": [
+  "stage 2 is never run when stage 1 fails (saves the replay allowance)",
+  "each stage is executed once; no fix-and-rerun after results are seen; infrastructure defects are fixed before the run on synthetic data",
+  "no horizon, window, volatility measure, quantile, comparator or cost level is added after registration",
+  "N may not exceed the recorded post-registration value; any request for more stops the work and asks the owner"
+ ],
+ "budget": {
+  "ledger_today": {
+   "baseline_N": 43,
+   "baseline_composition": {
+    "phase3": 26,
+    "phase4": 14,
+    "family_a": 3
+   },
+   "h1_configurations": 2,
+   "total_N": 45,
+   "cap": 52,
+   "families_used": "1 of 3",
+   "h1_market_runs": "1 of 1 consumed (L1)",
+   "h1_diagnostic_replays": "1 of 1 consumed (M4; added 0 configurations, so N did not change)"
+  },
+  "recommended_option_R": {
+   "description": "register one new family h1_vol_control with 2 configurations (VC-h7, VC-h28); stage 1 is its single market run; stage 2 is its single approved diagnostic replay (protocol V2 section 8)",
+   "N_after_registration": 47,
+   "N_cost": 2,
+   "families_after": "2 of 3",
+   "caps_check": "configurations 2 <= 3; market runs 1 <= 1; diagnostic replays 1 <= 1; N 47 <= 52: no cap is exceeded",
+   "N_if_stage1_fails": 47,
+   "N_after_stage2": 47
+  },
+  "conservative_option_C": {
+   "description": "charge the stage-2 horizon comparisons as additional trials (4 trials)",
+   "N_after": 49,
+   "requires": "an owner exception to max_configurations_per_family (4 > 3) or a third family slot (families 3 of 3)",
+   "remaining_N": 3
+  },
+  "remaining_after_R": {
+   "N": 5,
+   "families": 1,
+   "note": "enough for one further family of at most 3 configurations (N <= 50)"
+  },
+  "multiplicity_note": "under option R the stage-2 comparisons are not extra ledger trials but are inside the registered fixed-sequence procedure (stage 2 only after stage 1; Holm across horizons), so no multiplicity is hidden; option C is the stricter bookkeeping"
+ },
+ "guards_to_implement_after_approval": [
+  "owner approval entry for the exact spec hash with scope 'M5 stage 1' (stage 2 needs its own approval or an explicit pre-authorisation)",
+  "family h1_vol_control registered in the research budget with N 47 before any result is read",
+  "stage 2 guard reads the stage-1 result file and the passing horizons",
+  "the loader refuses the holdout (unchanged)"
+ ],
+ "effort_estimate_sessions": {
+  "stage1_code_and_synthetic_tests": 1.0,
+  "stage1_run_and_report": 0.5,
+  "stage2_code_shadow_v3_comparators_synthetic_tests": 1.5,
+  "stage2_run_and_report": 0.5
+ },
+ "known_limitations": [
+  "one history (2021-2025) and one venue; research-only licence",
+  "the volatility baseline is one fixed definition (28-day standard deviation); a different baseline could change the conclusion and is deliberately not searched",
+  "the partial IC removes only the rank-linear part of the volatility relation",
+  "portfolio-level tests have low power (annualised IR 1.17 detectable at 80 %)",
+  "surrogate nulls assume a persistence of 0.95 (an assumption)",
+  "stage 2 is research-only and unprotected by construction"
+ ]
+}

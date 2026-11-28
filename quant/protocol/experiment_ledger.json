@@ -1,0 +1,282 @@
+{
+ "note": "Reconstructed 2026-11-25 from GitHub Actions run list (run ids, commits, conclusions) and from the runner code (backtest counts per stage). Backtest counts are derived from code, not from per-run log counters. Holdout evaluations: 0.",
+ "sources": [
+  "quant-research.yml run list (17 runs)",
+  "quantlab/phase3.py stages",
+  "quantlab/phase4.py",
+  "quant/journal/*"
+ ],
+ "runs": [
+  {
+   "run": "45558871512",
+   "commit": "331ab62",
+   "marker": "phase3-data",
+   "conclusion": "success",
+   "freqtrade_backtests": 0,
+   "new_configurations": 0,
+   "note": "data download and validation (no strategy evaluated)",
+   "valid": true
+  },
+  {
+   "run": "45560148402",
+   "commit": "6a80519",
+   "marker": "phase3-bias",
+   "conclusion": "success",
+   "freqtrade_backtests": 0,
+   "new_configurations": 0,
+   "note": "lookahead (6 periods x 4 strategies) and recursive analysis (18 checks per strategy); not performance runs",
+   "valid": true
+  },
+  {
+   "run": "45560353060",
+   "commit": "a573c62",
+   "marker": "(no marker)",
+   "conclusion": "cancelled",
+   "freqtrade_backtests": 0,
+   "new_configurations": 0,
+   "note": "cancelled by concurrency; no result",
+   "valid": true
+  },
+  {
+   "run": "45560987873",
+   "commit": "5126a25",
+   "marker": "(no marker)",
+   "conclusion": "skipped",
+   "freqtrade_backtests": 0,
+   "new_configurations": 0,
+   "note": "no stage ran",
+   "valid": true
+  },
+  {
+   "run": "45561413667",
+   "commit": "18cdd1c",
+   "marker": "phase3-eval",
+   "conclusion": "failure",
+   "freqtrade_backtests": 0,
+   "new_configurations": 0,
+   "note": "failed before any result (export directory bug); no result produced",
+   "valid": true
+  },
+  {
+   "run": "45561982317",
+   "commit": "fedad61",
+   "marker": "phase3-eval",
+   "conclusion": "success",
+   "freqtrade_backtests": 32,
+   "new_configurations": 26,
+   "note": "first complete evaluation: 4 strategies + BuyAndHold x (base, stress) = 10, plus 22 one-at-a-time variants; original post-hoc costs",
+   "valid": true
+  },
+  {
+   "run": "45563804911",
+   "commit": "918c2f5",
+   "marker": "phase3-eval",
+   "conclusion": "success",
+   "freqtrade_backtests": 37,
+   "new_configurations": 0,
+   "note": "identical frozen configurations re-run (annualised intervals, ruin flag) + 5 reconcile backtests; repeat, not new trials",
+   "valid": true
+  },
+  {
+   "run": "45629198632",
+   "commit": "04abeec",
+   "marker": "phase3b-audit",
+   "conclusion": "failure",
+   "freqtrade_backtests": 0,
+   "new_configurations": 0,
+   "note": "KeyError in dispatch before any backtest",
+   "valid": true
+  },
+  {
+   "run": "45630084090",
+   "commit": "065a7fc",
+   "marker": "phase3b-audit",
+   "conclusion": "success",
+   "freqtrade_backtests": 37,
+   "new_configurations": 0,
+   "note": "same 26 configurations re-costed with sizing-consistent slippage: 32 backtests + 5 audit backtests; repeat, not new trials",
+   "valid": true
+  },
+  {
+   "run": "45644306073",
+   "commit": "1e99407",
+   "marker": "phase4-research",
+   "conclusion": "success",
+   "freqtrade_backtests": 15,
+   "new_configurations": 14,
+   "note": "R1 + 6 ablations x 2 strategies (+1 smoke); INVALID (overlay equity double counting)",
+   "valid": false
+  },
+  {
+   "run": "45653877385",
+   "commit": "20b972b",
+   "marker": "phase4-research",
+   "conclusion": "success",
+   "freqtrade_backtests": 15,
+   "new_configurations": 0,
+   "note": "same 14 configurations after the fix (+1 smoke); valid; repeat of the same configurations",
+   "valid": true
+  },
+  {
+   "run": "45679466940",
+   "commit": "7058aa4",
+   "marker": "family-a-eval",
+   "conclusion": "success",
+   "freqtrade_backtests": 0,
+   "new_configurations": 3,
+   "valid": true,
+   "note": "Family A evaluation on the Stage 0 engine: A1, A0, V0 (breaker ON) + A1 at 2x costs; 31 engine runs incl. 27 causality runs; evaluation period only; holdout untouched"
+  }
+ ],
+ "configurations_evaluated_on_research_data": {
+  "phase3": {
+   "base_strategies": 4,
+   "one_at_a_time_variants": 22,
+   "subtotal": 26,
+   "detail": "TrendEmaCross, MeanReversionRsiBb, BreakoutDonchian, MomentumRoc + variants from protocol.json robustness ranges"
+  },
+  "phase4": {
+   "R1_strategies": 2,
+   "ablations": 12,
+   "subtotal": 14,
+   "status": "rejected by owner; incl. no_stop_cooldown"
+  },
+  "total_distinct": 43,
+  "excluded": "BuyAndHold reference and benchmarks B1-B5 (not tuned strategies)",
+  "family_a": {
+   "configurations": 3,
+   "subtotal": 3,
+   "detail": "A1, A0, V0 (A1 at 2x costs is the same configuration under stress)"
+  }
+ },
+ "execution_totals": {
+  "freqtrade_backtests_in_successful_runs": 136,
+  "first_evaluations": 47,
+  "repeats_of_identical_configurations": 89,
+  "holdout_evaluations": 0,
+  "explanation": "first evaluations: run 45561982317 (32) + run 45644306073 (15). Repeats: 45563804911 (37), 45630084090 (37), 45653877385 (15).",
+  "engine_runs_family_a": 31
+ },
+ "multiple_testing_rule": "N for DSR = 43 (40 before Family A + A1, A0, V0); any new family adds its configurations before its results are read",
+ "all_data_before_2025_07_01_is_research_data": true,
+ "data_audits": [
+  {
+   "id": "S1",
+   "date": "2026-11-26",
+   "purpose": "free historical data sources, point-in-time universe feasibility",
+   "returns_evaluated": false,
+   "strategy_or_parameter_selection_influenced": false,
+   "market_observations_after_2025_06_read": false,
+   "counts_toward_N": false,
+   "report": "quant/docs/phase4c/s1_data_audit_report.md"
+  },
+  {
+   "id": "S3",
+   "date": "2026-11-26",
+   "purpose": "data feasibility gate: data quality, point-in-time liquidity eligibility, identity flags, licence, resources (development period only)",
+   "returns_evaluated": false,
+   "strategy_or_parameter_selection_influenced": false,
+   "market_observations_after_2025_06_read": false,
+   "counts_toward_N": false,
+   "note": "daily closes and quote volumes of the development period were read for data-quality and eligibility counts only; BTC trailing return used for descriptive regime labels (coverage only)",
+   "criteria_preregistered": "quant/docs/phase4c/s3_criteria.json (commit 325aa33)",
+   "report": "quant/docs/phase4c/s3_feasibility_report.md"
+  },
+  {
+   "id": "S4",
+   "date": "2026-11-26",
+   "purpose": "point-in-time dataset builder: full daily+hourly scan of the development window, identity epochs, causal eligibility",
+   "returns_evaluated": false,
+   "strategy_or_parameter_selection_influenced": false,
+   "market_observations_after_2025_06_read": false,
+   "counts_toward_N": false,
+   "note": "development-window candles read for data quality, epochs and liquidity eligibility only; the archive's root listing returned the NAMES of USDT symbols listed after 2025-06 (names only: no keys, dates, sizes or bytes); they have no development-window file and never entered any table",
+   "criteria_preregistered": "quant/docs/phase4c/s4_criteria.json (commit 58ba372)",
+   "report": "quant/docs/phase4c/s4_dataset_builder_report.md"
+  },
+  {
+   "id": "S5",
+   "date": "2026-11-26",
+   "purpose": "S5-infra preparatory investigations on the development window: daily/hourly volume discrepancy (X1) and identity-epoch review; loader/guard/budget infrastructure (synthetic)",
+   "returns_evaluated": false,
+   "strategy_or_parameter_selection_influenced": false,
+   "market_observations_after_2025_06_read": false,
+   "counts_toward_N": false,
+   "criteria_preregistered": "quant/docs/phase4c/s5_criteria.json (commit 03af3d9)",
+   "report": "quant/docs/phase4c/s5_report.md"
+  },
+  {
+   "id": "S6",
+   "date": "2026-11-26",
+   "purpose": "feasibility gate and benchmark infrastructure with synthetic fixtures; stale-position review; design-only family proposal (arithmetic on assumptions)",
+   "returns_evaluated": false,
+   "strategy_or_parameter_selection_influenced": false,
+   "market_observations_after_2025_06_read": false,
+   "counts_toward_N": false,
+   "criteria_preregistered": "quant/docs/phase4c/s6_criteria.json (commit f053d61)",
+   "report": "quant/docs/phase4c/s6_report.md"
+  },
+  {
+   "id": "S7",
+   "date": "2026-11-26",
+   "purpose": "risk layer V3 (synthetic), feasibility-gate methodology audit (synthetic simulation), strategy family design review, production-readiness roadmap (documentation)",
+   "returns_evaluated": false,
+   "strategy_or_parameter_selection_influenced": false,
+   "market_observations_after_2025_06_read": false,
+   "counts_toward_N": false,
+   "criteria_preregistered": "quant/docs/phase4c/s7_criteria.json (commit 5ffce7c)",
+   "report": "quant/docs/phase4c/s7_report.md"
+  }
+ ],
+ "ledger_rule": "Every diagnostic or exploratory experiment is recorded; any experiment that influenced strategy or parameter selection counts toward N and the research budget.",
+ "registered_families": [
+  {
+   "id": "h1_lottery_max3",
+   "registered": "2026-11-27",
+   "amendment": "A11",
+   "configurations": [
+    "H1-h7",
+    "H1-h28"
+   ],
+   "N_before": 43,
+   "N_after": 45,
+   "spec_sha256": "469607453ca5261c83d7903ed95ea69fdee87f05b47878d0472feb551cc48741",
+   "preregistration": "protocol/h1_l1_preregistration.json",
+   "owner_approval": "protocol/h1_owner_approval.json",
+   "counts_toward_N": true,
+   "charged_before_results_read": true,
+   "ladder_level": "L1",
+   "note": "the 43 earlier configurations are unchanged; multiple_testing_rule keeps its recorded baseline N = 43 and this family adds its two configurations",
+   "market_run": {
+    "executed": "2026-11-27",
+    "result_file": "docs/phase4c/m3_l1_results.json",
+    "result_sha256": "53a3862df0d199efadcd7d391bbf297ea68ee67ec8b12fe0fd2534b651aba8aa",
+    "configurations_reported": [
+     "H1-h7",
+     "H1-h28"
+    ],
+    "outcome": "both configurations passed the registered L1 criteria (L1 only)",
+    "market_runs_consumed": 1,
+    "holdout_accessed": false,
+    "data": "Binance Vision spot 1d klines 2020-11-01..2025-06-29, 15699 files verified against the S4 manifest",
+    "read_before_registration": false
+   },
+   "diagnostic_replay": {
+    "stage": "M4 / L2 economic viability",
+    "status": "EXECUTED once (2026-11-27); consumed",
+    "preregistration": "protocol/m4_l2_preregistration.json",
+    "spec_sha256": "8f18168550ca9af879296c2de2655be36ac8a5bc4b786da610968b749d9c7435",
+    "owner_approval": "protocol/m4_owner_approval.json",
+    "adds_configurations": 0,
+    "N_after": 45,
+    "rule": "approved diagnostic replay per family (protocol V2 section 8); executed once; no rerun",
+    "result_file": "docs/phase4c/m4_l2_results.json",
+    "result_sha256": "2d64e8e8591548d475d27f3039d8d5b31613f8e3f2718818d3debad92d0541a4",
+    "outcome": "L2 NO-GO for H1-h7 (failed A4, A5) and for H1-h28 (failed A3, A4, A5); Risk Management V3 reached SHUTDOWN at 2021-02-23 (h=7) and 2021-05-19 (h=28)",
+    "holdout_accessed": false,
+    "n_after": 45,
+    "diagnostic_replays_used": 1
+   }
+  }
+ ]
+}

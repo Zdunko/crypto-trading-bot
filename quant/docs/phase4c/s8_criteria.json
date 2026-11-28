@@ -1,0 +1,52 @@
+{
+ "id": "S8-criteria-v1",
+ "purpose": "Pre-registered acceptance criteria of S8 (research feasibility resolution and methodology redesign). Committed BEFORE any S8 code or analysis. Simulation parameters, grids, seeds and the decision rule are fixed here and are never tuned to results.",
+ "scope": "synthetic simulations and documentation only; no strategy implementation or registration, no market backtest or evaluation, no holdout access (not even metadata), no research-budget increase (N stays 43/52, 0 further families), no change to T1-T10, S2/S6/S7 thresholds or any frozen artifact, no paper/live trading, no paid service, no merge/deploy; B2, C1, C2, C3 stay unapproved; Family A stays rejected; Risk V3 is NOT adopted into market evaluations",
+ "freeze": [
+  {"id": "F1", "rule": "S7 is frozen only after the documented CI revalidation outcome on c3ce81b (rerun of failed jobs; intermittency of the upstream Windows failure judged from the rerun result; no upstream test is modified, skipped or suppressed, CI is not weakened); s7_freeze_record.json hashes are verified by the existing test"},
+  {"id": "F2", "rule": "research budget state unchanged (N 43 of 52, 0 further families, run_approvals empty, spec registry empty); all historical freeze and acceptance records verify; feasibility.py, benchmarks.py, risk_v2.py, risk_v3.py, s6_criteria.json, s7_criteria.json are byte-unchanged"}
+ ],
+ "simulation_fixed_parameters": {
+  "days_per_year": 365,
+  "n_days_primary": 1642,
+  "daily_sd": 0.03,
+  "one_sided_alpha": 0.05,
+  "target_power": 0.8,
+  "annualised_information_ratios_grid": [0.0, 0.3, 0.5, 0.8, 1.0],
+  "plausible_effect_declaration": "IR 0.5 is the reference plausible relative effect (declared before the study, not derived from market data); IR 0.3 is the pessimistic and 0.8 the optimistic case",
+  "dgp": ["iid_normal", "student_t3", "ar1_0.15", "vol_clustering", "regime_persistent_mean"],
+  "regime_dgp": "two-state Markov chain, daily stay probability 0.99, regime mean +/-0.001 per day around a total mean of the declared effect",
+  "tests": ["naive_t", "newey_west_lag10", "circular_block_bootstrap_L10", "circular_block_bootstrap_L20", "circular_block_bootstrap_L40"],
+  "bootstrap_draws": 499,
+  "replications_per_cell": 400,
+  "seeds": {"d1": 81, "d2": 82, "d3": 83, "d4": 84, "d5": 85, "d6": 86},
+  "cross_section": {"assets": [5, 20, 40, 100], "market_factor_loadings": "beta 1, factor sd 0.025, idiosyncratic sd 0.02", "sector_factors": {"clusters": 5, "sd": 0.01}, "rho_idiosyncratic_extra": [0.0, 0.3], "days": 1642, "ic_grid": [0.0, 0.01, 0.02]},
+  "purge": {"label_horizon_days": 20, "embargo_days": 20, "folds": 5, "knn_k": 5, "days": 1642, "reps": 100},
+  "multiple_testing": {"n_families": [1, 5, 15, 43], "reps": 2000, "days": 1642}
+ },
+ "design_questions": [
+  {"id": "D1", "question": "Which dependence-aware inference method keeps the size at 0.05 under autocorrelation, volatility clustering and persistent regimes, and what is the power of each at the declared IR grid for a paired (strategy minus benchmark) series?", "decision_use": "choose the inference for any future paired relative claim"},
+  {"id": "D2", "question": "How often does an underpowered design return 'not significant' for a truly positive effect versus produce evidence of negative performance (upper confidence bound below zero)?", "decision_use": "document that failing to reject is not evidence of negative expected performance and that negativity needs its own criterion"},
+  {"id": "D3", "question": "How much optimism does naive K-fold cross-validation with overlapping labels create on pure noise and does purging plus embargo remove it; how much usable test sample is lost?", "decision_use": "decide whether purged and embargoed walk-forward is required for any model-based family"},
+  {"id": "D4", "question": "Do additional assets create independent observations for absolute return claims and for cross-sectional (relative) claims under a market factor and sector factors?", "decision_use": "decide whether a larger universe or a hierarchical design can rescue power"},
+  {"id": "D5", "question": "How many years of history are needed for 80 percent power at each IR in the grid under the dependence inflation measured in D1, and what do longer legally usable histories buy?", "decision_use": "the central feasibility number"},
+  {"id": "D6", "question": "How large is the selection bias from picking the best of N null strategies and what does Holm or deflation recover?", "decision_use": "multiple-testing and selection-bias policy"}
+ ],
+ "audit_acceptance": [
+  {"id": "S1", "rule": "every number in the S8 documents comes from the stored results file s8_design_study_results.json produced by the committed code with the fixed seeds; re-running produces a byte-identical file; a test pins every verdict-bearing number with a tolerance"},
+  {"id": "S2", "rule": "negative results are reported as found: if the naive and HAC tests keep their size, if block bootstrap does not improve, or if no path reaches target power, that is stated"},
+  {"id": "S3", "rule": "no existing threshold (A7 raw 200, effective 80, MDE 1.5, 4.5-year window minimum 3) is edited; any change is a separately versioned proposal that is not adopted"}
+ ],
+ "decision_rule": {
+  "statement": "Fixed before the study. A path is a research path only if ALL hold: (1) a dependence-aware paired test with simulated size <= 0.07 at nominal 0.05 under every DGP in the grid; (2) simulated power >= 0.80 at the declared plausible effect IR 0.5 over the available legally usable history; (3) the data used is legally usable for the intended purpose (research-only data does not count for commercial deployment, and unverified licences count as unverified); (4) no frozen threshold is weakened.",
+  "GO": "at least one path meets (1)-(4) with data already in hand or verified free and legal",
+  "CONDITIONAL_GO": "at least one path meets (1), (2) and (4) but (3) is unresolved or the history must first be extended; the conditions are listed explicitly",
+  "NO_GO": "no path meets (1) and (2) even with the maximum conceivable free history"
+ },
+ "risk_v3_review": {
+  "rule": "readiness is judged against the S7 R1-R12 results, the list of required integration tests and the remaining assumptions; V3 is NOT adopted into any market evaluation in S8"
+ },
+ "licensing": {
+  "rule": "only primary texts actually read count as verified; a host that cannot be fetched is recorded as unverified with the reason; no clause is filled in from memory; the research-only versus commercially usable separation is kept; nothing is purchased or contacted"
+ }
+}

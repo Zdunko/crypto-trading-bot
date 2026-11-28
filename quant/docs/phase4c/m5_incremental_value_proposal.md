@@ -1,0 +1,41 @@
+# M5 proposal — does MAX3 add predictive and economic value beyond low-volatility selection? (DESIGN ONLY)
+
+Nothing in this document is registered or approved. No market statistic was computed; the only new numbers are **synthetic** (`m5_incremental_power_results.json`). Machine-readable draft: `protocol/proposals/m5_incremental_value_preregistration_DRAFT.json` (status DRAFT, no approval entry, budget unchanged at N 45/52).
+
+## 1. Why the existing evidence cannot answer the question
+- L1 PASS (mean IC 0.092 / 0.117) used a naive IC test. The synthetic study shows that when a signal is a volatility proxy (rank correlation with volatility 0.91, the M3 value) and volatility carries a premium, the **naive test rejects in 100 % of runs even when MAX3 has zero incremental effect** (h = 7 and 28). The L1 result is therefore equally consistent with "MAX3 = low volatility".
+- M4's paired comparison against the low-volatility portfolio was uninformative: terminal V3 shutdown put both portfolios in cash (h = 7: the same hour).
+
+## 2. Methodology (two stages, fixed sequence)
+**Stage 1 — signal level (cheap, high power).** Same universe, returns and dates as L1. Statistic: mean daily **partial rank correlation** of S with the h-day forward return controlling for the volatility rank (volatility = std of the 28 daily returns, the MAX3 window; one fixed measure). One-sided HAC (Newey-West lag 2h), Holm across the 2 horizons, minimum effect = the S9 break-even IC scaled by sqrt(h) (0.0093 / 0.0186), positive in both sub-periods. Calibration: 200 surrogate signals with the same 0.913 rank correlation to volatility and no return information must be rejected in <= 10 % of cases on the real data, otherwise the stage is INCONCLUSIVE. Integrity: independent re-implementation within 1e-9. Descriptive, non-gating: a volatility-tercile x MAX3-tercile double sort.
+
+**Stage 2 — economic comparison, research-only, only for horizons that pass stage 1.** MAX3 portfolio versus the pure low-volatility portfolio with the **identical** eligible set, K, tie-breaking, rebalance schedule, engine, hourly execution, 1 h latency, participation cap, fees + slippage (normal and double). **Unprotected by construction** (engine breaker off, V3 not acting) so terminal shutdown cannot confound; Risk Management V3 (zero recovery) is stepped on each arm's equity as a **shadow** for reporting only. The stage is labelled *research-only unprotected*: it never counts as an operational L2 pass and never touches the M4 NO-GO.
+Comparators, all causal (no ex-post calibration): cash; BTC buy-and-hold; point-in-time equal weight; **exposure-matched** BTC/cash using the arm's own invested fraction of the previous 28 days; **causally risk-matched** BTC/cash with weight min(1, sigma_arm / sigma_btc) from the previous 28 daily returns; and the **primary comparator, the volatility-matched low-volatility portfolio** (low-volatility arm scaled at each rebalance by min(1, sigma_MAX3 / sigma_lowvol) from trailing data, rest cash).
+
+## 3. How incremental signal is told apart from volatility exposure
+(i) the partial IC removes the rank-linear volatility component of S before testing; (ii) the double sort tests MAX3 within volatility buckets without a linear assumption (descriptive); (iii) the portfolio comparison holds volatility constant causally (volatility-matched low-volatility arm) and reports alpha on the low-volatility arm and on BTC; (iv) the surrogate null checks on the real data that a pure volatility proxy is **not** rejected; (v) the synthetic study demonstrates the logic: under no incremental effect the naive test rejects 100 % while the partial test rejects 6.5 % (h = 28) and 8.3 % (h = 7) (nominal 5 %; the h = 7 value slightly exceeds the 0.07 size limit used in S9/S8, Monte-Carlo standard error 0.011 — reported, not hidden).
+
+## 4. Statistical power and effect sizes (synthetic; partial IC in h-day units)
+| | partial IC 0.005 per-day-equivalent | 0.01 | 0.02 |
+|---|---|---|---|
+| h = 7: partial IC_h / power | 0.0105 / 0.63 | 0.0199 / 0.98 | 0.0406 / 1.00 |
+| h = 28: partial IC_h / power | 0.0124 / 0.44 | 0.0251 / 0.85 | 0.0498 / 1.00 |
+Interpolated 80 % minimum detectable partial IC: about **0.0135 (h = 7)** and **0.0225 (h = 28)**, versus the minimum economically meaningful 0.0093 and 0.0186: the test is powered for effects about 1.2-1.5x the economic threshold. The portfolio-level paired test is weak: on 4.5 years it detects an annualised information ratio of about 1.17 at 80 % power, so the minimum economic effect (3.6 %/yr) is detectable only if the arms' tracking error is below about 3 %/yr, which is unlikely for two altcoin portfolios. **Stage 2 will often be INCONCLUSIVE and is designed as estimation with a confidence interval, not as the primary gate.** Outcomes: ESTABLISHED / REFUTED (upper 95 % bound below 3.6 %/yr) / INCONCLUSIVE.
+
+## 5. Decision tree (abandon H1 vs a separate volatility-targeted hypothesis)
+D1 stage 1 not established or refuted at both horizons -> **abandon H1** (L1 PASS recorded as a volatility proxy), stage 2 not run. D2 stage 1 established -> stage 2 for those horizons. D3 stage 2 established -> the owner may be offered a **separate** hypothesis H1b (volatility-neutral MAX3 in a causally volatility-targeted portfolio) with its own registration. D4 stage 2 refuted -> abandon H1. D5 stage 2 inconclusive -> H1 not carried forward on economics (H1b only if the point estimate reaches 3.6 %/yr, labelled underpowered). D6 independently, a **plain volatility-targeted low-volatility portfolio** is a new family with parameters fixed a priori from the 20 % drawdown limit and its own budget; it is not part of this proposal. D7 any integrity, guard or budget failure -> stop, no rerun.
+
+## 6. Research budget — exact cost and reconciliation
+Ledger today: baseline N = 43 (Phase 3: 26 = 4 strategies + 22 variants; Phase 4: 14; Family A: 3) + H1's 2 configurations = **45 of 52**; families 1 of 3. H1 market runs 1 of 1 (L1, consumed); H1 diagnostic replays 1 of 1 (M4, consumed; it added **0** configurations, so N did not change). No further market evaluation of the H1 family is possible under the caps without an owner decision.
+| Option | Registration | N | Families | Caps |
+|---|---|---|---|---|
+| **R (recommended)** | one new family `h1_vol_control`, 2 configurations (VC-h7, VC-h28); stage 1 = its market run; stage 2 = its approved replay | **47 (cost 2)** | 2 of 3 | none exceeded |
+| C (conservative bookkeeping) | additionally charge the 2 stage-2 comparisons as trials | 49 (cost 4) | 2 of 3 with a configurations-cap exception (4 > 3), or 3 of 3 | needs an owner exception |
+| Stage 1 fails | stage 2 never runs | 47 | 2 of 3 | replay allowance lapses |
+**Sufficiency review.** Budget is sufficient for exactly one such two-stage diagnostic **and** one later separate family of up to 3 configurations (N <= 50), but for nothing more: after option R plus a volatility-targeted family the programme sits at N 50/52 with 3 of 3 families and no run or replay left. Statistically the budget is adequate for the signal-level question (high power) and inadequate for the portfolio-level economic question (IR 1.17 detectable): hence the design relies on stage 1 for the decision and treats stage 2 as estimation.
+
+## 7. Limitations
+One history and venue, research-only licence; one fixed volatility definition (no search over windows or measures); partial IC removes only the rank-linear part; surrogate persistence 0.95 is an assumption; the synthetic DGP is idealised (persistent AR(1) characteristics, t(3) shocks); stage 2 is unprotected and research-only; no result of this proposal can promote H1 to L2/L3.
+
+## 8. Recommendation
+**Approve stage 1 only, registered as option R (N 47), and decide stage 2 after seeing stage 1** (or pre-authorise it conditionally if you prefer fewer interruptions). Expected effort: about 1.5 sessions for stage 1 (code, synthetic tests, pre-registration, run, report), about 2 further sessions for stage 2. If stage 1 fails, H1 is abandoned at the cost of N + 2 and about 1.5 sessions, and the remaining budget (N 47, 2 of 3 families) stays available for a separate volatility-targeted hypothesis.

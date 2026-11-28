@@ -1,0 +1,28 @@
+{
+ "files": {
+  "docs/phase4c/m2_horizon_power_results.json": "a2070c6f90164080f90025b98d13450ae54ef152db97e4951b1985cfa623b068",
+  "docs/phase4c/m2_preregistration_report.md": "256439a67ee8381f8893adedf6e95e592927bb19e12ea1d88c027fe4d56b2070",
+  "docs/phase4c/s9_criteria.json": "6fd924988fef4e32eba7581afa4e2275540145ec2931eaff7b9a11816d64c62d",
+  "protocol/amendments/A11_register_h1.json": "3e1640e974c3d6b16f1c10b7b74e6f553e1c6e3a322a1115f5a16e6197bbbe81",
+  "protocol/amendments/A12_pinned_artifacts_h1.json": "dd8ee3df98bd2806b2e62e9332d52b9eecdf69b9987e3b9b323a661c63eb5e17",
+  "protocol/h1_l1_preregistration.json": "dcf05980e1603dc9618fbed24b1358b968d514cd576662064d9b87f301833e64",
+  "protocol/h1_owner_approval.json": "2365e40c11c318cfa67b71e8097c5f30f95b10d2f9da1e7fb68ecfb77876ba11",
+  "protocol/s9_acceptance_record.json": "55bf0e3cf1550fba343e51e60497cced099ee3379b37f4beca44ae85685fb580",
+  "quantlab/feasibility.py": "ea14e754ebba5616a6265961273ec890cf342ee9cbf706cc5c2247700c51ea34",
+  "quantlab/l1_horizon_power.py": "bd7b7a636f59f30b585a4e72980c649dc3e1dea81340fd7b3bf113f443d5f737",
+  "quantlab/l1_max3.py": "2e4cdf62442b3e674e908878fc4bcf5e5822dd550b5ecebd17cbbfd8ab5d0a47",
+  "quantlab/l1_run.py": "2ae508d6f8e8eaaf0fbc46228657715193714db01a831b9f692feac4e830533b",
+  "quantlab/risk_status.py": "e148aa96ead2c91e0bf55866379a70a8136d568229c7677979a48705f708bc29",
+  "quantlab/risk_v2.py": "99f337972a10315927d926368faa192448e5fe8dcdaecae607f89f86811b5e73",
+  "quantlab/risk_v3.py": "cbfe545e8727fc1012e930d62ef57f92b9920f011a0233a3cd74dd4d6a8e6cc8",
+  "tests/amend_chain.py": "5463b009d1c8eeb6d4b169c0e7d32906f22922141584bb53030bdf1dd07867c3",
+  "tests/test_l1_horizon_power.py": "dc8c20e2c0dd0fd358912d58fb94f578e94742ef0e48257748ec0532c322ad92",
+  "tests/test_l1_max3.py": "d05a17b02439301ed8b04952f9fbf437512918b59d4dbcccd724ecf7b501ff15",
+  "tests/test_l1_run.py": "b1e41ed5117bd23faf87b90e02df6ae207fd893524114ac3f581c5b486410786",
+  "tests/test_risk_v3_integration.py": "aa1db5e812861d71373db0c467a9cc95420fcdaf8b25f5bc6243d59b19d58779"
+ },
+ "id": "M2-freeze-v1",
+ "market_results_existed_at_freeze": false,
+ "purpose": "Registered H1 L1 evaluation, frozen BEFORE any candidate-specific market statistic was read",
+ "spec_sha256": "469607453ca5261c83d7903ed95ea69fdee87f05b47878d0472feb551cc48741"
+}

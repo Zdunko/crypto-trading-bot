@@ -1,0 +1,28 @@
+{
+ "approvals": [],
+ "budget_state": {
+  "consecutive_rejected_under_v2": 0,
+  "further_families": [],
+  "note_n": "N=43 as recorded in experiment_ledger.json (multiple_testing_rule); Family A and everything before it are inside N",
+  "note_rejected": "Family A was evaluated before protocol V2 and does not count toward the V2 stop rule",
+  "total_n": 43
+ },
+ "criteria_sha256_at_pre_registration_f053d61": "ee25010bc0765bd75ac4ec5f90bd75ca156fbf00a7d6dd5e70e8a9689a448236",
+ "files": {
+  "docs/phase4c/proposals/b2_draft_gate_result.json": "6856abd24ecec370ead39d4223a72035de054b2b5eb68b8472ddc94602cc306c",
+  "docs/phase4c/proposals/b2_draft_preregistration.json": "fa8d0cbbc3932c912d9cd34e879024a379fc09e5bf026456bf1afc558b2c3144",
+  "docs/phase4c/s6_criteria.json": "ee25010bc0765bd75ac4ec5f90bd75ca156fbf00a7d6dd5e70e8a9689a448236",
+  "docs/phase4c/s6_next_family_design_proposal.md": "35c16f44280a5dada8302b1e0c827eeafb5552c7461723ab7d9beb1e7fcddd0b",
+  "docs/phase4c/s6_stale_position_review.md": "87cafad5708a3e7cc6be8e7a4984af11f594d82ee1cd670ef56088bc394d75c9",
+  "protocol/benchmark_registry.json": "8b436a6f1301f9f7b14c6180c0cc90c8a3b5b3a26b688b0a4567e82bd0f5adb1",
+  "protocol/preregistration_template.json": "d1004466edc544dd29acf8a86453d64e749add2f75e6a169e826da81b27c4ce1",
+  "protocol/run_approvals.json": "d9631caecb365d4aea7835453851ad5e87e341d96053780fbafebad115b5bf7d",
+  "protocol/s5_freeze_record.json": "80412562f64b38b2441af8a8e29bccca4bc207a635a7ed016ef04ba66d62a56d",
+  "protocol/spec_registry.json": "27e27d5cfd4209ae0084f50c2c56fde38df9baf31676006d4da9c33c685787b8",
+  "quantlab/benchmarks.py": "7a472a29d30cef22b995c57152bdcc294696a04a592ebab1b299168e7185924f",
+  "quantlab/feasibility.py": "ea14e754ebba5616a6265961273ec890cf342ee9cbf706cc5c2247700c51ea34",
+  "tests/prereg_fixtures.py": "baa5d4ed1b1ec06fb2643042327886d45b0794d48832425f73a53bdcb863e670"
+ },
+ "id": "S6-freeze-record",
+ "status": "Feasibility gate and benchmark infrastructure frozen at delivery (pending the owner's acceptance). A change needs a new version and an amendment; registering a family or adding an approval is such a change."
+}

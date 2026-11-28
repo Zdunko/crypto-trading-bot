@@ -1,0 +1,16 @@
+{
+ "amendment": "A20",
+ "budget_total_n": 45,
+ "defect_corrections_sha256": "10f7ed4c33905822ece481eba008a0333a25b38a761653ce00f6bf14cb9f8bcd",
+ "freeze_commit": "b5907a5",
+ "freeze_sha256": "c4d0864f111aae7741f08d1519a8f7148dce9af68b5ad1c841dd32ac6ce86116",
+ "holdout_access": false,
+ "id": "m6-s0-record",
+ "market_data": false,
+ "recommendation": "NO-GO for registration of lv_sleeve (not an authorisation)",
+ "registration": false,
+ "report": "docs/phase4c/m6_s0_report.md",
+ "report_sha256": "03150609759d7b155e03441d3747a59d22c66e8d52486f85419400c418b39bb4",
+ "results_sha256": "576099bac89f1510452aa3c372611f03b89dc3180d29f50230d1fd5fa44c1d92",
+ "synthetic_only": true
+}
