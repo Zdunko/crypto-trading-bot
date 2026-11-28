@@ -1,0 +1,74 @@
+{
+ "id": "M5-calibration-protocol-round2-v1",
+ "status": "PRE-REGISTERED BEFORE THE ROUND-2 RUN. Synthetic only; no market data. This is the FINAL calibration round: if it fails, Phase 1 is stopped before market evaluation and no round 3 exists.",
+ "round1_outcome_recorded_before_this_protocol": {
+  "result_file": "docs/phase4c/m5_calibration_results.json",
+  "protocol": "protocol/m5_calibration_protocol.json (round 1, seed 20261210, 600 reps per cell)",
+  "finding": "NO method of the round-1 menu M0-M4 was valid (max size over the 10 cells: M0 0.083, M1 0.085, M2 0.087, M3 0.085, M4 0.083; the binding cell is S4_volatility_clustering at h = 28 for ALL methods; the originally flagged cell S1 h = 7 measured 0.052-0.055 for all methods). By the round-1 rule this is a STOP.",
+  "new_diagnosis": "the size excess does not depend on the lag (M0 ... M4 behave alike) and appears under volatility clustering at h = 28: with persistent characteristics and 28-day overlaps the effective number of independent observations is only about 60-80, so Gaussian critical values with HAC variances are too liberal and the heavy-tailed daily correlations aggravate it; the 600-replication Monte-Carlo standard error (about 0.009) is also too large for an 'all ten cells <= 0.07' rule",
+  "why_round2": "the owner's condition asks to resolve the calibration with synthetic data only and to stop if no defensible method exists; round 1 tested the lag hypothesis only. Round 2 tests the few-effective-observations hypothesis, once, with fresh seeds and more replications. Round-1 methods M0 and M1 are re-evaluated at the higher precision for a fair comparison."
+ },
+ "preserved": {
+  "nominal_one_sided_level": 0.05,
+  "statistic": "mean daily cross-sectional partial rank correlation (unchanged)",
+  "min_effect_thresholds": {
+   "h7": 0.0093,
+   "h28": 0.0186
+  },
+  "multiple_testing": "Holm over the two configurations",
+  "size_tolerance": 0.07,
+  "scenarios": "S1-S5 and horizons 7, 28 exactly as in round 1"
+ },
+ "methods_menu_final": {
+  "M0": "as round 1 (Newey-West lag 2h, normal)",
+  "M1": "as round 1 (Newey-West lag max(2h,60), normal)",
+  "M5": "Newey-West lag max(2h,60) with Student-t critical value, df = max(5, floor(n / lag) - 1) (fixed-b style: the degrees of freedom reflect the number of lag-length blocks, not the naive sample size)",
+  "M6": "batch-means t-test: non-overlapping blocks of length max(2h,60) starting at the first observation, t = mean(block means) / (sd(block means) / sqrt(nb)), Student-t critical value with df = nb - 1",
+  "M7": "Fisher z-transform (arctanh) of the daily partial correlations, then Newey-West lag max(2h,60) with normal critical value",
+  "M8": "Fisher z-transform, then the batch-means t-test of M6"
+ },
+ "no_other_method_may_be_tried": true,
+ "procedure": {
+  "step1_calibration": {
+   "seed": 20261220,
+   "reps_per_cell": 1500,
+   "rule": "unchanged: VALID iff size <= 0.07 in ALL 10 cells; among valid methods the highest mean power at a_m = 0.01; ties within 0.005 -> the lower method index; none valid -> STOP"
+  },
+  "step2_validation": {
+   "seeds": [
+    20261221,
+    20261222
+   ],
+   "reps_per_cell": 1500,
+   "rule": "selected method: size <= 0.07 in ALL 10 cells in BOTH independent runs; otherwise STOP"
+  },
+  "step3_power_report": {
+   "seed": 20261223,
+   "reps_per_cell": 1000,
+   "cells": "S1 and S3, both horizons, a_m in {0.005, 0.01, 0.02}",
+   "report": "unchanged; STOP if the power at 2 x threshold is below 0.80 in S1 for either horizon"
+  },
+  "step4_surrogate_validation": {
+   "seed": 20261224,
+   "panels": 50,
+   "surrogates_per_panel": 20,
+   "scenarios": [
+    "S1_baseline",
+    "S3_low_persistence"
+   ],
+   "a_m": [
+    0.0,
+    0.02
+   ],
+   "horizons": [
+    7,
+    28
+   ],
+   "rule": "unchanged: surrogate rejection rate <= 0.10 in all 8 combinations"
+  }
+ },
+ "surrogate_construction_final": "unchanged from protocol/m5_calibration_protocol.json (circular time shift of the MAX3-specific residual by Delta in [180, T-180]; 200 surrogates; threshold 0.10; seed 20261215)",
+ "outputs": [
+  "docs/phase4c/m5_calibration_round2_results.json"
+ ]
+}
