@@ -1,0 +1,15 @@
+{
+ "files": {
+  "docs/phase4c/m4_validation_outcome.md": "491fff0131203fad33bd85b7bb1334e8f938f5823c6e6e1094c5ca9ce03d576e",
+  "docs/phase4c/m5_incremental_power_results.json": "99affd795663ed59cf94dee5fab29e03d9abc7a992f7e537b9f01fbd5cb59b76",
+  "docs/phase4c/m5_incremental_value_proposal.md": "838bc258cdc0c171f962e4f97f174b54b077d72ac94ce9840503634a1185d7cd",
+  "protocol/m4_acceptance_record.json": "e085b78942561359582a3b6d0224186463aa75ba8289b124266e84c89b01bc3c",
+  "protocol/proposals/m5_incremental_value_preregistration_DRAFT.json": "ba03705a2ecf552ee945ad9701f870e1db6f2e555535144b1f360ac89b1fce82",
+  "quantlab/incremental_power.py": "6db077c8d3f38ba648d1eb926f4e446519e7b0454a9ffc51b29377aeb6f8e1fa",
+  "tests/test_incremental_power.py": "af55532de6c32ad592bceb6bb83c65b658a8baaa1881de56d37c12ed3bb922e4",
+  "tests/test_m4_acceptance.py": "fd00c9aea21ddb7ae34aa79b09b6e37d09e456fb9e18098ea63464c3d93bf254",
+  "tests/test_m5_proposal.py": "b9c099ebdd65abc529752f06b5d5b79bd5a058bc22d44754f9474d7eb0e10a47"
+ },
+ "id": "M5-proposal-freeze-v1",
+ "status": "DESIGN ONLY: the draft is not registered or approved; no market execution; budget unchanged (N 45/52)"
+}

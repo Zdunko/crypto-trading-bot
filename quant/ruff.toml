@@ -42,6 +42,7 @@ extend-immutable-calls = ["quant.quantlab.family_a.FamilyAConfig"]
 "quantlab/l2_run.py" = ["E501", "C901", "PLR0911", "PLR0912", "PLR0913", "PLR0914", "PLR0915", "PLR2004", "S603", "PLC0415", "SLF001", "E731"]  # registered L2 evaluation, rules kept inline
 "quantlab/l2_portfolio.py" = ["E501", "C901", "PLR0911", "PLR0912", "PLR0913", "PLR0914", "PLR0915", "PLR2004", "S603", "PLC0415", "SLF001", "E731"]  # registered L2 evaluation, rules kept inline
 "quantlab/l1_horizon_power.py" = ["E501", "C901", "PLR0913", "PLR0914", "PLR0915", "PLR2004"]  # seeded synthetic power study
+"quantlab/incremental_power.py" = ["E501", "C901", "PLR0913", "PLR0914", "PLR0915", "PLR2004"]  # seeded synthetic design study
 "quantlab/risk_v3.py" = ["E501", "C901", "PLR0912", "PLR0913", "PLR0914"]  # V3 wrapper mirrors the V2 order logic
 "quantlab/benchmarks.py" = ["E501", "C901", "PLR0913", "PLR0914"]  # engine-based benchmarks, formulas kept inline
 "quantlab/feasibility.py" = ["E501", "C901", "PLR0912", "PLR0915", "BLE001"]  # one check per rule; broad except is the fail-closed design
