@@ -1,0 +1,20 @@
+{
+ "id": "A20",
+ "date": "2026-11-28",
+ "manifests": [],
+ "title": "M6 design correction: a 15 % target exposure does NOT guarantee a drawdown below 18 % (claim withdrawn)",
+ "reason": "Owner instruction (Issue #2, M6-S0): the M6-DESIGN-01 statement that E_max = 0.15 makes shutdown impossible by construction is withdrawn. Repeated replenishment compounds losses (1000 -> 850 -> 722.50 is a 27.75 % drawdown absent intervention); V3 may or may not block replenishment, which is verified in M6-S0 and not assumed; target and realized exposure differ (drift between rebalances); equity is measured against the high-water mark, not the previous level; a single-event bound is not a cumulative bound; the normal 3-sigma approximation is not a hard bound. The design document is preserved unchanged; this amendment supersedes only the claim.",
+ "owner_approval": "Issue #2 comment 7236751506",
+ "preserves": {
+  "quant/docs/phase4c/m6_design_01_lowvol_sleeve_proposal.md": "unchanged (historical)"
+ },
+ "changes": [],
+ "claim_corrections": [
+  {
+   "file": "quant/docs/phase4c/m6_design_01_lowvol_sleeve_proposal.md",
+   "withdrawn": "Shutdown through the sleeve's own loss is therefore impossible by construction",
+   "replacement": "A single total loss of a 15 % sleeve costs at most 15 % of equity at that moment; cumulative loss, drift between rebalances, V3 integrity alarms (delistings, stale candles) and gaps are not bounded by the cap. Whether V3 prevents shutdown is tested in M6-S0, not assumed."
+  }
+ ],
+ "unchanged_parameters": "N 45, families 1 of 3, every cap, V3 limits, T1-T10"
+}

@@ -1,0 +1,346 @@
+{
+ "approval": "Issue #2 comment 7236751506 (owner)",
+ "causality_tests_planned": [
+  "prefix invariance of sigma_hat and E_t (truncate data after t)",
+  "units and annualisation: constant 2 % daily volatility -> 0.382 annualised",
+  "zero volatility -> exposure = e_max, no division error",
+  "insufficient or NaN history -> exposure 0",
+  "deterministic replay",
+  "cash + positions = equity"
+ ],
+ "claims_under_test": {
+  "C1": "No SHUTDOWN can occur with the sleeve capped at 15 % (unconditional no-shutdown guarantee)",
+  "C2": "Realized exposure never exceeds the 15 % target by more than 5 % relative",
+  "C3": "A single-event loss never exceeds 15 % of equity",
+  "C4": "With V3 active, drawdown from the high-water mark stays below 18 % in every fixture",
+  "C5": "Entry is blocked and pending buys are not executed while V3 is in FLAT_COOLDOWN or SHUTDOWN"
+ },
+ "common": {
+  "configs": {
+   "LV-1": "E_t = min(e_max, sigma_star / sigma_hat_basket)",
+   "LV-2": "E_t = e_max"
+  },
+  "engine": "quantlab.execution.run, ExecConfig(wallet=1000, costs=BASE unless stated, breaker=True as in M4, max_participation=None unless stated)",
+  "f_sd": 0.003,
+  "freq": "1h",
+  "note": "Fixtures are generic synthetic stress shapes chosen from the owner's list, not from any market data; no parameter is tuned after results.",
+  "pairs": 10,
+  "price_model": "hourly log-returns = common factor N(0, f_sd) + idiosyncratic N(0, 0.002); open_k = previous close x gap factor; start price 100",
+  "risk": "RiskManagedStrategyV3 with RiskV3Config() defaults (S2 limits, zero recovery, 48 h stale horizon); status feed none unless stated; V3 never disabled",
+  "seed": 20261128,
+  "sleeve": {
+   "annualisation": "sqrt(365)",
+   "basket": "fixed 10 pairs, equal weight, no market selection",
+   "decision": "Mondays 01:00 UTC from completed candles (orders fill at the next hourly open)",
+   "e_max": 0.15,
+   "missing_or_short_history": "sigma_hat NaN -> exposure 0 (fail closed)",
+   "resize": "buy shortfall / sell excess per asset when the difference >= min notional; no resize between Mondays",
+   "sigma_star": 0.1,
+   "vol_window_days": 60,
+   "zero_vol": "sigma_hat == 0 -> exposure = e_max (cap binds)"
+  },
+  "start": "2022-01-01T00:00:00Z",
+  "volume": 1000000000.0,
+  "wallet": 1000.0
+ },
+ "fixtures": [
+  {
+   "days": 200,
+   "events": [
+    {
+     "day": 100,
+     "factor": 0.001,
+     "hour": 5,
+     "kind": "gap",
+     "pairs": "all"
+    }
+   ],
+   "id": "F01_single_total_wipeout",
+   "predicted": {
+    "max_single_event_equity_loss_le": 0.152,
+    "shutdown": false,
+    "v3_states_visited_include": [
+     "FLAT_COOLDOWN"
+    ]
+   },
+   "purpose": "single-event loss versus cap; tier-2 inclusive boundary; cooldown and re-entry timeline (recovery semantics)"
+  },
+  {
+   "days": 240,
+   "events": [
+    {
+     "day": 100,
+     "factor": 0.001,
+     "hour": 5,
+     "kind": "gap",
+     "pairs": "all"
+    },
+    {
+     "day": 130,
+     "factor": 0.001,
+     "hour": 5,
+     "kind": "gap",
+     "pairs": "all"
+    },
+    {
+     "day": 165,
+     "factor": 0.001,
+     "hour": 5,
+     "kind": "gap",
+     "pairs": "all"
+    }
+   ],
+   "id": "F02_repeated_wipeouts",
+   "predicted": {
+    "cause": "tier3_floor",
+    "shutdown": true
+   },
+   "purpose": "cumulative loss with replenishment (owner example 1000 -> 850 -> 722.5): does V3 stop it, and does it end in SHUTDOWN"
+  },
+  {
+   "days": 260,
+   "events": [
+    {
+     "day": 90,
+     "factor": 0.4,
+     "hour": 5,
+     "kind": "gap",
+     "pairs": "all"
+    },
+    {
+     "day": 111,
+     "factor": 0.4,
+     "hour": 5,
+     "kind": "gap",
+     "pairs": "all"
+    },
+    {
+     "day": 132,
+     "factor": 0.4,
+     "hour": 5,
+     "kind": "gap",
+     "pairs": "all"
+    },
+    {
+     "day": 153,
+     "factor": 0.4,
+     "hour": 5,
+     "kind": "gap",
+     "pairs": "all"
+    },
+    {
+     "day": 174,
+     "factor": 0.4,
+     "hour": 5,
+     "kind": "gap",
+     "pairs": "all"
+    }
+   ],
+   "id": "F03_repeated_partial_losses",
+   "predicted": {
+    "shutdown": false
+   },
+   "purpose": "cumulative partial losses (-60 % x5) with weekly replenishment and tier-1/tier-2 transitions"
+  },
+  {
+   "days": 200,
+   "events": [
+    {
+     "daily_log_drift": 0.006,
+     "from_day": 80,
+     "kind": "drift",
+     "to_day": 140
+    },
+    {
+     "day": 150,
+     "factor": 0.001,
+     "hour": 5,
+     "kind": "gap",
+     "pairs": "all"
+    }
+   ],
+   "id": "F04_gain_then_loss_from_new_peak",
+   "predicted": {
+    "drawdown_from_hwm_le": 0.17,
+    "shutdown": false
+   },
+   "purpose": "high-water mark versus current equity after gains; weekly resizing keeps exposure near target"
+  },
+  {
+   "days": 200,
+   "events": [
+    {
+     "day": 101,
+     "factor": 1.4,
+     "hour": 5,
+     "kind": "gap",
+     "pairs": "all"
+    },
+    {
+     "day": 103,
+     "factor": 0.001,
+     "hour": 5,
+     "kind": "gap",
+     "pairs": "all"
+    }
+   ],
+   "id": "F05_exposure_drift_between_rebalances",
+   "predicted": {
+    "cause": "tier3_floor",
+    "realized_exposure_above_target": true,
+    "shutdown": true
+   },
+   "purpose": "rally of +40 % before the next Monday resize inflates realized exposure above 15 %, then a wipeout"
+  },
+  {
+   "days": 200,
+   "events": [
+    {
+     "day": 100,
+     "factor": 0.5,
+     "hour": 5,
+     "kind": "gap",
+     "pairs": "all"
+    }
+   ],
+   "id": "F06_overnight_gap_minus_50",
+   "predicted": {
+    "shutdown": false,
+    "v3_transitions": 0
+   },
+   "purpose": "moderate gap: loss about 7.5 % of equity stays below tier 1"
+  },
+  {
+   "costs": "STRESS",
+   "days": 200,
+   "events": [
+    {
+     "day": 100,
+     "factor": 0.5,
+     "hour": 5,
+     "kind": "gap",
+     "pairs": "all"
+    }
+   ],
+   "id": "F07_partial_fills_and_double_costs",
+   "max_participation": 0.1,
+   "predicted": {
+    "realized_exposure_le_target_plus": 0.0,
+    "shutdown": false
+   },
+   "purpose": "delayed and partial fills (participation cap), double costs, illiquid candles: realized exposure lags target; reconciliation",
+   "volume": 0.5
+  },
+  {
+   "days": 200,
+   "events": [
+    {
+     "from_hour": 3000,
+     "kind": "missing",
+     "pair": 3,
+     "to_hour": 3012
+    },
+    {
+     "from_hour": 3400,
+     "kind": "missing",
+     "pair": 5,
+     "to_hour": 3460
+    }
+   ],
+   "id": "F08_missing_candles_short_and_long",
+   "predicted": {
+    "cause": "integrity",
+    "shutdown": true
+   },
+   "purpose": "12 h gap (no alarm expected) and 60 h gap resuming (stale > 48 h) on held assets"
+  },
+  {
+   "days": 200,
+   "events": [
+    {
+     "from_hour": 3000,
+     "kind": "delist",
+     "pair": 4
+    }
+   ],
+   "id": "F09_delisting_one_asset",
+   "predicted": {
+    "cause": "integrity",
+    "shutdown": true
+   },
+   "purpose": "one of ten sleeve assets (1.5 % of equity) disappears: does V3 shut down although the loss is tiny"
+  },
+  {
+   "days": 200,
+   "events": [
+    {
+     "from_hour": 3000,
+     "kind": "delist",
+     "pair": 4
+    }
+   ],
+   "id": "F10_delisting_with_status_feed",
+   "predicted": {
+    "cause": "integrity",
+    "shutdown": true,
+    "write_off_recorded": true
+   },
+   "purpose": "same with an explicit DELISTED status (zero recovery write-off)",
+   "status_feed": {
+    "from_hour": 3000,
+    "pair": 4,
+    "status": "DELISTED"
+   }
+  },
+  {
+   "days": 200,
+   "events": [],
+   "id": "F11_calm_regime_cap_binds",
+   "predicted": {
+    "lv1_equals_lv2": true,
+    "shutdown": false
+   },
+   "purpose": "attainable versus target volatility when the cap binds (basket volatility about 28 % annualised)"
+  },
+  {
+   "days": 200,
+   "events": [],
+   "f_sd": 0.012,
+   "id": "F12_turbulent_regime_target_binds",
+   "predicted": {
+    "lv1_mean_exposure_below_lv2": true,
+    "shutdown": false
+   },
+   "purpose": "basket volatility about 110 % annualised: LV-1 exposure falls below the cap; realised portfolio volatility versus target"
+  },
+  {
+   "days": 200,
+   "events": [
+    {
+     "day": 100,
+     "factor": 0.001,
+     "hour": 5,
+     "kind": "gap",
+     "pairs": "all"
+    }
+   ],
+   "id": "F13_determinism_and_reconciliation",
+   "predicted": {
+    "cash_plus_positions_equals_equity": true,
+    "identical_hash": true
+   },
+   "purpose": "same fixture twice: identical order hash and equity; cash + positions reconcile",
+   "repeat": 2
+  }
+ ],
+ "id": "m6-s0-fixtures-freeze-v1",
+ "overlap_audit_planned": "existing documents + synthetic fixtures only: exposure-rule equivalence between Family A V0 (min(1, 40 %/sigma_i)) and LV-1 (min(0.15, 10 %/sigma_B)) on a synthetic volatility grid; selection/weighting/exposure/timing/execution/risk comparison matrix for Family A V0, S7 C2, H1, M4 low-volatility comparator",
+ "rules": {
+  "claim_falsification": "A claim is FALSIFIED if any fixture/config violates it (C1: any SHUTDOWN; C2: max(realized exposure) > 0.1575; C3: one gap event loses > 15 % of equity; C4: min(equity/hwm) < 0.82; C5: any buy fill while V3 state is FLAT_COOLDOWN or SHUTDOWN). A correct SHUTDOWN is NOT a software failure; it falsifies C1.",
+  "harness_defects": "Test-harness defects (crashes, unit errors, a fixture not producing its declared event) may be corrected transparently with the acceptance rules and predictions unchanged; the correction is reported.",
+  "recommendation_rule": "Recommend NO-GO for registration if the overlap audit finds only a risk overlay on already evaluated components (no distinct return hypothesis), regardless of fixture outcome. Fixture results can only weaken the case further; they cannot create a GO by themselves.",
+  "stop": "One run of each fixture and config. No new fixtures, parameters, caps, estimators or inference methods after results; no M5 reopening; no market data; no registration; N 45/52 and families 1/3 unchanged.",
+  "withdrawal": "A falsified guarantee is withdrawn in the report; no replacement strategy, cap or parameter is tuned."
+ },
+ "status": "FROZEN BEFORE THE FIRST RUN (synthetic only)"
+}
