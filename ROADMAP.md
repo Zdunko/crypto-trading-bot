@@ -82,3 +82,4 @@ M0-M3 (H1) executed: L1 PASS for the MAX3 signal on research-only data, flagged 
 M4 (L2) executed: H1 (MAX3) is an L2 NO-GO under the existing risk limits (V3 shutdown within weeks; unprotected drawdown 83-88 %). L3, paper and live are not reachable for this family; any follow-up needs a new owner decision. See `quant/docs/phase4c/m4_l2_report.md`.
 
 M5 (proposal only): a two-stage diagnostic of whether MAX3 adds value beyond low volatility, with its budget cost (N 47/52) and decision tree, awaits the owner's decision; see `quant/docs/phase4c/m5_incremental_value_proposal.md`. Nothing is registered or executed.
+- 2026-11-28 - M5 Phase 1: synthetic calibration did not pass validation; market evaluation blocked pending owner decision (see `quant/docs/phase4c/m5_phase1_calibration_stop.md`).

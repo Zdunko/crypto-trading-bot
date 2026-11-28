@@ -32,7 +32,8 @@ def test_the_draft_is_not_registered_not_approved_and_the_budget_is_unchanged():
     reg = json.loads((Q / "protocol/spec_registry.json").read_text(encoding="utf-8"))["registered"]
     assert all(r["family_id"] == "h1_lottery_max3" for r in reg)
     assert not list((Q / "docs/phase4c").glob("m5_*results*.json")) or all(
-        "power" in p.name for p in (Q / "docs/phase4c").glob("m5_*results*.json")
+        ("power" in p.name or "calibration" in p.name)  # synthetic only
+        for p in (Q / "docs/phase4c").glob("m5_*results*.json")
     )
 
 

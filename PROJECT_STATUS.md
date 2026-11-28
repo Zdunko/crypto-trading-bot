@@ -247,3 +247,7 @@ defaults to **OKX** for the technical bias check; this is **not** the owner's fi
 - 2026-11-27 — M0-M3 (H1): registration, V3 integration tests, L1 pre-registration, single L1 market run: L1 PASS (L1 only), with volatility-confound and magnitude caveats; budget N 45/52.
 - 2026-11-27 — M4 (L2) for H1: single approved replay executed; L2 NO-GO for both configurations; verification of the L1 IC passes; budget N 45/52.
 - 2026-11-28 — M5 proposal (design only): incremental value of MAX3 beyond low volatility; synthetic design validation; budget options (N 47 recommended); nothing registered or executed.
+
+## M5 Phase 1 (2026-11-28): synthetic calibration STOP (`quant/docs/phase4c/m5_phase1_calibration_stop.md`)
+
+- Owner approved Option R / Phase 1 only (N <= 47). Calibration (synthetic only): round 1 no valid method; round 2 selected M5 but failed the pre-registered independent validation (max size 0.0727 > 0.07 in both runs; pooled 0.060). Per the owner's condition: **stopped before market evaluation**. Family `h1_vol_control` not registered, N = 45/52, no VC market result, holdout untouched, Phase 2 not authorised. Awaiting owner decision (A amended criterion / B one more calibration round / C stop H1).
