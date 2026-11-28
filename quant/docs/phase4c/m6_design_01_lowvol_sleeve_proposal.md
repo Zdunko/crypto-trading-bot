@@ -1,0 +1,71 @@
+# M6-DESIGN-01 — design proposal: low-volatility selection with a prospectively capped, causally volatility-targeted crypto/cash sleeve
+
+**Status: DESIGN ONLY.** Nothing is registered, implemented, run or approved. No market statistic was computed for this document; research budget unchanged (**N = 45 / 52**, families 1 / 3). Authority: Issue #2, task M6-DESIGN-01 (owner approval relayed in the issue; record `protocol/m6_design01_approval_record.json`). Every number below is either (a) quoted from an existing repository artefact (cited), (b) arithmetic on a stated assumption (labelled *assumption*), or (c) a constraint derived from the frozen risk limits. Nothing is a result. Commercial data rights are **not** assumed (Binance Vision remains research-only).
+
+## 1. Finalised Option C (H1 terminated under the current protocol)
+H1 research stops: no further calibration, no registration of `h1_vol_control`, no Phase 2/H1b. Preserved unchanged: H1 L1 PASS **with the volatility confound** (rank correlation −0.913 with 28-day volatility); M4 L2 NO-GO (V3 shutdown 2021-02-23 / 2021-05-19; unprotected drawdown 83–88 %); M5 calibration stopped (round 2 validation max size 0.0727 > 0.07). The incremental effect of MAX3 beyond volatility is **unresolved, not disproven**. Ledger N = 45 / 52 unchanged.
+
+## 2. CI on `dcb7f98` (job level, read once)
+Quant CI (run 146 push, 147 pull_request): success. zizmor: success. Freqtrade CI run 46119349988: 29 jobs, **24 success, 5 skipped, 0 failure, 0 cancelled**. The five skipped jobs are release/deploy jobs (Docker Package Cleanup, Docker Build and Deploy, PyPI, TestPyPI, Notify CI Completion): skipped, **not** passes. Pre-commit Types update: skipped. The earlier failures were on `f52e72d` (Quant CI: fixed by amendment A19; upstream Build/macOS/Online-live: never analysed, not assumed infrastructure) and are superseded for this HEAD.
+
+## 3. Overlap with previous work (honest assessment)
+| Component of the proposal | Previous artefact | Overlap |
+|---|---|---|
+| Crypto/cash allocation with volatility scaling, liquidity cap, capital protection | **Family A** (A1 trend + vol scaling `min(1, 40 %/σ30)`, A0, **V0 = volatility scaling only**, 8 pairs, terminal breaker). Evaluated once: "not credible"; V0 +30.0 %, halted after 8.7 % of the period, T4 20.4 % (fail) | **Material** for the allocation layer (same mechanism: scale exposure by inverse volatility, remainder cash). Different: portfolio-level target on a selected basket, PIT universe, V3 instead of the terminal breaker, and a prospective exposure cap |
+| Selection of low-volatility assets | **S7 C2** (cross-sectional low-vol tilt: 60-day window, tercile, monthly; judged NO-GO on power/risk-layer, never registered); **M4 low-volatility comparator** (evaluated only as a comparator, shut down by V3) and the H1 observation that MAX3 ≈ low volatility | **Material** for the hypothesis (not a new economic idea). Its choice is informed by H1 data, so the observed volatility association is **exploratory, not independent evidence** |
+| Cross-sectional ranking on the PIT universe | H1 L1 (MAX3), S7 B2 (momentum, NO-GO) | Infrastructure only (reuse), different signal |
+| Phase 3 strategies (EMA cross, RSI/BB, Donchian, ROC), R1 risk overlay | rejected, per-asset time-series rules | None (no time-series entry/exit signal here) |
+| **Exposure cap derived from the risk limits** (section 5) | none | **New** — but it is a risk-engineering constraint, not a return hypothesis |
+
+**Judgement:** the family is a recombination of already evaluated or already specified components; the only genuinely new element is the prospective sizing constraint that removes the shutdown failure of Family A and H1. This is **not a pure relabel** (different universe, level of targeting, risk layer and an explicitly separable test), but it is also **not a new return hypothesis**, and the recommendation in section 9 is conditioned on that.
+
+## 4. Proposed family `lv_sleeve` — at most three fixed configurations; **two proposed**
+Common (all frozen from existing constraints, none tuned on performance):
+- **Universe / eligibility:** point-in-time S4 universe exactly as in L1/M4 (`PitDataset.universe_at(month start, '5M', 3)`, identity epochs, delisted symbols included, stablecoins excluded by the explicit classification); eligible only with ≥ 60 completed daily candles inside the identity epoch.
+- **Signal:** `σ_i,t = std(daily simple returns over the last 60 completed days)` (60 days is the S7 C2 convention fixed *before* any H1 market data; the H1 window 28 is deliberately **not** reused). Selection `S_i,t = −σ_i,t`; basket = lowest-σ tercile, `K = max(10, ceil(n_valid/3))`, ties by symbol name; fewer than 10 valid assets → cash.
+- **Within-basket weights:** equal weight `1/K`, capped by liquidity: `w_i ≤ 1 % of the asset's 20-day median daily quote volume / equity` (inactive at 10,000 USDT; sets the capacity statement, section 7); excess stays cash.
+- **Basket volatility estimator (causal):** `σ̂_B,t` = annualised (×√365) std of the last 60 completed daily returns of the equal-weight basket **at its current target weights** (weights fixed, returns observed).
+- **Sleeve exposure:** `E_t = min(E_max, σ*/σ̂_B,t)` (LV-1) or `E_t = E_max` (LV-2); the rest of equity is USDT cash earning 0 %. No leverage, no shorting, no averaging down, `position_adjustment_enable` unchanged.
+- **Schedule:** daily signals from completed candles; selection rebalance on the first day of each month (signal of D−1); exposure `E_t` re-set weekly (Mondays 00:00 UTC); fills at the next hourly open, 1 h latency, participation cap 10 %, minimum notional enforced; engine and risk wrapper unchanged (`l2_portfolio.py`, Risk Management V3 with unchanged thresholds, **V3 never disabled**).
+
+| | LV-1 | LV-2 |
+|---|---|---|
+| Role | selection + causal volatility targeting | selection + constant sleeve (isolates the targeting layer) |
+| `E_max` | 0.15 | 0.15 |
+| `σ*` (portfolio target) | 10 % annualised | n/a |
+
+**Derivation of the two risk numbers (constraints, not performance):**
+- `E_max = 0.15`: V3 tier-3 floor is an 18 % drawdown and tier-2 is 15 % (S2). A **total loss of the entire risky sleeve costs at most 15 % of equity**, so no sleeve outcome — including a wipe-out or a delisting cascade, independent of any historical drawdown — can reach the 18 % floor, and the 20 % T4 limit cannot be breached by the sleeve alone. Shutdown through the sleeve's own loss is therefore impossible *by construction* (residual risks: gap overshoot beyond the sleeve is impossible since cash is cash; stale/untradeable valuation at recovery 0 counts the sleeve at 0, which is the same bound). The cost is a small exposure, stated openly.
+- `σ* = 10 %`: under a normal approximation a 3σ monthly loss is `3·σ*/√12 = 8.7 %`, below the tier-1 boundary (10 %); fat tails are acknowledged (*assumption*). With `E_max` 0.15 the targeting layer binds only when `σ̂_B > σ*/E_max = 66.7 %`, i.e. it is a **turbulence brake**; in calm periods LV-1 ≈ LV-2 (stated in advance; the difference between the two is descriptive and statistically unprovable, section 7).
+
+**Third configuration:** not proposed (no distinct, constraint-derived alternative exists without adding a tunable parameter). Budget request would be **N 45 → 47, family slot 2 / 3**; caps unchanged (market runs per family 1, diagnostic replays per family 1, max N 52).
+
+## 5. Expected turnover and execution costs (*assumption*, unmeasured)
+Monthly basket churn 30–50 % of the sleeve → one-way turnover on equity ≈ `0.15 × 0.4 × 12 ≈ 0.7`/year; weekly resizing ≈ 0.5–1.0 /year → total ≈ **1.2–1.7 × equity per year one-way**. Cost per side 0.15 % (fee 0.10 % + slippage 0.05 %, normal) and **0.30 % (double)** → drag ≈ 0.2–0.3 % of equity per year (normal), 0.4–0.5 % (double). Gross upside is also small: if the sleeve earned 33 % a year (BTC-like CAGR in the repository, **not** an expectation), contribution = `0.15 × 33 % ≈ 5 %` of equity per year; if the sleeve earned 0 the loss is bounded by costs plus the sleeve's own drawdown (≤ 15 % by construction).
+
+## 6. Benchmarks (all causal, same costs)
+Cash; BTC buy-and-hold; PIT equal-weight universe; **same exposure schedule `E_t` applied to BTC** (the key comparator for selection value: BTC/cash with identical risk budget); **same `E_t` applied to the PIT equal-weight universe**; random-selection control (K assets drawn at random from the eligible set, 200 draws, same schedule); exposure-matched and risk-matched BTC/cash mixes from the existing registry. Benchmarks without V3 are reported as such.
+
+## 7. Statistical feasibility and what each level can show
+- **L1a — selection signal (return predictiveness), separate from risk allocation.** Statistic: mean daily cross-sectional Spearman IC of `S = −σ60` with the 28-day forward return (open t+1 to open t+1+28), HAC; null IC ≤ 0; **one horizon**, so no horizon multiplicity; fixed sub-periods P1 2021-01..2022-12, P2 2023-01..2025-06-29; economic threshold from the S9 break-even formula: IC_min = 0.0014 (turnover 4.8, normal costs) / 0.0042 (3× costs) per day-equivalent (arithmetic). **Power (existing synthetic, `m2_horizon_power_results.json`, `m2_preregistration_report.md`):** for h = 28 the S9 numbers are optimistic when the signal is not very persistent (power 0.30–0.55 at per-day IC 0.01 for φ 0.9; ≈ 0.92 at φ 0.97, N = 100); HAC with lag 2h was over-sized up to 0.093 at h = 28. A non-rejection cannot exclude a small viable effect (MDE ≫ break-even, as in S9).
+- **L1a is near-tautological on the development window**: the H1 results (rank correlation −0.913 between MAX3 and volatility; "calmer coins outperformed" in 2021–2025) already make a pass very likely. It is therefore **exploratory documentation, not confirmatory evidence**. Independent confirmation exists only on data not yet looked at: the sealed holdout (2025-07-01 → 2026-11-25, about 513 days; arithmetic extrapolation of the S9 detectable IC by √(1642/513) ≈ 1.8) — a single-use test that **needs separate explicit owner approval and is not requested here** — or licensed forward data (licensing unresolved).
+- **L1b — risk-forecast calibration (no return claim):** ratio `realised 28-day portfolio volatility / σ*` of LV-1 over the development window must lie in [0.5, 1.5] for ≥ 80 % of weeks, and `E_t` must never exceed 0.15 (invariant). It tests the allocation layer without any statement about profitability.
+- **L2 — economic viability (one approved replay; hourly engine + V3):** acceptance (derived from constraints, written before any run): (1) V3 never reaches SHUTDOWN (normal costs); (2) net return after **double** costs > 0; (3) max drawdown ≤ 20 % **and** not above the same-schedule BTC/cash comparator; (4) Sortino ≥ the same-schedule BTC/cash comparator (selection beats the simplest alternative); (5) fill ratio ≥ 0.95; (6) cost drag ≤ 25 % of gross sleeve return. This shows **economic viability under the risk limits, not alpha**.
+- **Profitability cannot be established statistically:** a relative claim needs IR ≥ 1.17 on 4.5 years (S7 arithmetic: power 0.16 / 0.28 / 0.52 / 0.68 at IR 0.3 / 0.5 / 0.8 / 1.0), and a 15 % sleeve makes effects smaller still. Selection-vs-targeting (LV-1 vs LV-2) is descriptive. My prior that this family yields a **statistically demonstrable** profitable edge: < 5 % (*assumption*).
+- **Capacity (arithmetic at the eligibility floor):** 28 assets × 1 % × 5 M USDT = 1.4 M USDT sleeve → about 9 M USDT equity; not tested.
+- **Inference lesson from M5:** a point-estimate size cap (≤ 0.07 per cell) with Monte-Carlo SE 0.0056 is too strict; any new inference calibration must pre-register a binomial-interval rule **from the start** (owner approval required; this proposal does not adopt option A retroactively for H1).
+
+## 8. Minimal prospective plan (each step needs its own approval; none requested now)
+| Step | Content | Budget / market data |
+|---|---|---|
+| S0 synthetic validation | cap invariant (`E_t ≤ 0.15`, total sleeve loss ⇒ equity loss ≤ 15 %, V3 never in SHUTDOWN on injected wipe-outs/delistings/gaps); causality (prefix-invariance of σ60 and σ̂_B); targeting fidelity on synthetic stochastic-volatility data; L1a size/power for h = 28 with a pre-registered binomial calibration rule and independent validation seeds; reuse `l2_portfolio.py`, `risk_v3.py`, `signal_power.py`, `vc_inference.py` | none, synthetic only |
+| S1 pre-registration | freeze spec, thresholds, comparators, stopping rules; register `lv_sleeve` (N 45 → 47, family 2/3); push before any market data | consumes N; no market data yet |
+| L1 | one run on 1d development data (L1a, L1b) = the family's single market run | market run 1/1 |
+| L2 | one approved diagnostic replay (hourly engine + V3) | replay 1/1, N unchanged |
+| conditional L3 | only if L1/L2 pass **and** licensing is resolved **and** the owner approves: paper/shadow replay on forward data with no real orders | out of scope |
+Stopping rules: S0 fails (cap invariant, causality or calibration) → stop before registration; L1b fails → stop; L2 criterion 1 fails → terminate; no reruns or variant search after any result; non-rejection ≠ proof.
+
+## 9. Limitations and recommendation
+Limitations: single 2021–2025 history (one cycle); Binance Vision research-only, commercial rights unresolved; survivorship by Binance listing; kline data without order book; hourly latency model; small-account assumption; the volatility association was seen during H1 (exploratory); cost/turnover numbers are assumptions; the sleeve's small size bounds both loss and gain.
+
+**Recommendation (one):** **conditional, narrow GO limited to step S0 (synthetic validation only; no registration, no market data, no budget consumption)**, followed by a fresh owner decision on S1. If the owner does not accept that (i) L1a is exploratory and (ii) profitability is statistically unprovable here, or if S0 cannot reproduce the cap/causality/calibration requirements, **terminate research**: the family is mostly a recombination of previously evaluated components, and its realistic value is a bounded-risk operational structure rather than a demonstrable edge.

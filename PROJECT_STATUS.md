@@ -251,3 +251,7 @@ defaults to **OKX** for the technical bias check; this is **not** the owner's fi
 ## M5 Phase 1 (2026-11-28): synthetic calibration STOP (`quant/docs/phase4c/m5_phase1_calibration_stop.md`)
 
 - Owner approved Option R / Phase 1 only (N <= 47). Calibration (synthetic only): round 1 no valid method; round 2 selected M5 but failed the pre-registered independent validation (max size 0.0727 > 0.07 in both runs; pooled 0.060). Per the owner's condition: **stopped before market evaluation**. Family `h1_vol_control` not registered, N = 45/52, no VC market result, holdout untouched, Phase 2 not authorised. Awaiting owner decision (A amended criterion / B one more calibration round / C stop H1).
+
+## M6-DESIGN-01 (2026-11-28, Issue #2): design only (`quant/docs/phase4c/m6_design_01_lowvol_sleeve_proposal.md`)
+
+- Option C finalised (H1 terminated under the current protocol; L1 PASS with volatility confound, M4 L2 NO-GO, M5 calibration failure preserved; MAX3 incremental effect unresolved). CI on `dcb7f98`: Quant CI success; Freqtrade CI 24 success / 5 skipped release jobs / 0 failure / 0 cancelled. Proposal `lv_sleeve` (two configurations, exposure cap 0.15 by construction, sigma* 10 %) with material overlap disclosed (Family A V0, S7 C2); recommendation: conditional narrow GO to synthetic validation only, else terminate. Nothing registered or run; N = 45/52.

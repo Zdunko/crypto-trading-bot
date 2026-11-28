@@ -1,0 +1,29 @@
+{
+ "approved": [
+  "finalise Option C: terminate H1 research under the current protocol; freeze M5 outcome; keep L1 PASS with volatility confound, M4 L2 NO-GO, M5 calibration failure; MAX3 incremental effect unresolved, not disproven",
+  "one design proposal for a long-only spot low-volatility selection + causal volatility-targeted crypto/cash family with unchanged V3",
+  "documentation / freeze records only"
+ ],
+ "budget_state": {
+  "families_used": 1,
+  "family_registered": null,
+  "max_total_n": 52,
+  "total_n": 45
+ },
+ "id": "m6-design-01-approval-record",
+ "not_approved": [
+  "any market experiment or candidate-specific market statistic",
+  "holdout access including metadata",
+  "optimisation",
+  "new calibration",
+  "registration or budget consumption",
+  "T1-T10 or risk-limit changes, disabling V3",
+  "paper or live trading, real orders, paid services, merge, deployment",
+  "strategy or engine implementation",
+  "any next step (separate approval required)"
+ ],
+ "proposal": "docs/phase4c/m6_design_01_lowvol_sleeve_proposal.md",
+ "proposal_sha256": "3c300a5beacc28f50823fdd38baf407b41c52158a25566ab3e8c2d9f101263bb",
+ "source": "https://github.com/Zdunko/crypto-trading-bot/issues/2 (comment 7236629305, author account Zdunko, association OWNER; the comment quotes an owner statement made in ChatGPT)",
+ "task": "M6-DESIGN-01 (design only)"
+}
